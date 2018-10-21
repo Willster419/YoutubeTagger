@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<DownloadInfo.xml CommandLine="youtube-dl -i --playlist-reverse --dateafter {0} --match-filter &quot;duration &gt; {1}&quot; -o &quot;%%(autonumber)s-%%(title)s.%%(ext)s&quot; --format m4a --embed-thumbnail ">
+  <!--Your comment-->
+  <DownloadInfo Folder="EDM_Treasures" Album="ElectroHouseSections Releases" AlbumArtist="EDM Treasures" Genre="Dance" LastTrackNumber="122" />
+  <!--<DownloadInfo Folder="ElectroDanceMovement" Album="ElectroDanceMovement" AlbumArtist="DJ Styline" Genre="Dance" LastTrackNumber="137" />-->
+  <!--<DownloadInfo Folder="Eric_Clapman" Album="Eric Clapman Mixes" AlbumArtist="Eric Clapman" Genre="Dance" LastTrackNumber="77" />-->
+  <!--<DownloadInfo Folder="Hands_Up_Generation" Album="Hands Up Generation" AlbumArtist="Willster419" Genre="Hands Up" LastTrackNumber="1141" />-->
+  <!--<DownloadInfo Folder="Hands_Up_Music" Album="HandsUp Music" AlbumArtist="HandsUp Music" Genre="Hands Up" LastTrackNumber="1700" />-->
+  <!--<DownloadInfo Folder="HHH_Sounds" Album="HHH Sounds" AlbumArtist="DJ HHH" Genre="Hands Up" LastTrackNumber="125" />-->
+  <!--<DownloadInfo Folder="NCS_House" Album="NCS House" AlbumArtist="Willster419" Genre="House" LastTrackNumber="172"/>-->
+  <!--<DownloadInfo Folder="PARADISE" Album="PARADISE Mixes" AlbumArtist="Willster419" Genre="Trance" LastTrackNumber="317" />-->
+  <!--<DownloadInfo Folder="PARADISE" Album="PARADISE Releases" AlbumArtist="Willster419" Genre="Trance" LastTrackNumber="914" />-->
+  <!--<DownloadInfo Folder="Waltrus_HandsUp" Album="Waltrus Hands Up" AlbumArtist="Willster419" Genre="Hands Up" LastTrackNumber="20" />-->
+  <!--<DownloadInfo Folder="Waltrus_Hardstyle" Album="Waltrus Hardstyle" AlbumArtist="Willster419" Genre="Hardstyle" LastTrackNumber="7" />-->
+</DownloadInfo.xml>

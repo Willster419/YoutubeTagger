@@ -1,0 +1,1 @@
+youtube-dl -i --playlist-reverse -o "%%(autonumber)s-%%(title)s.%%(ext)s" --format m4a --embed-thumbnail https://www.youtube.com/channel/UCMB1gPE92uvZlNouruclp6w/videos

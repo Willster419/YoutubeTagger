@@ -1,0 +1,1 @@
+youtube-dl -i --playlist-reverse -o "%%(autonumber)s-%%(title)s.%%(ext)s" --download-archive archive.txt --skip-download --format m4a https://www.youtube.com/playlist?list=UUIGtPvEVzyHdn01m4P36_yQ

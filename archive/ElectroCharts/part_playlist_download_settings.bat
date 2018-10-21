@@ -1,0 +1,1 @@
+youtube-dl -i --playlist-reverse --dateafter 20170313 --match-filter "duration > 1200" -o "%%(autonumber)s-%%(title)s.%%(ext)s" -x --audio-format m4a --embed-thumbnail https://www.youtube.com/playlist?list=UUaNx11M3bC-69l0P--J4flA

@@ -1,0 +1,1 @@
+youtube-dl -i --playlist-reverse --dateafter 20160821 -o "%%(autonumber)s-%%(title)s.%%(ext)s" -x --audio-format m4a --embed-thumbnail https://www.youtube.com/playlist?list=UU6AHeJa7s9-Brs6VyXy6Dwg

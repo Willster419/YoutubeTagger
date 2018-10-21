@@ -1,0 +1,1 @@
+youtube-dl -i --playlist-reverse --dateafter 20180203 --match-filter "duration > 600" -o "%%(autonumber)s-%%(title)s.%%(ext)s" --format m4a --embed-thumbnail https://www.youtube.com/user/Cyberx1000/videos

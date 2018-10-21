@@ -1,0 +1,1 @@
+youtube-dl -i --playlist-reverse --dateafter 20181021 --match-filter "duration > 600" -o "%%(autonumber)s-%%(title)s.%%(ext)s" --format m4a --embed-thumbnail https://www.youtube.com/channel/UCpCB87jDAMiOVlZH3VD-DPw/videos
