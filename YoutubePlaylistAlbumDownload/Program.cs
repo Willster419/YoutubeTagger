@@ -80,7 +80,7 @@ namespace YoutubePlaylistAlbumDownload
                 Console.WriteLine("Parsing directory" + info.Folder);
                 if (!Directory.Exists(info.Folder))
                 {
-                    Console.WriteLine("Directory" + info.Folder + " does not exist");
+                    Console.WriteLine("Directory " + info.Folder + " does not exist");
                     Console.ReadLine();
                     continue;
                 }
@@ -126,12 +126,14 @@ namespace YoutubePlaylistAlbumDownload
                     //if two, then it's a mix, artist is VA
                     //else index 1 is artist and 2 is track
                     string[] splitFileName = Path.GetFileNameWithoutExtension(fileName).Split('-');
-                    if(splitFileName.Count() > 2)
+                    int total_song_seconds = (int)file.Properties.Duration.TotalSeconds;
+                    if(splitFileName.Count() > 2 && total_song_seconds < 600)//greator than 10 mins is a mix
                     {
                         //0 = dumb, 1 = artist, 2 = title
                         tag.Performers = null;
                         tag.Performers = new string[] { splitFileName[1] };
                         tag.Title = splitFileName[2];
+                        Console.WriteLine("Song treated as song");
                     }
                     else
                     {
@@ -139,6 +141,7 @@ namespace YoutubePlaylistAlbumDownload
                         tag.Performers = null;
                         tag.Performers = new string[] { "VA" };
                         tag.Title = splitFileName[1];
+                        Console.WriteLine("Song treated as mix");
                     }
                     tag.Genres = null;
                     tag.Genres = new string[] { info.Genre };
