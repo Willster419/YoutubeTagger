@@ -16,9 +16,9 @@ rem full
 rem start "Eric_Clapman" /D Eric_Clapman "full_playlist_download_settings.bat"
 
 rem part
-rem start "Hands_Up_Generation" /D Hands_Up_Generation "part_playlist_download_settings.bat"
+start "Hands_Up_Generation" /D Hands_Up_Generation "part_playlist_download_settings.bat"
 rem full
-start "Hands_Up_Generation" /D Hands_Up_Generation "full_playlist_download_settings.bat"
+rem start "Hands_Up_Generation" /D Hands_Up_Generation "full_playlist_download_settings.bat"
 
 rem part
 start "Hands_Up_Music" /D Hands_Up_Music "part_playlist_download_settings.bat"
