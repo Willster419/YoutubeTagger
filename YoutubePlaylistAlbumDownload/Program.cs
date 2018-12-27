@@ -226,6 +226,8 @@ namespace YoutubePlaylistAlbumDownload
                                 WriteToLog(string.Format("{0}\nnot renamed", oldFileName));
                             }
                         }
+                        //and re-sort if afterwards
+                        files.Sort();
                     }
                     else
                     {
@@ -316,10 +318,13 @@ namespace YoutubePlaylistAlbumDownload
                                 }
                             }
                             tag.Performers = null;
-                            //TODO: this may need to become join? with 2 skip?
                             tag.Performers = new string[] { splitFileName[1].Trim() };
                             //trim it as well, just in case
-                            tag.Title = splitFileName[2].Trim();
+                            //tag.Title = splitFileName[2].Trim();
+                            tag.Title = string.Join("-", splitFileName.Skip(2)).Trim();
+                            WriteToLog("DEBUG: IS THIS NAME CORRECT?");
+                            WriteToLog(tag.Title);
+                            Console.ReadLine();
                             WriteToLog("Song treated as youtube song");
                             break;
                         default:
@@ -386,7 +391,6 @@ namespace YoutubePlaylistAlbumDownload
                             {
                                 WriteToLog("ERROR: Artist property is missing, please input manually!");
                                 file.Tag.Performers = null;
-                                //TODO: this may need to become join? with 2 skip?
                                 file.Tag.Performers = new string[] { Console.ReadLine() };
                                 file.Save();
                             }
