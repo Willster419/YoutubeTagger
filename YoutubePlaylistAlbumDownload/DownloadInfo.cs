@@ -6,18 +6,24 @@ using System.Threading.Tasks;
 
 namespace YoutubePlaylistAlbumDownload
 {
+    public enum DownloadType
+    {
+        YoutubeMix,
+        YoutubeSong,
+        Other1
+    }
     public class DownloadInfo
     {
+        //the type of download type to use
+        public DownloadType DownloadType;
+        //the name of the folder to process files
         public string Folder;
         public string Album;
         //public int Year;//from datetime now
         //public string Title;//from filename
         //public string Artist;//from filename or VA
         public string AlbumArtist;
-        //public int TrackNumber;//from saved in xml file
-        //public string PlaylistURL;//not needed at this time
-        //public string LengthFilter;//not needed at thie time
-        //public string LastDateDownloaded;//not needed a this time
+        //from saved in xml file
         public int LastTrackNumber;
         public string Genre;
     }
