@@ -13,14 +13,14 @@
 *.userprefs
 
 # Build results
-[Dd]ebug/
+#[Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
 x64/
 x86/
 bld/
-[Bb]in/
+#[Bb]in/
 [Oo]bj/
 [Ll]og/
 
@@ -329,3 +329,9 @@ ASALocalRun/
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
 desktop.ini
+*.exe
+*.mp3
+*.m4a
+*.dll
+/YoutubePlaylistAlbumDownload/bin/Debug/YoutubePlaylistAlbumDownload.exe.config
+/YoutubePlaylistAlbumDownload/bin/Debug/policy.2.0.taglib-sharp.config
