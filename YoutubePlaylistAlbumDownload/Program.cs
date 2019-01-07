@@ -322,9 +322,9 @@ namespace YoutubePlaylistAlbumDownload
                             //trim it as well, just in case
                             //tag.Title = splitFileName[2].Trim();
                             tag.Title = string.Join("-", splitFileName.Skip(2)).Trim();
-                            WriteToLog("DEBUG: IS THIS NAME CORRECT?");
-                            WriteToLog(tag.Title);
-                            Console.ReadLine();
+                            //WriteToLog("DEBUG: IS THIS NAME CORRECT?");
+                            //WriteToLog(tag.Title);
+                            //Console.ReadLine();
                             WriteToLog("Song treated as youtube song");
                             break;
                         default:
