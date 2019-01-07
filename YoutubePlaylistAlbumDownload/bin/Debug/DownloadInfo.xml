@@ -2,12 +2,12 @@
 <DownloadInfo.xml>
   <!--Your comment-->
   <DownloadInfo Folder="EDM_Treasures" Album="ElectroHouseSections Releases" AlbumArtist="EDM Treasures" Genre="Dance" DownloadType="YoutubeSong" LastTrackNumber="128" />
-  <DownloadInfo Folder="ElectroDanceMovement" Album="ElectroDanceMovement" AlbumArtist="DJ Styline" Genre="Dance" DownloadType="YoutubeMix" LastTrackNumber="144" />
-  <DownloadInfo Folder="Eric_Clapman" Album="Eric Clapman Mixes" AlbumArtist="Eric Clapman" Genre="Dance" DownloadType="YoutubeMix" LastTrackNumber="85" />
-  <DownloadInfo Folder="Hands_Up_Generation" Album="Hands Up Generation" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="1165" />
-  <DownloadInfo Folder="Hands_Up_Music" Album="HandsUp Music" AlbumArtist="HandsUp Music" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="1759" />
-  <DownloadInfo Folder="HHH_Sounds" Album="HHH Sounds" AlbumArtist="DJ HHH" Genre="Hands Up" DownloadType="YoutubeMix" LastTrackNumber="133" />
-  <DownloadInfo Folder="NCS_House" Album="NCS House" AlbumArtist="Willster419" Genre="House" DownloadType="YoutubeSong" LastTrackNumber="179" />
+  <DownloadInfo Folder="ElectroDanceMovement" Album="ElectroDanceMovement" AlbumArtist="DJ Styline" Genre="Dance" DownloadType="YoutubeMix" LastTrackNumber="145" />
+  <DownloadInfo Folder="Eric_Clapman" Album="Eric Clapman Mixes" AlbumArtist="Eric Clapman" Genre="Dance" DownloadType="YoutubeMix" LastTrackNumber="87" />
+  <DownloadInfo Folder="Hands_Up_Generation" Album="Hands Up Generation" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="1181" />
+  <DownloadInfo Folder="Hands_Up_Music" Album="HandsUp Music" AlbumArtist="HandsUp Music" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="1761" />
+  <DownloadInfo Folder="HHH_Sounds" Album="HHH Sounds" AlbumArtist="DJ HHH" Genre="Hands Up" DownloadType="YoutubeMix" LastTrackNumber="134" />
+  <DownloadInfo Folder="NCS_House" Album="NCS House" AlbumArtist="Willster419" Genre="House" DownloadType="YoutubeSong" LastTrackNumber="180" />
   <DownloadInfo Folder="PARADISE_Mixes" Album="PARADISE Mixes" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeMix" LastTrackNumber="317" />
   <DownloadInfo Folder="PARADISE_Releases" Album="PARADISE Releases" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeSong" LastTrackNumber="914" />
   <DownloadInfo Folder="Waltrus_HandsUp" Album="Waltrus Hands Up" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeMix" LastTrackNumber="20" />
@@ -18,4 +18,5 @@
   <DownloadInfo Folder="Flybeat_electro_house" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="Dance" DownloadType="Other1" LastTrackNumber="53" />
   <DownloadInfo Folder="Flybeat_handsup" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="Other1" LastTrackNumber="55" />
   <DownloadInfo Folder="Flybeat_hardstyle" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="Hardstyle" DownloadType="Other1" LastTrackNumber="17" />
+  <DownloadInfo Folder="Flybeat_uplifting_trance" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="Uplifting Trance" DownloadType="Other1" LastTrackNumber="1" />
 </DownloadInfo.xml>
