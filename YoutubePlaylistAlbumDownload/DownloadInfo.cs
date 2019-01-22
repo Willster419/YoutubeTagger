@@ -26,5 +26,6 @@ namespace YoutubePlaylistAlbumDownload
         //from saved in xml file
         public int LastTrackNumber;
         public string Genre;
+        public string[] CopyPaths;
     }
 }
