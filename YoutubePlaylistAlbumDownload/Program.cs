@@ -206,6 +206,7 @@ namespace YoutubePlaylistAlbumDownload
                 for (int j = 0; j < DownloadInfos.Count; j++)
                 {
                     DownloadInfo info = DownloadInfos[j];
+                    WriteToLog("");
                     WriteToLog("-----------------------Parsing directory " + info.Folder + "----------------------");
                     if (!Directory.Exists(info.Folder))
                     {
@@ -489,14 +490,17 @@ namespace YoutubePlaylistAlbumDownload
                     DownloadInfo info = DownloadInfos[j];
                     //make and filter out the lists
                     List<string> files = Directory.GetFiles(info.Folder).Where(file => ValidExtensions.Contains(Path.GetExtension(file))).ToList();
-                    if(files.Count == 0)
+                    WriteToLog("");
+                    WriteToLog("-----------------------CopyFiles for directory " + info.Folder + "----------------------");
+                    if (files.Count == 0)
                     {
-                        WriteToLog("ERROR: in CopyFiles, files.Count == 0!!");
+                        WriteToLog("files.Count == 0");
                         Console.ReadLine();
-                        return;
+                        continue;
                     }
+                    bool breakout = false;
                     //using copy for all then delete because you can't move across drives
-                    foreach(string copypath in info.CopyPaths)
+                    foreach (string copypath in info.CopyPaths)
                     {
                         WriteToLog("Copying files to directory " + copypath);
                         //get a list of files in the copy directory for checking later
@@ -510,18 +514,31 @@ namespace YoutubePlaylistAlbumDownload
                                 string naveofPresentFileCheck = string.Join("-", Path.GetFileName(fileInDestToCheck).Split('-').Skip(1));
                                 if(naveofPresentFileCheck.Equals(nameOfCurrentFileCheck))
                                 {
-                                    WriteToLog("ERROR: file with similar name exists!!");
+                                    WriteToLog("ERROR: file with similar name exists in" + info.Folder);
                                     WriteToLog(naveofPresentFileCheck);
-                                    Console.WriteLine();
-                                    return;
+                                    WriteToLog("Skipping, you will need to correct for duplicate entry and try again");
+                                    Console.ReadLine();
+                                    breakout = true;
+                                    break;
                                 }
                             }
+                            if (breakout)
+                                break;
+                        }
+                        if (breakout)
+                            break;
+                        //getting here means that all files were checked above and no duplicates exist
+                        foreach(string file in files)
+                        {
                             WriteToLog(Path.GetFileName(file));
                             string newPath = Path.Combine(copypath, Path.GetFileName(file));
                             File.Copy(file, newPath);
                         }
                     }
+                    if (breakout)
+                        continue;
                     //now delete
+                    WriteToLog("Deleting files in infos folder");
                     foreach (string file in files)
                     {
                         if(File.Exists(file))
