@@ -44,13 +44,9 @@
     <CopyPath>F:\Music\PARADISE\Releases</CopyPath>
     <CopyPath>F:\Converted Phone Music\PARADISE\Releases</CopyPath>
   </DownloadInfo>
-  <DownloadInfo Folder="Waltrus_HandsUp" Album="Waltrus Hands Up" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeMix" LastTrackNumber="20" >
-    <CopyPath>F:\Music\Waltrus\Hands Up</CopyPath>
-    <CopyPath>F:\Converted Phone Music\Waltrus\Hands Up</CopyPath>
-  </DownloadInfo>
-  <DownloadInfo Folder="Waltrus_Hardstyle" Album="Waltrus Hardstyle" AlbumArtist="Willster419" Genre="Hardstyle" DownloadType="YoutubeMix" LastTrackNumber="7" >
-    <CopyPath>F:\Music\Waltrus\Hardstyle</CopyPath>
-    <CopyPath>F:\Converted Phone Music\Waltrus\Hardstyle</CopyPath>
+  <DownloadInfo Folder="Waltrus_House" Album="Waltrus House" AlbumArtist="Willster419" Genre="House" DownloadType="YoutubeSong" LastTrackNumber="0" >
+    <CopyPath>F:\Music\Waltrus\House</CopyPath>
+    <CopyPath>F:\Converted Phone Music\Waltrus\House</CopyPath>
   </DownloadInfo>
   <DownloadInfo Folder="Flybeat_bass_up" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="Bass Up" DownloadType="Other1" LastTrackNumber="1" >
     <CopyPath>F:\Music\DJ FlyBeat\Bass Up</CopyPath>

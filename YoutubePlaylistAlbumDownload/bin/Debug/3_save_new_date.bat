@@ -86,20 +86,11 @@ set PARADISE_Releases_3=%PARADISE_Releases_1%%today%%PARADISE_Releases_2%
 rem save comamnd to disk
 echo %PARADISE_Releases_3%>PARADISE_Releases\part_playlist_download_settings.bat
 
-rem Waltrus_HandsUp
-set /p Waltrus_HandsUp=<Waltrus_HandsUp\part_playlist_download_settings.bat
-set Waltrus_HandsUp_1=%Waltrus_HandsUp:~0,45%
-set Waltrus_HandsUp_2=%Waltrus_HandsUp:~53%
+rem Waltrus_House
+set /p Waltrus_House=<Waltrus_House\part_playlist_download_settings.bat
+set Waltrus_House_1=%Waltrus_House:~0,45%
+set Waltrus_House_2=%Waltrus_House:~53%
 rem modify and save command
-set Waltrus_HandsUp_3=%Waltrus_HandsUp_1%%today%%Waltrus_HandsUp_2%
+set Waltrus_House_3=%Waltrus_House_1%%today%%Waltrus_House%
 rem save comamnd to disk
-echo %Waltrus_HandsUp_3%>Waltrus_HandsUp\part_playlist_download_settings.bat
-
-rem Waltrus_Hardstyle
-set /p Waltrus_Hardstyle=<Waltrus_Hardstyle\part_playlist_download_settings.bat
-set Waltrus_Hardstyle_1=%Waltrus_Hardstyle:~0,45%
-set Waltrus_Hardstyle_2=%Waltrus_Hardstyle:~53%
-rem modify and save command
-set Waltrus_Hardstyle_3=%Waltrus_Hardstyle_1%%today%%Waltrus_Hardstyle_2%
-rem save comamnd to disk
-echo %Waltrus_Hardstyle_3%>Waltrus_Hardstyle\part_playlist_download_settings.bat
+echo %Waltrus_House_3%>Waltrus_House\part_playlist_download_settings.bat

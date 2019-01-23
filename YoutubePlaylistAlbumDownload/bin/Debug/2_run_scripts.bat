@@ -46,11 +46,6 @@ rem full
 rem start "PARADISE_Releases" /D PARADISE_Releases "full_playlist_download_settings.bat"
 
 rem part
-start "Waltrus_HandsUp" /D Waltrus_HandsUp "part_playlist_download_settings.bat"
+rem start "Waltrus_House" /D Waltrus_House "part_playlist_download_settings.bat"
 rem full
-rem start "Waltrus_HandsUp" /D Waltrus_HandsUp "full_playlist_download_settings.bat"
-
-rem part
-start "Waltrus_Hardstyle" /D Waltrus_Hardstyle "part_playlist_download_settings.bat"
-rem full
-rem start "Waltrus_Hardstyle" /D Waltrus_Hardstyle "full_playlist_download_settings.bat"
+start "Waltrus_House" /D Waltrus_House "full_playlist_download_settings.bat"

@@ -46,13 +46,8 @@ copy "bin\youtube-dl.exe" "PARADISE_Releases\youtube-dl.exe"
 copy "bin\AtomicParsley.exe" "PARADISE_Releases\AtomicParsley.exe"
 copy "bin\ffmpeg.exe" "PARADISE_Releases\ffmpeg.exe"
 copy "bin\ffprobe.exe" "PARADISE_Releases\ffprobe.exe"
-rem Waltrus_HandsUp
-copy "bin\youtube-dl.exe" "Waltrus_HandsUp\youtube-dl.exe"
-copy "bin\AtomicParsley.exe" "Waltrus_HandsUp\AtomicParsley.exe"
-copy "bin\ffmpeg.exe" "Waltrus_HandsUp\ffmpeg.exe"
-copy "bin\ffprobe.exe" "Waltrus_HandsUp\ffprobe.exe"
-rem Waltrus_Hardstyle
-copy "bin\youtube-dl.exe" "Waltrus_Hardstyle\youtube-dl.exe"
-copy "bin\AtomicParsley.exe" "Waltrus_Hardstyle\AtomicParsley.exe"
-copy "bin\ffmpeg.exe" "Waltrus_Hardstyle\ffmpeg.exe"
-copy "bin\ffprobe.exe" "Waltrus_Hardstyle\ffprobe.exe"
+rem Waltrus_House
+copy "bin\youtube-dl.exe" "Waltrus_House\youtube-dl.exe"
+copy "bin\AtomicParsley.exe" "Waltrus_House\AtomicParsley.exe"
+copy "bin\ffmpeg.exe" "Waltrus_House\ffmpeg.exe"
+copy "bin\ffprobe.exe" "Waltrus_House\ffprobe.exe"
