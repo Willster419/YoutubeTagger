@@ -499,8 +499,23 @@ namespace YoutubePlaylistAlbumDownload
                     foreach(string copypath in info.CopyPaths)
                     {
                         WriteToLog("Copying files to directory " + copypath);
-                        foreach(string file in files)
+                        //get a list of files in the copy directory for checking later
+                        List<string> destinationDuplicateCheck = Directory.GetFiles(copypath).Where(file => ValidExtensions.Contains(Path.GetExtension(file))).ToList();
+                        foreach (string file in files)
                         {
+                            //check for duplicates by spitting the names and checking if the title is the same (skipping the track name)
+                            string nameOfCurrentFileCheck = string.Join("-",Path.GetFileName(file).Split('-').Skip(1));
+                            foreach(string fileInDestToCheck in destinationDuplicateCheck)
+                            {
+                                string naveofPresentFileCheck = string.Join("-", Path.GetFileName(fileInDestToCheck).Split('-').Skip(1));
+                                if(naveofPresentFileCheck.Equals(nameOfCurrentFileCheck))
+                                {
+                                    WriteToLog("ERROR: file with similar name exists!!");
+                                    WriteToLog(naveofPresentFileCheck);
+                                    Console.WriteLine();
+                                    return;
+                                }
+                            }
                             WriteToLog(Path.GetFileName(file));
                             string newPath = Path.Combine(copypath, Path.GetFileName(file));
                             File.Copy(file, newPath);
