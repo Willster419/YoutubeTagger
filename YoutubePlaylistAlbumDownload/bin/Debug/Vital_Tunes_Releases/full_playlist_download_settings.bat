@@ -1,1 +1,1 @@
-youtube-dl -i --playlist-reverse -o "%%(autonumber)s-%%(title)s.%%(ext)s" --format m4a --embed-thumbnail https://www.youtube.com/user/VitalTunezMusic/videos
+youtube-dl -i --playlist-reverse --match-filter "duration < 600" -o "%%(autonumber)s-%%(title)s.%%(ext)s" --format m4a --embed-thumbnail https://www.youtube.com/user/VitalTunezMusic/videos
