@@ -335,3 +335,5 @@ desktop.ini
 *.dll
 /YoutubePlaylistAlbumDownload/bin/Debug/YoutubePlaylistAlbumDownload.exe.config
 /YoutubePlaylistAlbumDownload/bin/Debug/policy.2.0.taglib-sharp.config
+*.jpg
+*.part
