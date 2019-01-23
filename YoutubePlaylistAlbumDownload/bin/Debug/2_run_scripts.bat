@@ -36,14 +36,14 @@ rem full
 rem start "NCS_House" /D NCS_House "full_playlist_download_settings.bat"
 
 rem part
-start "PARADISE_Mixes" /D PARADISE_Mixes "part_playlist_download_settings.bat"
+start "Vital_Tunes_Mixes" /D Vital_Tunes_Mixes "part_playlist_download_settings.bat"
 rem full
-rem start "PARADISE_Mixes" /D PARADISE_Mixes "full_playlist_download_settings.bat"
+rem start "Vital_Tunes_Mixes" /D Vital_Tunes_Mixes "full_playlist_download_settings.bat"
 
 rem part
-start "PARADISE_Releases" /D PARADISE_Releases "part_playlist_download_settings.bat"
+start "Vital_Tunes_Releases" /D Vital_Tunes_Releases "part_playlist_download_settings.bat"
 rem full
-rem start "PARADISE_Releases" /D PARADISE_Releases "full_playlist_download_settings.bat"
+rem start "Vital_Tunes_Releases" /D Vital_Tunes_Releases "full_playlist_download_settings.bat"
 
 rem part
 rem start "Waltrus_House" /D Waltrus_House "part_playlist_download_settings.bat"

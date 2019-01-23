@@ -36,13 +36,13 @@
     <CopyPath>F:\Music\NCS\House</CopyPath>
     <CopyPath>F:\Converted Phone Music\NCS\House</CopyPath>
   </DownloadInfo>
-  <DownloadInfo Folder="PARADISE_Mixes" Album="PARADISE Mixes" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeMix" LastTrackNumber="317" >
-    <CopyPath>F:\Music\PARADISE\Mixes</CopyPath>
-    <CopyPath>F:\Converted Phone Music\PARADISE\Mixes</CopyPath>
+  <DownloadInfo Folder="Vital_Tunes_Mixes" Album="Vital Tunes Mixes" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeMix" LastTrackNumber="317" >
+    <CopyPath>F:\Music\Vital Tunes\Mixes</CopyPath>
+    <CopyPath>F:\Converted Phone Music\Vital Tunes\Mixes</CopyPath>
   </DownloadInfo>
-  <DownloadInfo Folder="PARADISE_Releases" Album="PARADISE Releases" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeSong" LastTrackNumber="914" >
-    <CopyPath>F:\Music\PARADISE\Releases</CopyPath>
-    <CopyPath>F:\Converted Phone Music\PARADISE\Releases</CopyPath>
+  <DownloadInfo Folder="Vital_Tunes_Releases" Album="Vital Tunes Releases" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeSong" LastTrackNumber="914" >
+    <CopyPath>F:\Music\Vital Tunes\Releases</CopyPath>
+    <CopyPath>F:\Converted Phone Music\Vital Tunes\Releases</CopyPath>
   </DownloadInfo>
   <DownloadInfo Folder="Waltrus_House" Album="Waltrus House" AlbumArtist="Willster419" Genre="House" DownloadType="YoutubeSong" LastTrackNumber="0" >
     <CopyPath>F:\Music\Waltrus\House</CopyPath>

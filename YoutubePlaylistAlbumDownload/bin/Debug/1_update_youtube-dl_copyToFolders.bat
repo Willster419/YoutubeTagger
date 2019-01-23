@@ -36,16 +36,16 @@ copy "bin\youtube-dl.exe" "NCS_House\youtube-dl.exe"
 copy "bin\AtomicParsley.exe" "NCS_House\AtomicParsley.exe"
 copy "bin\ffmpeg.exe" "NCS_House\ffmpeg.exe"
 copy "bin\ffprobe.exe" "NCS_House\ffprobe.exe"
-rem PARADISE_Mixes
-copy "bin\youtube-dl.exe" "PARADISE_Mixes\youtube-dl.exe"
-copy "bin\AtomicParsley.exe" "PARADISE_Mixes\AtomicParsley.exe"
-copy "bin\ffmpeg.exe" "PARADISE_Mixes\ffmpeg.exe"
-copy "bin\ffprobe.exe" "PARADISE_Mixes\ffprobe.exe"
-rem PARADISE_Releases
-copy "bin\youtube-dl.exe" "PARADISE_Releases\youtube-dl.exe"
-copy "bin\AtomicParsley.exe" "PARADISE_Releases\AtomicParsley.exe"
-copy "bin\ffmpeg.exe" "PARADISE_Releases\ffmpeg.exe"
-copy "bin\ffprobe.exe" "PARADISE_Releases\ffprobe.exe"
+rem Vital_Tunes_Mixes
+copy "bin\youtube-dl.exe" "Vital_Tunes_Mixes\youtube-dl.exe"
+copy "bin\AtomicParsley.exe" "Vital_Tunes_Mixes\AtomicParsley.exe"
+copy "bin\ffmpeg.exe" "Vital_Tunes_Mixes\ffmpeg.exe"
+copy "bin\ffprobe.exe" "Vital_Tunes_Mixes\ffprobe.exe"
+rem Vital_Tunes_Releases
+copy "bin\youtube-dl.exe" "Vital_Tunes_Releases\youtube-dl.exe"
+copy "bin\AtomicParsley.exe" "Vital_Tunes_Releases\AtomicParsley.exe"
+copy "bin\ffmpeg.exe" "Vital_Tunes_Releases\ffmpeg.exe"
+copy "bin\ffprobe.exe" "Vital_Tunes_Releases\ffprobe.exe"
 rem Waltrus_House
 copy "bin\youtube-dl.exe" "Waltrus_House\youtube-dl.exe"
 copy "bin\AtomicParsley.exe" "Waltrus_House\AtomicParsley.exe"

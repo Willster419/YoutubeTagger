@@ -68,23 +68,23 @@ set NCS_House_3=%NCS_House_1%%today%%NCS_House_2%
 rem save comamnd to disk
 echo %NCS_House_3%>NCS_House\part_playlist_download_settings.bat
 
-rem PARADISE_Mixes
-set /p PARADISE_Mixes=<PARADISE_Mixes\part_playlist_download_settings.bat
-set PARADISE_Mixes_1=%PARADISE_Mixes:~0,45%
-set PARADISE_Mixes_2=%PARADISE_Mixes:~53%
+rem Vital_Tunes_Mixes
+set /p Vital_Tunes_Mixes=<Vital_Tunes_Mixes\part_playlist_download_settings.bat
+set Vital_Tunes_Mixes_1=%Vital_Tunes_Mixes:~0,45%
+set Vital_Tunes_Mixes_2=%Vital_Tunes_Mixes:~53%
 rem modify and save command
-set PARADISE_Mixes_3=%PARADISE_Mixes_1%%today%%PARADISE_Mixes_2%
+set Vital_Tunes_Mixes_3=%Vital_Tunes_Mixes_1%%today%%Vital_Tunes_Mixes_2%
 rem save comamnd to disk
-echo %PARADISE_Mixes_3%>PARADISE_Mixes\part_playlist_download_settings.bat
+echo %Vital_Tunes_Mixes_3%>Vital_Tunes_Mixes\part_playlist_download_settings.bat
 
-rem PARADISE_Releases
-set /p PARADISE_Releases=<PARADISE_Releases\part_playlist_download_settings.bat
-set PARADISE_Releases_1=%PARADISE_Releases:~0,45%
-set PARADISE_Releases_2=%PARADISE_Releases:~53%
+rem Vital_Tunes_Releases
+set /p Vital_Tunes_Releases=<Vital_Tunes_Releases\part_playlist_download_settings.bat
+set Vital_Tunes_Releases_1=%Vital_Tunes_Releases:~0,45%
+set Vital_Tunes_Releases_2=%Vital_Tunes_Releases:~53%
 rem modify and save command
-set PARADISE_Releases_3=%PARADISE_Releases_1%%today%%PARADISE_Releases_2%
+set Vital_Tunes_Releases_3=%Vital_Tunes_Releases_1%%today%%Vital_Tunes_Releases_2%
 rem save comamnd to disk
-echo %PARADISE_Releases_3%>PARADISE_Releases\part_playlist_download_settings.bat
+echo %Vital_Tunes_Releases_3%>Vital_Tunes_Releases\part_playlist_download_settings.bat
 
 rem Waltrus_House
 set /p Waltrus_House=<Waltrus_House\part_playlist_download_settings.bat
