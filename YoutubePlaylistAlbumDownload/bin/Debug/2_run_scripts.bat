@@ -46,6 +46,6 @@ rem full
 rem start "Vital_Tunes_Releases" /D Vital_Tunes_Releases "full_playlist_download_settings.bat"
 
 rem part
-rem start "Waltrus_House" /D Waltrus_House "part_playlist_download_settings.bat"
+start "Waltrus_House" /D Waltrus_House "part_playlist_download_settings.bat"
 rem full
-start "Waltrus_House" /D Waltrus_House "full_playlist_download_settings.bat"
+rem start "Waltrus_House" /D Waltrus_House "full_playlist_download_settings.bat"
