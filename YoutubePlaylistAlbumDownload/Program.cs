@@ -21,12 +21,6 @@ namespace YoutubePlaylistAlbumDownload
             ".MP3"
         };
 
-        private static readonly string[] DownloadStepsFiles = new string[]
-        {
-            "2_run_scripts.bat",
-            "3_save_new_date.bat",
-        };
-
         private static readonly string[] BinaryFiles = new string[]
         {
             "AtomicParsley.exe",
@@ -43,7 +37,15 @@ namespace YoutubePlaylistAlbumDownload
 
         private static List<DownloadInfo> DownloadInfos = new List<DownloadInfo>();
 
-        private const string logfile = "logfile.log";
+        private const string Logfile = "logfile.log";
+
+        private const string DefaultCommandLine = "-i --playlist-reverse {0} {1} --match-filter \"{2}\" -o \"%%(autonumber) s-%%(title) s.%%(ext) s\" --format m4a --embed-thumbnail {3}";
+
+        private const string DateAfterCommandLine = "--dateafter";
+
+        private const string YoutubeSongDurationCommandLine = "duration < 600";
+
+        private const string YoutubeMixDurationCommandLine = "duration > 600";
         #endregion
 
         //also using initializers as defaults
@@ -64,6 +66,8 @@ namespace YoutubePlaylistAlbumDownload
         public static bool DeleteBinaries = true;
         //if we should update youtubedl
         public static bool UpdateYoutubeDL = true;
+        //if we are saving the new date for the last time the script was run
+        public static bool SaveNewDate = true;
         #endregion
 
         
@@ -97,14 +101,15 @@ namespace YoutubePlaylistAlbumDownload
             {
                 //https://www.freeformatter.com/xpath-tester.html#ad-output
                 //get some default settings
-                NoPrompts = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/NoPrompts").InnerText);
-                RunScripts = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/RunScripts").InnerText);
-                HtmlParse = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/HtmlParse").InnerText);
-                ParseTags = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/ParseTags").InnerText);
-                CopyFiles = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/CopyFiles").InnerText);
-                CopyBinaries = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/CopyBinaries").InnerText);
-                DeleteBinaries = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/DeleteBinaries").InnerText);
-                UpdateYoutubeDL = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/UpdateYoutubeDL").InnerText);
+                NoPrompts = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/NoPrompts").InnerText.Trim());
+                UpdateYoutubeDL = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/UpdateYoutubeDL").InnerText.Trim());
+                CopyBinaries = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/CopyBinaries").InnerText.Trim());
+                HtmlParse = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/HtmlParse").InnerText.Trim());
+                RunScripts = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/RunScripts").InnerText.Trim());
+                SaveNewDate = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/SaveNewDate").InnerText.Trim());
+                ParseTags = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/ParseTags").InnerText.Trim());
+                CopyFiles = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/CopyFiles").InnerText.Trim());
+                DeleteBinaries = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/DeleteBinaries").InnerText.Trim());
                 //for each xml element "DownloadInfo" in element "DownloadInfo.xml"
                 foreach (XmlNode infosNode in doc.SelectNodes(string.Format("//{0}/{1}", DownloadInfoXml, nameof(DownloadInfo))))
                 {
@@ -113,12 +118,15 @@ namespace YoutubePlaylistAlbumDownload
                     DownloadInfo temp = new DownloadInfo
                     {
                         //Folder = 
-                        Folder = infosNode.Attributes[nameof(DownloadInfo.Folder)].Value,
-                        Album = infosNode.Attributes[nameof(DownloadInfo.Album)].Value,
-                        AlbumArtist = infosNode.Attributes[nameof(DownloadInfo.AlbumArtist)].Value,
-                        Genre = infosNode.Attributes[nameof(DownloadInfo.Genre)].Value,
-                        LastTrackNumber = int.Parse(infosNode.Attributes[nameof(DownloadInfo.LastTrackNumber)].Value),
-                        DownloadType = (DownloadType)Enum.Parse(typeof(DownloadType), infosNode.Attributes[nameof(DownloadInfo.DownloadType)].Value)
+                        Folder = infosNode.Attributes[nameof(DownloadInfo.Folder)].Value.Trim(),
+                        Album = infosNode.Attributes[nameof(DownloadInfo.Album)].Value.Trim(),
+                        AlbumArtist = infosNode.Attributes[nameof(DownloadInfo.AlbumArtist)].Value.Trim(),
+                        Genre = infosNode.Attributes[nameof(DownloadInfo.Genre)].Value.Trim(),
+                        LastTrackNumber = int.Parse(infosNode.Attributes[nameof(DownloadInfo.LastTrackNumber)].Value.Trim()),
+                        DownloadType = (DownloadType)Enum.Parse(typeof(DownloadType), infosNode.Attributes[nameof(DownloadInfo.DownloadType)].Value.Trim()),
+                        LastDate = infosNode.Attributes[nameof(DownloadInfo.LastDate)].Value.Trim(),
+                        DownloadURL = infosNode.Attributes[nameof(DownloadInfo.DownloadURL)].Value.Trim(),
+                        FirstRun = bool.Parse(infosNode.Attributes[nameof(DownloadInfo.FirstRun)].Value.Trim()),
                     };
                     XmlNodeList pathsList = infosNode.ChildNodes;
                     //i can do it without lists
@@ -263,28 +271,42 @@ namespace YoutubePlaylistAlbumDownload
             if(HtmlParse)
             {
                 WriteToLog("HtmlParse start...");
-                using (WebClient client = new WebClient())
+                foreach(DownloadInfo info in DownloadInfos)
                 {
-                    HtmlDocument document = new HtmlDocument();
-                    document.LoadHtml(client.DownloadString("https://hearthis.at/djflybeat/"));
-                    //"/html[1]/body[1]/div[4]/div[1]/div[1]/section[1]/section[2]/div[1]/div[2]/div[1]/div[1]/ul[1]"
-                    //https://stackoverflow.com/questions/15826875/html-agility-pack-using-xpath-to-get-a-single-node-object-reference-not-set
-                    HtmlNode node = document.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[4]/div[1]/div[1]/section[1]/section[2]/div[1]/div[2]/div[1]/div[1]/ul[1]");
-                    List<HtmlNode> musicEntries = node.ChildNodes.Skip(1).ToList();
-                    //.Where(element => element.properties
-                    musicEntries = musicEntries.Where(entry => entry.Name.Equals("li")).ToList();
-                    foreach(HtmlNode musicEntry in musicEntries)
+                    if(info.DownloadType != DownloadType.Other1)
                     {
-                        HtmlNode article = musicEntry.ChildNodes[1];
-                        HtmlNode span = article.ChildNodes[1];
-                        HtmlNode entity = span.ChildNodes[0];
-                        string page = entity.Attributes["href"].Value;
-                        HtmlDocument songPage = new HtmlDocument();
-                        songPage.LoadHtml(client.DownloadString(page));
+                        WriteToLog(string.Format("skipping folder {0} (downloadType != other1)", info.Folder));
+                        continue;
+                    }
+                    //delete any previous entries
+                    foreach(string file in Directory.GetFiles(info.Folder,"*",SearchOption.TopDirectoryOnly))
+                    {
+                        if (ValidExtensions.Contains(Path.GetExtension(file)))
+                            File.Delete(file);
+                    }
+                    WriteToLog("TODO: HTML PARSE");
+                    continue;
+                    using (WebClient client = new WebClient())
+                    {
+                        HtmlDocument document = new HtmlDocument();
+                        document.LoadHtml(client.DownloadString("https://hearthis.at/djflybeat/"));
+                        //"/html[1]/body[1]/div[4]/div[1]/div[1]/section[1]/section[2]/div[1]/div[2]/div[1]/div[1]/ul[1]"
+                        //https://stackoverflow.com/questions/15826875/html-agility-pack-using-xpath-to-get-a-single-node-object-reference-not-set
+                        HtmlNode node = document.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[4]/div[1]/div[1]/section[1]/section[2]/div[1]/div[2]/div[1]/div[1]/ul[1]");
+                        List<HtmlNode> musicEntries = node.ChildNodes.Skip(1).ToList();
+                        //.Where(element => element.properties
+                        musicEntries = musicEntries.Where(entry => entry.Name.Equals("li")).ToList();
+                        foreach (HtmlNode musicEntry in musicEntries)
+                        {
+                            HtmlNode article = musicEntry.ChildNodes[1];
+                            HtmlNode span = article.ChildNodes[1];
+                            HtmlNode entity = span.ChildNodes[0];
+                            string page = entity.Attributes["href"].Value;
+                            HtmlDocument songPage = new HtmlDocument();
+                            songPage.LoadHtml(client.DownloadString(page));
+                        }
                     }
                 }
-                //return;
-                WriteToLog("HtmlParse end");
             }
             else
                 WriteToLog("HtmlParse skipped");
@@ -296,28 +318,123 @@ namespace YoutubePlaylistAlbumDownload
             }
             if (RunScripts)
             {
-                if (!Directory.Exists(BinaryFolder))
+                //make sure binaries exist first
+                foreach (DownloadInfo info in DownloadInfos)
                 {
-                    WriteToLog("ERROR: \"bin\" folder missing");
-                    Console.ReadLine();
-                    return;
+                    if (!Directory.Exists(info.Folder))
+                    {
+                        WriteToLog("ERROR: folder " + info.Folder + "does not exist!");
+                        Console.ReadLine();
+                        return;
+                    }
+                    if (info.DownloadType == DownloadType.Other1)
+                    {
+                        WriteToLog(string.Format("skipping folder {0} (downloadType = other1)", info.Folder));
+                        continue;
+                    }
+                    foreach (string binaryFile in BinaryFiles)
+                    {
+                        string fileToCopy = Path.Combine(info.Folder, binaryFile);
+                        if (!File.Exists(fileToCopy))
+                        {
+                            WriteToLog(string.Format("ERROR: binary file {0} does not exist in folder {1}", binaryFile, info.Folder));
+                            Console.ReadLine();
+                            return;
+                        }
+                    }
                 }
-                //tell the user which script we are running
-                foreach (string s in DownloadStepsFiles)
+                //build and run the process list
+                //build first
+                List<Process> processes = new List<Process>();
+                foreach (DownloadInfo info in DownloadInfos)
                 {
-                    WriteToLog(string.Format("Running script {0}, press enter when done", s));
+                    if (info.DownloadType == DownloadType.Other1)
+                    {
+                        WriteToLog(string.Format("skipping folder {0} (downloadType = other1)", info.Folder));
+                        continue;
+                    }
+                    //delete any previous entries
+                    foreach (string file in Directory.GetFiles(info.Folder, "*", SearchOption.TopDirectoryOnly))
+                    {
+                        if (ValidExtensions.Contains(Path.GetExtension(file)))
+                            File.Delete(file);
+                    }
+                    WriteToLog(string.Format("build process info folder {0}", info.Folder));
+                    processes.Add(new Process()
+                    {
+                        StartInfo = new ProcessStartInfo()
+                        {
+                            RedirectStandardError = false,
+                            RedirectStandardOutput = false,
+                            UseShellExecute = true,
+                            WorkingDirectory = info.Folder,
+                            FileName = youtubeDL,
+                            CreateNoWindow = false,
+                            Arguments = string.Format(DefaultCommandLine,
+                                info.FirstRun ? string.Empty : DateAfterCommandLine,
+                                info.FirstRun ? string.Empty : info.LastDate,
+                                info.DownloadType == DownloadType.YoutubeMix ? YoutubeMixDurationCommandLine : YoutubeSongDurationCommandLine,
+                                info.DownloadURL)
+                        }
+                    });
+                }
+                //run them all now
+                foreach(Process p in processes)
+                {
                     try
                     {
-                        Process.Start(s);
-                        Console.ReadLine();
+                        WriteToLog("Launching process for folder " + p.StartInfo.WorkingDirectory);
+                        p.Start();
                     }
-                    catch (Exception ex)
+                    catch(Exception ex)
                     {
+                        WriteToLog("An error has occurred running a process, stopping all");
+                        foreach(Process proc in processes)
+                        {
+                            try
+                            {
+                                proc.Kill();
+                            }
+                            catch
+                            {
+                                //WriteToLog("process " + proc.Id + "not stopped");
+                            }
+                        }
                         WriteToLog(ex.ToString());
+                        Console.ReadLine();
                         return;
                     }
                 }
+                //iterate to wait for all to complete
+                foreach (Process p in processes)
+                {
+                    p.WaitForExit();
+                    WriteToLog(string.Format("Process of folder {0} has finished or previously finished", p.StartInfo.WorkingDirectory));
+                    p.Dispose();
+                }
+                GC.Collect();
+                WriteToLog("All processes completed");
             }
+            else
+                WriteToLog("RunScripts skipped");
+
+            //save the new date for when the above scripts were last run
+            if (!NoPrompts)
+            {
+                SaveNewDate = GetUserResponse("SaveNewDate?");
+            }
+            if (SaveNewDate)
+            {
+                //https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings
+                string newDate = string.Format("{0:yyyyMMdd}", DateTime.Now);
+                for(int i = 0; i < DownloadInfos.Count; i++)
+                {
+                    WriteToLog(string.Format("changing old date from {0} to {1}", DownloadInfos[i].LastDate, newDate));
+                    DownloadInfos[i].LastDate = newDate;
+                }
+            }
+            else
+                WriteToLog("SaveNewDate skipped");
 
             //start naming and tagging
             //get a list of files from the directory listed
@@ -729,7 +846,7 @@ namespace YoutubePlaylistAlbumDownload
         private static void WriteToLog(string logMessage)
         {
             Console.WriteLine(logMessage);
-            File.AppendAllText(logfile, string.Format("{0}:   {1}{2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), logMessage ,Environment.NewLine));
+            File.AppendAllText(Logfile, string.Format("{0}:   {1}{2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), logMessage ,Environment.NewLine));
         }
 
         private static bool GetUserResponse(string question)
