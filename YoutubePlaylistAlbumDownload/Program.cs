@@ -1,15 +1,15 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Xml;
-using System.IO;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Net;
-using HtmlAgilityPack;
+using System.Xml;
 
 namespace YoutubePlaylistAlbumDownload
 {
-    
+
     class Program
     {
         #region Constants
@@ -70,7 +70,7 @@ namespace YoutubePlaylistAlbumDownload
         public static bool SaveNewDate = true;
         #endregion
 
-        
+
         static void Main(string[] args)
         {
             //WriteToLog("Press enter to start");
@@ -130,14 +130,14 @@ namespace YoutubePlaylistAlbumDownload
                     };
                     XmlNodeList pathsList = infosNode.ChildNodes;
                     //i can do it without lists
-                    if(pathsList.Count > 0)
+                    if (pathsList.Count > 0)
                     {
                         temp.CopyPaths = new string[pathsList.Count];
                         int i = 0;
                         foreach (XmlNode paths in pathsList)
                         {
                             //check to make sure the path is valid before trying to use later
-                            if(!Directory.Exists(paths.InnerText))
+                            if (!Directory.Exists(paths.InnerText))
                             {
                                 WriteToLog("ERROR: the path");
                                 WriteToLog(paths.Value);
@@ -179,7 +179,7 @@ namespace YoutubePlaylistAlbumDownload
                     Console.ReadLine();
                     return;
                 }
-                if(!File.Exists(Path.Combine(BinaryFolder,youtubeDL)))
+                if (!File.Exists(Path.Combine(BinaryFolder, youtubeDL)))
                 {
                     WriteToLog(string.Format("ERROR: {0} is missing in the {1} folder", youtubeDL, BinaryFolder));
                 }
@@ -264,24 +264,24 @@ namespace YoutubePlaylistAlbumDownload
             }
             else
                 WriteToLog("CopyBinaries skipped");
-            
+
             //html parsing (testing...)
-            if(!NoPrompts)
+            if (!NoPrompts)
             {
                 HtmlParse = GetUserResponse("HtmlParse?");
             }
-            if(HtmlParse)
+            if (HtmlParse)
             {
                 WriteToLog("Parsing HTML");
-                foreach(DownloadInfo info in DownloadInfos)
+                foreach (DownloadInfo info in DownloadInfos)
                 {
-                    if(info.DownloadType != DownloadType.Other1)
+                    if (info.DownloadType != DownloadType.Other1)
                     {
                         WriteToLog(string.Format("skipping folder {0} (downloadType != other1)", info.Folder));
                         continue;
                     }
                     //delete any previous entries
-                    foreach(string file in Directory.GetFiles(info.Folder,"*",SearchOption.TopDirectoryOnly))
+                    foreach (string file in Directory.GetFiles(info.Folder, "*", SearchOption.TopDirectoryOnly))
                     {
                         if (ValidExtensions.Contains(Path.GetExtension(file)))
                             File.Delete(file);
@@ -385,17 +385,17 @@ namespace YoutubePlaylistAlbumDownload
                     });
                 }
                 //run them all now
-                foreach(Process p in processes)
+                foreach (Process p in processes)
                 {
                     try
                     {
                         WriteToLog(string.Format("Launching process for folder {0} using arguments {1}", p.StartInfo.WorkingDirectory, p.StartInfo.Arguments));
                         p.Start();
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         WriteToLog("An error has occurred running a process, stopping all");
-                        foreach(Process proc in processes)
+                        foreach (Process proc in processes)
                         {
                             try
                             {
@@ -434,7 +434,7 @@ namespace YoutubePlaylistAlbumDownload
                 WriteToLog("Saving new date");
                 //https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings
                 string newDate = string.Format("{0:yyyyMMdd}", DateTime.Now);
-                for(int i = 0; i < DownloadInfos.Count; i++)
+                for (int i = 0; i < DownloadInfos.Count; i++)
                 {
                     WriteToLog(string.Format("changing and saving xml old date from {0} to {1}", DownloadInfos[i].LastDate, newDate));
                     DownloadInfos[i].LastDate = newDate;
@@ -869,7 +869,7 @@ namespace YoutubePlaylistAlbumDownload
         private static void WriteToLog(string logMessage)
         {
             Console.WriteLine(logMessage);
-            File.AppendAllText(Logfile, string.Format("{0}:   {1}{2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), logMessage ,Environment.NewLine));
+            File.AppendAllText(Logfile, string.Format("{0}:   {1}{2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), logMessage, Environment.NewLine));
         }
 
         private static bool GetUserResponse(string question)
