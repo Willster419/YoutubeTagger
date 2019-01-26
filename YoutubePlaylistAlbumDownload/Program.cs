@@ -39,7 +39,7 @@ namespace YoutubePlaylistAlbumDownload
 
         private const string Logfile = "logfile.log";
 
-        private const string DefaultCommandLine = "-i --playlist-reverse {0} {1} --match-filter \"{2}\" -o \"%%(autonumber)s-%%(title)s.%%(ext)s\" --format m4a --embed-thumbnail {3}";
+        private const string DefaultCommandLine = "-i --playlist-reverse {0} {1} --match-filter \"{2}\" -o \"%(autonumber)s-%(title)s.%(ext)s\" --format m4a --embed-thumbnail {3}";
 
         private const string DateAfterCommandLine = "--dateafter";
 
@@ -360,7 +360,10 @@ namespace YoutubePlaylistAlbumDownload
                     foreach (string file in Directory.GetFiles(info.Folder, "*", SearchOption.TopDirectoryOnly))
                     {
                         if (ValidExtensions.Contains(Path.GetExtension(file)))
+                        {
+                            WriteToLog("Deleting old file from previous run: " + Path.GetFileName(file));
                             File.Delete(file);
+                        }
                     }
                     WriteToLog(string.Format("build process info folder {0}", info.Folder));
                     processes.Add(new Process()
@@ -524,7 +527,7 @@ namespace YoutubePlaylistAlbumDownload
                         else
                         {
                             WriteToLog("Exiting!");
-                            System.Threading.Thread.Sleep(1000);
+                            Console.ReadLine();
                             return;
                         }
                     }
@@ -546,7 +549,7 @@ namespace YoutubePlaylistAlbumDownload
                         catch (Exception ex)
                         {
                             WriteToLog(ex.ToString());
-                            System.Threading.Thread.Sleep(1000);
+                            Console.ReadLine();
                             return;
                         }
 
@@ -640,7 +643,7 @@ namespace YoutubePlaylistAlbumDownload
                         catch (Exception ex)
                         {
                             WriteToLog(ex.ToString());
-                            System.Threading.Thread.Sleep(1000);
+                            Console.ReadLine();
                             return;
                         }
                         //get the old name
@@ -740,8 +743,7 @@ namespace YoutubePlaylistAlbumDownload
                     WriteToLog("-----------------------CopyFiles for directory " + info.Folder + "----------------------");
                     if (files.Count == 0)
                     {
-                        WriteToLog("files.Count == 0");
-                        Console.ReadLine();
+                        WriteToLog("no files to copy");
                         continue;
                     }
                     bool breakout = false;
