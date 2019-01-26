@@ -172,6 +172,7 @@ namespace YoutubePlaylistAlbumDownload
             }
             if (UpdateYoutubeDL)
             {
+                WriteToLog("Update YoutubeDL");
                 if (!Directory.Exists(BinaryFolder))
                 {
                     WriteToLog("ERROR: \"bin\" folder missing");
@@ -220,6 +221,7 @@ namespace YoutubePlaylistAlbumDownload
             }
             if (CopyBinaries)
             {
+                WriteToLog("Copy Binaries");
                 if (!Directory.Exists(BinaryFolder))
                 {
                     WriteToLog("ERROR: \"bin\" folder missing");
@@ -270,7 +272,7 @@ namespace YoutubePlaylistAlbumDownload
             }
             if(HtmlParse)
             {
-                WriteToLog("HtmlParse start...");
+                WriteToLog("Parsing HTML");
                 foreach(DownloadInfo info in DownloadInfos)
                 {
                     if(info.DownloadType != DownloadType.Other1)
@@ -318,6 +320,7 @@ namespace YoutubePlaylistAlbumDownload
             }
             if (RunScripts)
             {
+                WriteToLog("Running scripts");
                 //make sure binaries exist first
                 foreach (DownloadInfo info in DownloadInfos)
                 {
@@ -425,6 +428,7 @@ namespace YoutubePlaylistAlbumDownload
             }
             if (SaveNewDate)
             {
+                WriteToLog("Saving new date");
                 //https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings
                 string newDate = string.Format("{0:yyyyMMdd}", DateTime.Now);
                 for(int i = 0; i < DownloadInfos.Count; i++)
@@ -444,6 +448,7 @@ namespace YoutubePlaylistAlbumDownload
             }
             if(ParseTags)
             {
+                WriteToLog("Parsing tags");
                 for (int j = 0; j < DownloadInfos.Count; j++)
                 {
                     DownloadInfo info = DownloadInfos[j];
@@ -726,6 +731,7 @@ namespace YoutubePlaylistAlbumDownload
             }
             if(CopyFiles)
             {
+                WriteToLog("Copy Files");
                 for (int j = 0; j < DownloadInfos.Count; j++)
                 {
                     DownloadInfo info = DownloadInfos[j];
@@ -805,6 +811,7 @@ namespace YoutubePlaylistAlbumDownload
             }
             if (DeleteBinaries)
             {
+                WriteToLog("Delete Binaries");
                 if (!Directory.Exists(BinaryFolder))
                 {
                     WriteToLog("ERROR: \"bin\" folder missing");

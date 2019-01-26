@@ -2,14 +2,14 @@
 <DownloadInfo.xml>
   <!--Your comment-->
   <Settings>
-    <NoPrompts>False</NoPrompts>
+    <NoPrompts>True</NoPrompts>
     <UpdateYoutubeDL>True</UpdateYoutubeDL>
     <CopyBinaries>True</CopyBinaries>
-    <HtmlParse>False</HtmlParse>
-    <RunScripts>False</RunScripts>
+    <HtmlParse>True</HtmlParse>
+    <RunScripts>True</RunScripts>
     <SaveNewDate>True</SaveNewDate>
-    <ParseTags>False</ParseTags>
-    <CopyFiles>False</CopyFiles>
+    <ParseTags>True</ParseTags>
+    <CopyFiles>True</CopyFiles>
     <DeleteBinaries>True</DeleteBinaries>
   </Settings>
   <DownloadInfo Folder="EDM_Treasures" Album="ElectroHouseSections Releases" AlbumArtist="EDM Treasures" Genre="Dance"
