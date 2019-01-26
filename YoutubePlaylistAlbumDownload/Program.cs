@@ -39,7 +39,7 @@ namespace YoutubePlaylistAlbumDownload
 
         private const string Logfile = "logfile.log";
 
-        private const string DefaultCommandLine = "-i --playlist-reverse {0} {1} --match-filter \"{2}\" -o \"%(autonumber)s-%(title)s.%(ext)s\" --format m4a --embed-thumbnail {3}";
+        private const string DefaultCommandLine = "-i --playlist-reverse --youtube-skip-dash-manifest {0} {1} --match-filter \"{2}\" -o \"%(autonumber)s-%(title)s.%(ext)s\" --format m4a --embed-thumbnail {3}";
 
         private const string DateAfterCommandLine = "--dateafter";
 
