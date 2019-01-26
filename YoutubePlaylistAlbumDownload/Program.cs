@@ -414,6 +414,11 @@ namespace YoutubePlaylistAlbumDownload
                     p.WaitForExit();
                     WriteToLog(string.Format("Process of folder {0} has finished or previously finished", p.StartInfo.WorkingDirectory));
                     p.Dispose();
+                    foreach(string s in Directory.GetFiles(p.StartInfo.WorkingDirectory, "*%(autonumber)*",SearchOption.TopDirectoryOnly))
+                    {
+                        WriteToLog("Deleting extra file " + Path.GetFileName(s));
+                        File.Delete(s);
+                    }
                 }
                 GC.Collect();
                 WriteToLog("All processes completed");
