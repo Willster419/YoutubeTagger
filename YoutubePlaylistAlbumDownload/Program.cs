@@ -436,8 +436,18 @@ namespace YoutubePlaylistAlbumDownload
                 string newDate = string.Format("{0:yyyyMMdd}", DateTime.Now);
                 for(int i = 0; i < DownloadInfos.Count; i++)
                 {
-                    WriteToLog(string.Format("changing old date from {0} to {1}", DownloadInfos[i].LastDate, newDate));
+                    WriteToLog(string.Format("changing and saving xml old date from {0} to {1}", DownloadInfos[i].LastDate, newDate));
                     DownloadInfos[i].LastDate = newDate;
+                    string xpath = string.Format("//{0}/{1}[@Folder='{2}']", DownloadInfoXml, nameof(DownloadInfo), DownloadInfos[i].Folder);
+                    XmlNode infoNode = doc.SelectSingleNode(xpath);
+                    if (infoNode == null)
+                    {
+                        WriteToLog("failed to save node back folder " + DownloadInfos[i].Folder);
+                        Console.ReadLine();
+                        return;
+                    }
+                    infoNode.Attributes["LastDate"].Value = DownloadInfos[i].LastDate;
+                    doc.Save(DownloadInfoXml);
                 }
             }
             else
@@ -717,8 +727,9 @@ namespace YoutubePlaylistAlbumDownload
                     XmlNode infoNode = doc.SelectSingleNode(xpath);
                     if (infoNode == null)
                     {
-                        WriteToLog("failed to save node back folder=" + info.Folder);
-                        continue;
+                        WriteToLog("failed to save node back folder " + info.Folder);
+                        Console.ReadLine();
+                        return;
                     }
                     infoNode.Attributes["LastTrackNumber"].Value = info.LastTrackNumber.ToString();
                     doc.Save(DownloadInfoXml);
