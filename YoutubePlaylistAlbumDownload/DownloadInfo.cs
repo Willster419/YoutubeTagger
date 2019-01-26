@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace YoutubePlaylistAlbumDownload
+﻿namespace YoutubePlaylistAlbumDownload
 {
     public enum DownloadType
     {
@@ -27,5 +21,8 @@ namespace YoutubePlaylistAlbumDownload
         public int LastTrackNumber;
         public string Genre;
         public string[] CopyPaths;
+        public string LastDate;
+        public bool FirstRun;
+        public string DownloadURL;
     }
 }
