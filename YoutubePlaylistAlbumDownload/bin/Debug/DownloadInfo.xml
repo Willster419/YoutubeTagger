@@ -7,6 +7,9 @@
     <HtmlParse>False</HtmlParse>
     <ParseTags>False</ParseTags>
     <CopyFiles>False</CopyFiles>
+    <CopyBinaries>True</CopyBinaries>
+    <DeleteBinaries>True</DeleteBinaries>
+    <UpdateYoutubeDL>True</UpdateYoutubeDL>
   </Settings>
   <DownloadInfo Folder="EDM_Treasures" Album="ElectroHouseSections Releases" AlbumArtist="EDM Treasures" Genre="Dance" DownloadType="YoutubeSong" LastTrackNumber="128">
     <CopyPath>F:\Music\EDMTreasures</CopyPath>

@@ -13,7 +13,7 @@ namespace YoutubePlaylistAlbumDownload
     class Program
     {
         #region Constants
-        public static readonly string[] ValidExtensions = new string[]
+        private static readonly string[] ValidExtensions = new string[]
         {
             ".m4a",
             ".M4A",
@@ -21,15 +21,28 @@ namespace YoutubePlaylistAlbumDownload
             ".MP3"
         };
 
-        static readonly string[] DownloadStepsFiles = new string[]
+        private static readonly string[] DownloadStepsFiles = new string[]
         {
-            "1_update_youtube-dl_copyToFolders.bat",
             "2_run_scripts.bat",
             "3_save_new_date.bat",
-            "4_cleanup.bat"
         };
+
+        private static readonly string[] BinaryFiles = new string[]
+        {
+            "AtomicParsley.exe",
+            "ffmpeg.exe",
+            "ffprobe.exe",
+            "youtube-dl.exe"
+        };
+
+        private const string youtubeDL = "youtube-dl.exe";
+
+        private const string BinaryFolder = "bin";
+
         private const string DownloadInfoXml = "DownloadInfo.xml";
+
         private static List<DownloadInfo> DownloadInfos = new List<DownloadInfo>();
+
         private const string logfile = "logfile.log";
         #endregion
 
@@ -45,6 +58,12 @@ namespace YoutubePlaylistAlbumDownload
         public static bool ParseTags = false;
         //if we should copy files
         public static bool CopyFiles = false;
+        //if we shuld copy binary files
+        public static bool CopyBinaries = true;
+        //if we should delete binary files
+        public static bool DeleteBinaries = true;
+        //if we should update youtubedl
+        public static bool UpdateYoutubeDL = true;
         #endregion
 
         
@@ -83,6 +102,9 @@ namespace YoutubePlaylistAlbumDownload
                 HtmlParse = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/HtmlParse").InnerText);
                 ParseTags = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/ParseTags").InnerText);
                 CopyFiles = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/CopyFiles").InnerText);
+                CopyBinaries = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/CopyBinaries").InnerText);
+                DeleteBinaries = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/DeleteBinaries").InnerText);
+                UpdateYoutubeDL = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/UpdateYoutubeDL").InnerText);
                 //for each xml element "DownloadInfo" in element "DownloadInfo.xml"
                 foreach (XmlNode infosNode in doc.SelectNodes(string.Format("//{0}/{1}", DownloadInfoXml, nameof(DownloadInfo))))
                 {
@@ -133,6 +155,105 @@ namespace YoutubePlaylistAlbumDownload
                 Console.ReadLine();
                 return;
             }
+
+            //run an update on youtube-dl
+            //https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.process?redirectedfrom=MSDN&view=netframework-4.7.2
+            if (!NoPrompts)
+            {
+                UpdateYoutubeDL = GetUserResponse("UpdateYoutubeDL?");
+            }
+            if (UpdateYoutubeDL)
+            {
+                if (!Directory.Exists(BinaryFolder))
+                {
+                    WriteToLog("ERROR: \"bin\" folder missing");
+                    Console.ReadLine();
+                    return;
+                }
+                if(!File.Exists(Path.Combine(BinaryFolder,youtubeDL)))
+                {
+                    WriteToLog(string.Format("ERROR: {0} is missing in the {1} folder", youtubeDL, BinaryFolder));
+                }
+                try
+                {
+                    using (Process updateYoutubeDL = new Process())
+                    {
+                        //set properties
+                        updateYoutubeDL.StartInfo.RedirectStandardError = false;
+                        updateYoutubeDL.StartInfo.RedirectStandardOutput = false;
+                        updateYoutubeDL.StartInfo.UseShellExecute = true;
+                        updateYoutubeDL.StartInfo.WorkingDirectory = BinaryFolder;
+                        updateYoutubeDL.StartInfo.FileName = youtubeDL;
+                        updateYoutubeDL.StartInfo.CreateNoWindow = false;
+                        updateYoutubeDL.StartInfo.Arguments = "--update";
+                        updateYoutubeDL.Start();
+                        updateYoutubeDL.WaitForExit();
+                        if (updateYoutubeDL.ExitCode != 0)
+                        {
+                            WriteToLog(string.Format("ERROR: update process exited with code {0}", updateYoutubeDL.ExitCode));
+                            Console.ReadLine();
+                            return;
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    WriteToLog(e.ToString());
+                    Console.ReadLine();
+                    return;
+                }
+            }
+            else
+                WriteToLog("UpdateYoutubeDl skipped");
+
+            if (!NoPrompts)
+            {
+                CopyBinaries = GetUserResponse("CopyBinaries?");
+            }
+            if (CopyBinaries)
+            {
+                if (!Directory.Exists(BinaryFolder))
+                {
+                    WriteToLog("ERROR: \"bin\" folder missing");
+                    Console.ReadLine();
+                    return;
+                }
+                foreach (string s in BinaryFiles)
+                {
+                    if (!File.Exists(Path.Combine(BinaryFolder, s)))
+                    {
+                        WriteToLog(string.Format("ERROR: file {0} is missing", s));
+                        WriteToLog("Please download and place into \"bin\" folder");
+                        Console.ReadLine();
+                        return;
+                    }
+                }
+                //copy the binaries to each folder
+                foreach (DownloadInfo info in DownloadInfos)
+                {
+                    if (!Directory.Exists(info.Folder))
+                    {
+                        WriteToLog("ERROR: folder " + info.Folder + "does not exist!");
+                        Console.ReadLine();
+                        return;
+                    }
+                    if (info.DownloadType == DownloadType.Other1)
+                    {
+                        WriteToLog(string.Format("skipping folder {0} (downloadType = other1)", info.Folder));
+                        continue;
+                    }
+                    foreach (string binaryFile in BinaryFiles)
+                    {
+                        WriteToLog(string.Format("Copying file {0} into folder {1}", binaryFile, info.Folder));
+                        string fileToCopy = Path.Combine(info.Folder, binaryFile);
+                        if (File.Exists(fileToCopy))
+                            File.Delete(fileToCopy);
+                        File.Copy(Path.Combine(BinaryFolder, binaryFile), fileToCopy);
+                    }
+                }
+            }
+            else
+                WriteToLog("CopyBinaries skipped");
             
             //html parsing (testing...)
             if(!NoPrompts)
@@ -166,18 +287,21 @@ namespace YoutubePlaylistAlbumDownload
                 WriteToLog("HtmlParse end");
             }
             else
-            {
-                WriteToLog("HtmlParse skip...");
-            }
+                WriteToLog("HtmlParse skipped");
 
-            //ask user if we will run the scripts first
-            //if yes, then run them!
+            //ask user if we will run the scripts
             if (!NoPrompts)
             {
                 RunScripts = GetUserResponse("RunScripts?");
             }
             if (RunScripts)
             {
+                if (!Directory.Exists(BinaryFolder))
+                {
+                    WriteToLog("ERROR: \"bin\" folder missing");
+                    Console.ReadLine();
+                    return;
+                }
                 //tell the user which script we are running
                 foreach (string s in DownloadStepsFiles)
                 {
@@ -557,12 +681,51 @@ namespace YoutubePlaylistAlbumDownload
                 }  
             }
 
+            //delete the binaries in each folder
+            if (!NoPrompts)
+            {
+                DeleteBinaries = GetUserResponse("DeleteBinaries?");
+            }
+            if (DeleteBinaries)
+            {
+                if (!Directory.Exists(BinaryFolder))
+                {
+                    WriteToLog("ERROR: \"bin\" folder missing");
+                    Console.ReadLine();
+                    return;
+                }
+                foreach (DownloadInfo info in DownloadInfos)
+                {
+                    if (!Directory.Exists(info.Folder))
+                    {
+                        WriteToLog("ERROR: folder " + info.Folder + "does not exist!");
+                        Console.ReadLine();
+                        return;
+                    }
+                    if (info.DownloadType == DownloadType.Other1)
+                    {
+                        WriteToLog(string.Format("skipping folder {0} (downloadType = other1)", info.Folder));
+                        continue;
+                    }
+                    foreach (string binaryFile in BinaryFiles)
+                    {
+                        WriteToLog(string.Format("Deleting file {0} in folder {1} if exist", binaryFile, info.Folder));
+                        string fileToCopy = Path.Combine(info.Folder, binaryFile);
+                        if (File.Exists(fileToCopy))
+                            File.Delete(fileToCopy);
+                    }
+                }
+            }
+            else
+                WriteToLog("DeleteBinaries skipped");
+
             //and we're all set here
             WriteToLog("Done");
             Console.ReadLine();
         }
 
         #region Helper Methods
+
         private static void WriteToLog(string logMessage)
         {
             Console.WriteLine(logMessage);
