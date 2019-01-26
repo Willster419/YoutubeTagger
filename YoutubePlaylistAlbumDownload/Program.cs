@@ -39,7 +39,7 @@ namespace YoutubePlaylistAlbumDownload
 
         private const string Logfile = "logfile.log";
 
-        private const string DefaultCommandLine = "-i --playlist-reverse {0} {1} --match-filter \"{2}\" -o \"%%(autonumber) s-%%(title) s.%%(ext) s\" --format m4a --embed-thumbnail {3}";
+        private const string DefaultCommandLine = "-i --playlist-reverse {0} {1} --match-filter \"{2}\" -o \"%%(autonumber)s-%%(title)s.%%(ext)s\" --format m4a --embed-thumbnail {3}";
 
         private const string DateAfterCommandLine = "--dateafter";
 
@@ -386,7 +386,7 @@ namespace YoutubePlaylistAlbumDownload
                 {
                     try
                     {
-                        WriteToLog("Launching process for folder " + p.StartInfo.WorkingDirectory);
+                        WriteToLog(string.Format("Launching process for folder {0} using arguments {1}", p.StartInfo.WorkingDirectory, p.StartInfo.Arguments));
                         p.Start();
                     }
                     catch(Exception ex)
@@ -414,11 +414,6 @@ namespace YoutubePlaylistAlbumDownload
                     p.WaitForExit();
                     WriteToLog(string.Format("Process of folder {0} has finished or previously finished", p.StartInfo.WorkingDirectory));
                     p.Dispose();
-                    foreach(string s in Directory.GetFiles(p.StartInfo.WorkingDirectory, "*%(autonumber)*",SearchOption.TopDirectoryOnly))
-                    {
-                        WriteToLog("Deleting extra file " + Path.GetFileName(s));
-                        File.Delete(s);
-                    }
                 }
                 GC.Collect();
                 WriteToLog("All processes completed");
