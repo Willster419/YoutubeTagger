@@ -3,13 +3,14 @@
   <!--Your comment-->
   <Settings>
     <NoPrompts>False</NoPrompts>
-    <RunScripts>False</RunScripts>
+    <UpdateYoutubeDL>True</UpdateYoutubeDL>
+    <CopyBinaries>True</CopyBinaries>
     <HtmlParse>False</HtmlParse>
+    <RunScripts>False</RunScripts>
+    <SaveNewDate>True</SaveNewDate>
     <ParseTags>False</ParseTags>
     <CopyFiles>False</CopyFiles>
-    <CopyBinaries>True</CopyBinaries>
     <DeleteBinaries>True</DeleteBinaries>
-    <UpdateYoutubeDL>True</UpdateYoutubeDL>
   </Settings>
   <DownloadInfo Folder="EDM_Treasures" Album="ElectroHouseSections Releases" AlbumArtist="EDM Treasures" Genre="Dance"
                 DownloadType="YoutubeSong" LastTrackNumber="128" LastDate="20190123" FirstRun ="False" DownloadURL="https://www.youtube.com/playlist?list=UUIGtPvEVzyHdn01m4P36_yQ">
