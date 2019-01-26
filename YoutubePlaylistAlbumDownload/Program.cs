@@ -73,9 +73,9 @@ namespace YoutubePlaylistAlbumDownload
         
         static void Main(string[] args)
         {
-            WriteToLog("Press enter to start");
+            //WriteToLog("Press enter to start");
             //https://stackoverflow.com/questions/11512821/how-to-stop-c-sharp-console-applications-from-closing-automatically
-            Console.ReadLine();
+            //Console.ReadLine();
 
             //init tag parsing, load xml data
             //check to make sure download info xml file is present
@@ -470,8 +470,7 @@ namespace YoutubePlaylistAlbumDownload
                     //check to make sure there are valid audio files before proceding
                     if (files.Count == 0)
                     {
-                        WriteToLog("files.Count=0 (no valid audio files in directory)");
-                        Console.ReadLine();
+                        WriteToLog("no valid audio files in directory");
                         continue;
                     }
 
