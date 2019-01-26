@@ -459,7 +459,7 @@ namespace YoutubePlaylistAlbumDownload
             {
                 ParseTags = GetUserResponse("ParseTags?");
             }
-            if(ParseTags)
+            if (ParseTags)
             {
                 WriteToLog("Parsing tags");
                 for (int j = 0; j < DownloadInfos.Count; j++)
@@ -736,13 +736,15 @@ namespace YoutubePlaylistAlbumDownload
                     WriteToLog("Saved LastTrackNumber for folder " + info.Folder);
                 }
             }
+            else
+                WriteToLog("ParseTags skipped");
 
             //copy newly parsed files to their directories
             if (!NoPrompts)
             {
                 CopyFiles = GetUserResponse("CopyFiles?");
             }
-            if(CopyFiles)
+            if (CopyFiles)
             {
                 WriteToLog("Copy Files");
                 for (int j = 0; j < DownloadInfos.Count; j++)
@@ -767,11 +769,11 @@ namespace YoutubePlaylistAlbumDownload
                         foreach (string file in files)
                         {
                             //check for duplicates by spitting the names and checking if the title is the same (skipping the track name)
-                            string nameOfCurrentFileCheck = string.Join("-",Path.GetFileName(file).Split('-').Skip(1));
-                            foreach(string fileInDestToCheck in destinationDuplicateCheck)
+                            string nameOfCurrentFileCheck = string.Join("-", Path.GetFileName(file).Split('-').Skip(1));
+                            foreach (string fileInDestToCheck in destinationDuplicateCheck)
                             {
                                 string naveofPresentFileCheck = string.Join("-", Path.GetFileName(fileInDestToCheck).Split('-').Skip(1));
-                                if(naveofPresentFileCheck.Equals(nameOfCurrentFileCheck))
+                                if (naveofPresentFileCheck.Equals(nameOfCurrentFileCheck))
                                 {
                                     WriteToLog("ERROR: file with similar name exists in" + info.Folder);
                                     WriteToLog(naveofPresentFileCheck);
@@ -787,7 +789,7 @@ namespace YoutubePlaylistAlbumDownload
                         if (breakout)
                             break;
                         //getting here means that all files were checked above and no duplicates exist
-                        foreach(string file in files)
+                        foreach (string file in files)
                         {
                             WriteToLog(Path.GetFileName(file));
                             string newPath = Path.Combine(copypath, Path.GetFileName(file));
@@ -800,7 +802,7 @@ namespace YoutubePlaylistAlbumDownload
                     WriteToLog("Deleting files in infos folder");
                     foreach (string file in files)
                     {
-                        if(File.Exists(file))
+                        if (File.Exists(file))
                         {
                             File.Delete(file);
                         }
@@ -813,8 +815,10 @@ namespace YoutubePlaylistAlbumDownload
                             return;
                         }
                     }
-                }  
+                }
             }
+            else
+                WriteToLog("CopyFiles skipped");
 
             //delete the binaries in each folder
             if (!NoPrompts)
