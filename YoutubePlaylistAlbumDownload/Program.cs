@@ -72,7 +72,7 @@ namespace YoutubePlaylistAlbumDownload
         #endregion
 
 
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             //init tag parsing, load xml data
             //check to make sure download info xml file is present
@@ -80,7 +80,7 @@ namespace YoutubePlaylistAlbumDownload
             {
                 WriteToLog(string.Format("{0} is missing, application cannot continue", DownloadInfoXml));
                 Console.ReadLine();
-                return;
+                Environment.Exit(-1);
             }
             WriteToLog("Loading XML document");
             XmlDocument doc = new XmlDocument();
@@ -92,7 +92,7 @@ namespace YoutubePlaylistAlbumDownload
             {
                 WriteToLog(ex.ToString());
                 Console.ReadLine();
-                return;
+                Environment.Exit(-1);
             }
             try
             {
@@ -145,7 +145,7 @@ namespace YoutubePlaylistAlbumDownload
                                 WriteToLog(paths.Value);
                                 WriteToLog("Does not exist!");
                                 Console.ReadLine();
-                                return;
+                                Environment.Exit(-1);
                             }
                             temp.CopyPaths[i++] = paths.InnerText;
                         }
@@ -153,7 +153,7 @@ namespace YoutubePlaylistAlbumDownload
                     else
                     {
                         WriteToLog("ERROR: paths count is 0! for downloadFolder of folder attribute " + infosNode.Attributes[nameof(DownloadInfo.Folder)].Value);
-                        return;
+                        Environment.Exit(-1);
                     }
                     //if it's the first time running, then we can set the last track count to 0 (if not already)
                     if (temp.FirstRun)
@@ -166,7 +166,7 @@ namespace YoutubePlaylistAlbumDownload
             {
                 WriteToLog(ex.ToString());
                 Console.ReadLine();
-                return;
+                Environment.Exit(-1);
             }
 
             //check to make sure we have at least one downloadInfo to run!
@@ -174,7 +174,7 @@ namespace YoutubePlaylistAlbumDownload
             {
                 WriteToLog("No DownloadInfos parsed! (empty xml file?)");
                 Console.ReadLine();
-                return;
+                Environment.Exit(-1);
             }
 
             //if not silent, add start of application here
@@ -214,7 +214,7 @@ namespace YoutubePlaylistAlbumDownload
                         {
                             WriteToLog(string.Format("ERROR: update process exited with code {0}", updateYoutubeDL.ExitCode));
                             Console.ReadLine();
-                            return;
+                            Environment.Exit(-1);
                         }
                     }
                 }
@@ -222,7 +222,7 @@ namespace YoutubePlaylistAlbumDownload
                 {
                     WriteToLog(e.ToString());
                     Console.ReadLine();
-                    return;
+                    Environment.Exit(-1);
                 }
             }
             else
@@ -246,7 +246,7 @@ namespace YoutubePlaylistAlbumDownload
                     {
                         WriteToLog("ERROR: folder " + info.Folder + "does not exist!");
                         Console.ReadLine();
-                        return;
+                        Environment.Exit(-1);
                     }
                     if (info.DownloadType == DownloadType.Other1)
                     {
@@ -368,7 +368,7 @@ namespace YoutubePlaylistAlbumDownload
                         KillProcesses(processes);
                         WriteToLog(ex.ToString());
                         Console.ReadLine();
-                        return;
+                        Environment.Exit(-1);
                     }
                 }
                 //iterate to wait for all to complete
@@ -412,7 +412,7 @@ namespace YoutubePlaylistAlbumDownload
                     {
                         WriteToLog("failed to save node back folder " + DownloadInfos[i].Folder);
                         Console.ReadLine();
-                        return;
+                        Environment.Exit(-1);
                     }
                     infoNode.Attributes["LastDate"].Value = DownloadInfos[i].LastDate;
                     doc.Save(DownloadInfoXml);
@@ -501,7 +501,7 @@ namespace YoutubePlaylistAlbumDownload
                         {
                             WriteToLog("Exiting!");
                             Console.ReadLine();
-                            return;
+                            Environment.Exit(-1);
                         }
                     }
 
@@ -523,7 +523,7 @@ namespace YoutubePlaylistAlbumDownload
                         {
                             WriteToLog(ex.ToString());
                             Console.ReadLine();
-                            return;
+                            Environment.Exit(-1);
                         }
 
                         //assign tag infos
@@ -617,7 +617,7 @@ namespace YoutubePlaylistAlbumDownload
                         {
                             WriteToLog(ex.ToString());
                             Console.ReadLine();
-                            return;
+                            Environment.Exit(-1);
                         }
                         //get the old name
                         string oldFileName = Path.GetFileNameWithoutExtension(fileName);
@@ -692,7 +692,7 @@ namespace YoutubePlaylistAlbumDownload
                     {
                         WriteToLog("failed to save node back folder " + info.Folder);
                         Console.ReadLine();
-                        return;
+                        Environment.Exit(-1);
                     }
                     infoNode.Attributes["LastTrackNumber"].Value = info.LastTrackNumber.ToString();
                     doc.Save(DownloadInfoXml);
@@ -800,6 +800,9 @@ namespace YoutubePlaylistAlbumDownload
             WriteToLog("Done");
             if (!NoPrompts)
                 Console.ReadLine();
+            Environment.ExitCode = 0;
+            Environment.Exit(0);
+            return 0;
         }
 
         #region Helper Methods
@@ -839,7 +842,8 @@ namespace YoutubePlaylistAlbumDownload
             {
                 WriteToLog(string.Format("ERROR: missing file {0} for path {1}", Path.GetFileName(filePath), filePath));
                 Console.ReadLine();
-                return;
+                //https://stackoverflow.com/questions/10286056/what-is-the-command-to-exit-a-console-application-in-c
+                Environment.Exit(-1);
             }
         }
         //kill all running youtube download processes in list, then dispose of all of them
