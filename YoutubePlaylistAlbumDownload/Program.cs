@@ -186,16 +186,8 @@ namespace YoutubePlaylistAlbumDownload
             if (UpdateYoutubeDL)
             {
                 WriteToLog("Update YoutubeDL");
-                if (!Directory.Exists(BinaryFolder))
-                {
-                    WriteToLog("ERROR: \"bin\" folder missing");
-                    Console.ReadLine();
-                    return;
-                }
-                if (!File.Exists(Path.Combine(BinaryFolder, YoutubeDL)))
-                {
-                    WriteToLog(string.Format("ERROR: {0} is missing in the {1} folder", YoutubeDL, BinaryFolder));
-                }
+                CheckMissingFolder(BinaryFolder);
+                CheckMissingFile(Path.Combine(BinaryFolder, YoutubeDL));
                 try
                 {
                     using (Process updateYoutubeDL = new Process())
@@ -235,22 +227,10 @@ namespace YoutubePlaylistAlbumDownload
             if (CopyBinaries)
             {
                 WriteToLog("Copy Binaries");
-                if (!Directory.Exists(BinaryFolder))
-                {
-                    WriteToLog("ERROR: \"bin\" folder missing");
-                    Console.ReadLine();
-                    return;
-                }
+                CheckMissingFolder(BinaryFolder);
                 foreach (string s in BinaryFiles)
-                {
-                    if (!File.Exists(Path.Combine(BinaryFolder, s)))
-                    {
-                        WriteToLog(string.Format("ERROR: file {0} is missing", s));
-                        WriteToLog("Please download and place into \"bin\" folder");
-                        Console.ReadLine();
-                        return;
-                    }
-                }
+                    CheckMissingFile(Path.Combine(BinaryFolder, s));
+                
                 //copy the binaries to each folder
                 foreach (DownloadInfo info in DownloadInfos)
                 {
@@ -286,13 +266,10 @@ namespace YoutubePlaylistAlbumDownload
             if (HtmlParse)
             {
                 WriteToLog("Parsing HTML");
-                foreach (DownloadInfo info in DownloadInfos)
+                foreach (DownloadInfo info in DownloadInfos.Where(temp => temp.DownloadType == DownloadType.Other1))
                 {
-                    if (info.DownloadType != DownloadType.Other1)
-                    {
-                        WriteToLog(string.Format("skipping folder {0} (downloadType != other1)", info.Folder));
-                        continue;
-                    }
+                    //make sure download folder exists
+                    CheckMissingFolder(info.Folder);
                     //delete any previous entries
                     foreach (string file in Directory.GetFiles(info.Folder, "*", SearchOption.TopDirectoryOnly))
                     {
@@ -334,49 +311,21 @@ namespace YoutubePlaylistAlbumDownload
             if (RunScripts)
             {
                 WriteToLog("Running scripts");
-                //make sure binaries exist first
-                foreach (DownloadInfo info in DownloadInfos)
-                {
-                    if (!Directory.Exists(info.Folder))
-                    {
-                        WriteToLog("ERROR: folder " + info.Folder + "does not exist!");
-                        Console.ReadLine();
-                        return;
-                    }
-                    if (info.DownloadType == DownloadType.Other1)
-                    {
-                        WriteToLog(string.Format("skipping folder {0} (downloadType = other1)", info.Folder));
-                        continue;
-                    }
-                    foreach (string binaryFile in BinaryFiles)
-                    {
-                        string fileToCopy = Path.Combine(info.Folder, binaryFile);
-                        if (!File.Exists(fileToCopy))
-                        {
-                            WriteToLog(string.Format("ERROR: binary file {0} does not exist in folder {1}", binaryFile, info.Folder));
-                            Console.ReadLine();
-                            return;
-                        }
-                    }
-                }
-                //build and run the process list
+                //build and run the process list for youtube downloads
                 //build first
                 List<Process> processes = new List<Process>();
-                foreach (DownloadInfo info in DownloadInfos)
+                foreach (DownloadInfo info in DownloadInfos.Where(temp =>temp.DownloadType == DownloadType.YoutubeSong || temp.DownloadType==DownloadType.YoutubeMix))
                 {
-                    if (info.DownloadType == DownloadType.Other1)
+                    //make sure folder path exists
+                    CheckMissingFolder(info.Folder);
+                    //make sure required binaries exist
+                    foreach (string binaryFile in BinaryFiles)
+                        CheckMissingFile(Path.Combine(info.Folder, binaryFile));
+                    //delete any previous song file entries
+                    foreach (string file in Directory.GetFiles(info.Folder, "*", SearchOption.TopDirectoryOnly).Where(file => ValidExtensions.Contains(Path.GetExtension(file))))
                     {
-                        WriteToLog(string.Format("skipping folder {0} (downloadType = other1)", info.Folder));
-                        continue;
-                    }
-                    //delete any previous entries
-                    foreach (string file in Directory.GetFiles(info.Folder, "*", SearchOption.TopDirectoryOnly))
-                    {
-                        if (ValidExtensions.Contains(Path.GetExtension(file)))
-                        {
-                            WriteToLog("Deleting old file from previous run: " + Path.GetFileName(file));
-                            File.Delete(file);
-                        }
+                        WriteToLog("Deleting old song file from previous run: " + Path.GetFileName(file));
+                        File.Delete(file);
                     }
                     WriteToLog(string.Format("build process info folder {0}", info.Folder));
                     processes.Add(new Process()
@@ -408,17 +357,7 @@ namespace YoutubePlaylistAlbumDownload
                     catch (Exception ex)
                     {
                         WriteToLog("An error has occurred running a process, stopping all");
-                        foreach (Process proc in processes)
-                        {
-                            try
-                            {
-                                proc.Kill();
-                            }
-                            catch
-                            {
-                                //WriteToLog("process " + proc.Id + "not stopped");
-                            }
-                        }
+                        KillProcesses(processes);
                         WriteToLog(ex.ToString());
                         Console.ReadLine();
                         return;
@@ -428,9 +367,16 @@ namespace YoutubePlaylistAlbumDownload
                 foreach (Process p in processes)
                 {
                     p.WaitForExit();
+                    if(p.ExitCode != 0)
+                    {
+                        WriteToLog(string.Format("process of folder {0} exited of code {1}, killing all", p.StartInfo.WorkingDirectory, p.ExitCode));
+                        KillProcesses(processes);
+                    }
                     WriteToLog(string.Format("Process of folder {0} has finished or previously finished", p.StartInfo.WorkingDirectory));
-                    p.Dispose();
                 }
+                //after all completed successfully, dispose of them
+                foreach(Process p in processes)
+                    p.Dispose();
                 GC.Collect();
                 WriteToLog("All processes completed");
             }
@@ -451,6 +397,7 @@ namespace YoutubePlaylistAlbumDownload
                 {
                     WriteToLog(string.Format("changing and saving xml old date from {0} to {1}", DownloadInfos[i].LastDate, newDate));
                     DownloadInfos[i].LastDate = newDate;
+                    //then save it in xml
                     string xpath = string.Format("//{0}/{1}[@Folder='{2}']", DownloadInfoXml, nameof(DownloadInfo), DownloadInfos[i].Folder);
                     XmlNode infoNode = doc.SelectSingleNode(xpath);
                     if (infoNode == null)
@@ -480,14 +427,9 @@ namespace YoutubePlaylistAlbumDownload
                     DownloadInfo info = DownloadInfos[j];
                     WriteToLog("");
                     WriteToLog("-----------------------Parsing directory " + info.Folder + "----------------------");
-                    if (!Directory.Exists(info.Folder))
-                    {
-                        WriteToLog("Directory " + info.Folder + " does not exist");
-                        Console.ReadLine();
-                        continue;
-                    }
+                    CheckMissingFolder(info.Folder);
                     //make and filter out the lists
-                    List<string> files = Directory.GetFiles(info.Folder).Where(file => ValidExtensions.Contains(Path.GetExtension(file))).ToList();
+                    List<string> files = Directory.GetFiles(info.Folder,"*",SearchOption.TopDirectoryOnly).Where(file => ValidExtensions.Contains(Path.GetExtension(file))).ToList();
                     //check to make sure there are valid audio files before proceding
                     if (files.Count == 0)
                     {
@@ -763,8 +705,9 @@ namespace YoutubePlaylistAlbumDownload
                 for (int j = 0; j < DownloadInfos.Count; j++)
                 {
                     DownloadInfo info = DownloadInfos[j];
+                    CheckMissingFolder(info.Folder);
                     //make and filter out the lists
-                    List<string> files = Directory.GetFiles(info.Folder).Where(file => ValidExtensions.Contains(Path.GetExtension(file))).ToList();
+                    List<string> files = Directory.GetFiles(info.Folder,"*",SearchOption.TopDirectoryOnly).Where(file => ValidExtensions.Contains(Path.GetExtension(file))).ToList();
                     WriteToLog("");
                     WriteToLog("-----------------------CopyFiles for directory " + info.Folder + "----------------------");
                     if (files.Count == 0)
@@ -814,20 +757,8 @@ namespace YoutubePlaylistAlbumDownload
                     //now delete
                     WriteToLog("Deleting files in infos folder");
                     foreach (string file in files)
-                    {
                         if (File.Exists(file))
-                        {
                             File.Delete(file);
-                        }
-                        else
-                        {
-                            WriteToLog("ERROR: file");
-                            WriteToLog(file);
-                            WriteToLog("Does not exist!");
-                            Console.ReadLine();
-                            return;
-                        }
-                    }
                 }
             }
             else
@@ -841,25 +772,10 @@ namespace YoutubePlaylistAlbumDownload
             if (DeleteBinaries)
             {
                 WriteToLog("Delete Binaries");
-                if (!Directory.Exists(BinaryFolder))
+                CheckMissingFolder(BinaryFolder);
+                foreach (DownloadInfo info in DownloadInfos.Where(temp => temp.DownloadType == DownloadType.YoutubeSong || temp.DownloadType == DownloadType.YoutubeMix))
                 {
-                    WriteToLog("ERROR: \"bin\" folder missing");
-                    Console.ReadLine();
-                    return;
-                }
-                foreach (DownloadInfo info in DownloadInfos)
-                {
-                    if (!Directory.Exists(info.Folder))
-                    {
-                        WriteToLog("ERROR: folder " + info.Folder + "does not exist!");
-                        Console.ReadLine();
-                        return;
-                    }
-                    if (info.DownloadType == DownloadType.Other1)
-                    {
-                        WriteToLog(string.Format("skipping folder {0} (downloadType = other1)", info.Folder));
-                        continue;
-                    }
+                    CheckMissingFolder(info.Folder);
                     foreach (string binaryFile in BinaryFiles)
                     {
                         WriteToLog(string.Format("Deleting file {0} in folder {1} if exist", binaryFile, info.Folder));
@@ -879,13 +795,13 @@ namespace YoutubePlaylistAlbumDownload
         }
 
         #region Helper Methods
-
+        //write to the console and the logfile
         private static void WriteToLog(string logMessage)
         {
             Console.WriteLine(logMessage);
             File.AppendAllText(Logfile, string.Format("{0}:   {1}{2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), logMessage, Environment.NewLine));
         }
-
+        //get the response to a user question
         private static bool GetUserResponse(string question)
         {
             //ask user the question
@@ -898,7 +814,46 @@ namespace YoutubePlaylistAlbumDownload
                 }
                 else
                 {
-                    WriteToLog("Response must be bool parseable (i.e. true or false)");
+                    WriteToLog("Response must be bool parse-able (i.e. true or false)");
+                }
+            }
+        }
+        //check if a folder path is missing. create and continue is true
+        private static void CheckMissingFolder(string folderPath)
+        {
+           if (!Directory.Exists(folderPath))
+                    Directory.CreateDirectory(folderPath);
+        }
+        //check if a file is missing. error and exit if true
+        private static void CheckMissingFile(string filePath)
+        {
+            if(!File.Exists(filePath))
+            {
+                WriteToLog(string.Format("ERROR: missing file {0} for path {1}", Path.GetFileName(filePath), filePath));
+                Console.ReadLine();
+                return;
+            }
+        }
+        //kill all running youtube download processes in list, then dispose of all of them
+        private static void KillProcesses(List<Process> processes)
+        {
+            foreach (Process proc in processes)
+            {
+                try
+                {
+                    proc.Kill();
+                }
+                catch
+                {
+                    //WriteToLog("process " + proc.Id + "not stopped");
+                }
+                try
+                {
+                    proc.Dispose();
+                }
+                catch
+                {
+                    //WriteToLog("process " + proc.Id + "not stopped");
                 }
             }
         }
