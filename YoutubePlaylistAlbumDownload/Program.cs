@@ -13,6 +13,7 @@ namespace YoutubePlaylistAlbumDownload
     class Program
     {
         #region Constants
+        //list of valid audio extensions for the scope of this project
         private static readonly string[] ValidExtensions = new string[]
         {
             ".m4a",
@@ -20,32 +21,24 @@ namespace YoutubePlaylistAlbumDownload
             ".mp3",
             ".MP3"
         };
-
+        //list of binaries used for the scope of this project
         private static readonly string[] BinaryFiles = new string[]
         {
             "AtomicParsley.exe",
             "ffmpeg.exe",
             "ffprobe.exe",
-            "youtube-dl.exe"
+            YoutubeDL
         };
-
-        private const string youtubeDL = "youtube-dl.exe";
-
+        //name of youtube-dl application
+        private const string YoutubeDL = "youtube-dl.exe";
+        //name of folder to keep above binary files
         private const string BinaryFolder = "bin";
-
+        //name of xml file containing all download information
         private const string DownloadInfoXml = "DownloadInfo.xml";
-
+        //list to be parse of info from above defined xml file
         private static List<DownloadInfo> DownloadInfos = new List<DownloadInfo>();
-
+        //logile for the application
         private const string Logfile = "logfile.log";
-
-        private const string DefaultCommandLine = "-i --playlist-reverse --youtube-skip-dash-manifest {0} {1} --match-filter \"{2}\" -o \"%(autonumber)s-%(title)s.%(ext)s\" --format m4a --embed-thumbnail {3}";
-
-        private const string DateAfterCommandLine = "--dateafter";
-
-        private const string YoutubeSongDurationCommandLine = "duration < 600";
-
-        private const string YoutubeMixDurationCommandLine = "duration > 600";
         #endregion
 
         //also using initializers as defaults
@@ -68,15 +61,19 @@ namespace YoutubePlaylistAlbumDownload
         public static bool UpdateYoutubeDL = true;
         //if we are saving the new date for the last time the script was run
         public static bool SaveNewDate = true;
+        //the default command line args passed into youtube-dl
+        private static string DefaultCommandLine = "-i --playlist-reverse --youtube-skip-dash-manifest {0} {1} --match-filter \"{2}\" -o \"%(autonumber)s-%(title)s.%(ext)s\" --format m4a --embed-thumbnail {3}";
+        //the start of the dateafter command line arg
+        private static string DateAfterCommandLine = "--dateafter";
+        //the duration match filter for youtube songs (600 = 600 seconds -> 10 mins, less indicates a song)
+        private static string YoutubeSongDurationCommandLine = "duration < 600";
+        //the duration match filter for youtube mixes (600 = 600 seconds -> 10 mins, more indicates a mix)
+        private static string YoutubeMixDurationCommandLine = "duration > 600";
         #endregion
 
 
         static void Main(string[] args)
         {
-            //WriteToLog("Press enter to start");
-            //https://stackoverflow.com/questions/11512821/how-to-stop-c-sharp-console-applications-from-closing-automatically
-            //Console.ReadLine();
-
             //init tag parsing, load xml data
             //check to make sure download info xml file is present
             if (!File.Exists(DownloadInfoXml))
@@ -110,6 +107,11 @@ namespace YoutubePlaylistAlbumDownload
                 ParseTags = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/ParseTags").InnerText.Trim());
                 CopyFiles = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/CopyFiles").InnerText.Trim());
                 DeleteBinaries = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/DeleteBinaries").InnerText.Trim());
+                //and some default command line settings
+                DefaultCommandLine = doc.SelectSingleNode("//DownloadInfo.xml/CommandLine/Default").InnerText.Trim();
+                DateAfterCommandLine = doc.SelectSingleNode("//DownloadInfo.xml/CommandLine/DateAfter").InnerText.Trim();
+                YoutubeMixDurationCommandLine = doc.SelectSingleNode("//DownloadInfo.xml/CommandLine/YoutubeMixDuration").InnerText.Trim();
+                YoutubeSongDurationCommandLine = doc.SelectSingleNode("//DownloadInfo.xml/CommandLine/YoutubeSongDuration").InnerText.Trim();
                 //for each xml element "DownloadInfo" in element "DownloadInfo.xml"
                 foreach (XmlNode infosNode in doc.SelectNodes(string.Format("//{0}/{1}", DownloadInfoXml, nameof(DownloadInfo))))
                 {
@@ -122,7 +124,7 @@ namespace YoutubePlaylistAlbumDownload
                         Album = infosNode.Attributes[nameof(DownloadInfo.Album)].Value.Trim(),
                         AlbumArtist = infosNode.Attributes[nameof(DownloadInfo.AlbumArtist)].Value.Trim(),
                         Genre = infosNode.Attributes[nameof(DownloadInfo.Genre)].Value.Trim(),
-                        LastTrackNumber = int.Parse(infosNode.Attributes[nameof(DownloadInfo.LastTrackNumber)].Value.Trim()),
+                        LastTrackNumber = uint.Parse(infosNode.Attributes[nameof(DownloadInfo.LastTrackNumber)].Value.Trim()),
                         DownloadType = (DownloadType)Enum.Parse(typeof(DownloadType), infosNode.Attributes[nameof(DownloadInfo.DownloadType)].Value.Trim()),
                         LastDate = infosNode.Attributes[nameof(DownloadInfo.LastDate)].Value.Trim(),
                         DownloadURL = infosNode.Attributes[nameof(DownloadInfo.DownloadURL)].Value.Trim(),
@@ -153,6 +155,9 @@ namespace YoutubePlaylistAlbumDownload
                         WriteToLog("ERROR: paths count is 0! for downloadFolder of folder attribute " + infosNode.Attributes[nameof(DownloadInfo.Folder)].Value);
                         return;
                     }
+                    //if it's the first time running, then we can set the last track count to 0 (if not already)
+                    if (temp.FirstRun)
+                        temp.LastTrackNumber = 0;
                     //and finally add it to the list
                     DownloadInfos.Add(temp);
                 }
@@ -162,6 +167,14 @@ namespace YoutubePlaylistAlbumDownload
                 WriteToLog(ex.ToString());
                 Console.ReadLine();
                 return;
+            }
+
+            //if not silent, add start of application here
+            if(!NoPrompts)
+            {
+                WriteToLog("Press enter to start");
+                //https://stackoverflow.com/questions/11512821/how-to-stop-c-sharp-console-applications-from-closing-automatically
+                Console.ReadLine();
             }
 
             //run an update on youtube-dl
@@ -179,9 +192,9 @@ namespace YoutubePlaylistAlbumDownload
                     Console.ReadLine();
                     return;
                 }
-                if (!File.Exists(Path.Combine(BinaryFolder, youtubeDL)))
+                if (!File.Exists(Path.Combine(BinaryFolder, YoutubeDL)))
                 {
-                    WriteToLog(string.Format("ERROR: {0} is missing in the {1} folder", youtubeDL, BinaryFolder));
+                    WriteToLog(string.Format("ERROR: {0} is missing in the {1} folder", YoutubeDL, BinaryFolder));
                 }
                 try
                 {
@@ -192,7 +205,7 @@ namespace YoutubePlaylistAlbumDownload
                         updateYoutubeDL.StartInfo.RedirectStandardOutput = false;
                         updateYoutubeDL.StartInfo.UseShellExecute = true;
                         updateYoutubeDL.StartInfo.WorkingDirectory = BinaryFolder;
-                        updateYoutubeDL.StartInfo.FileName = youtubeDL;
+                        updateYoutubeDL.StartInfo.FileName = YoutubeDL;
                         updateYoutubeDL.StartInfo.CreateNoWindow = false;
                         updateYoutubeDL.StartInfo.Arguments = "--update";
                         updateYoutubeDL.Start();
@@ -374,7 +387,7 @@ namespace YoutubePlaylistAlbumDownload
                             RedirectStandardOutput = false,
                             UseShellExecute = true,
                             WorkingDirectory = info.Folder,
-                            FileName = youtubeDL,
+                            FileName = YoutubeDL,
                             CreateNoWindow = false,
                             Arguments = string.Format(DefaultCommandLine,
                                 info.FirstRun ? string.Empty : DateAfterCommandLine,
@@ -861,7 +874,8 @@ namespace YoutubePlaylistAlbumDownload
 
             //and we're all set here
             WriteToLog("Done");
-            Console.ReadLine();
+            if(!NoPrompts)
+                Console.ReadLine();
         }
 
         #region Helper Methods

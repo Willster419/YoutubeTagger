@@ -12,6 +12,13 @@
     <CopyFiles>True</CopyFiles>
     <DeleteBinaries>True</DeleteBinaries>
   </Settings>
+  <CommandLine>
+    <!--{0}=DateAfter (prefix), {1}=Actual Date, {2}=YoutubeSong/MixDuration, {3}=URL-->
+    <Default>-i --playlist-reverse --youtube-skip-dash-manifest {0} {1} --match-filter "{2}" -o "%(autonumber)s-%(title)s.%(ext)s" --format m4a --embed-thumbnail {3}</Default>
+    <DateAfter>--dateafter</DateAfter>
+    <YoutubeSongDuration>duration &lt; 600</YoutubeSongDuration>
+    <YoutubeMixDuration>duration &gt; 600</YoutubeMixDuration>
+  </CommandLine>
   <DownloadInfo Folder="EDM_Treasures" Album="ElectroHouseSections Releases" AlbumArtist="EDM Treasures" Genre="Dance" DownloadType="YoutubeSong" LastTrackNumber="128" LastDate="20190126" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=UUIGtPvEVzyHdn01m4P36_yQ">
     <CopyPath>F:\Music\EDMTreasures</CopyPath>
     <CopyPath>F:\Converted Phone Music\EDMTreasures</CopyPath>

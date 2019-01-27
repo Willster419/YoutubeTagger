@@ -18,7 +18,7 @@
         //public string Artist;//from filename or VA
         public string AlbumArtist;
         //from saved in xml file
-        public int LastTrackNumber;
+        public uint LastTrackNumber;
         public string Genre;
         public string[] CopyPaths;
         public string LastDate;
