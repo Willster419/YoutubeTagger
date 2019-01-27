@@ -61,6 +61,8 @@ namespace YoutubePlaylistAlbumDownload
         public static bool UpdateYoutubeDL = true;
         //if we are saving the new date for the last time the script was run
         public static bool SaveNewDate = true;
+        //if we should stop the application at error message prompts
+        public static bool NoErrorPrompts = false;
         //the default command line args passed into youtube-dl
         private static string DefaultCommandLine = "-i --playlist-reverse --youtube-skip-dash-manifest {0} {1} --match-filter \"{2}\" -o \"%(autonumber)s-%(title)s.%(ext)s\" --format m4a --embed-thumbnail {3}";
         //the start of the dateafter command line arg
@@ -99,6 +101,7 @@ namespace YoutubePlaylistAlbumDownload
                 //https://www.freeformatter.com/xpath-tester.html#ad-output
                 //get some default settings
                 NoPrompts = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/NoPrompts").InnerText.Trim());
+                NoErrorPrompts = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/NoErrorPrompts").InnerText.Trim());
                 UpdateYoutubeDL = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/UpdateYoutubeDL").InnerText.Trim());
                 CopyBinaries = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/CopyBinaries").InnerText.Trim());
                 HtmlParse = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/HtmlParse").InnerText.Trim());
@@ -173,7 +176,8 @@ namespace YoutubePlaylistAlbumDownload
             if(DownloadInfos.Count == 0)
             {
                 WriteToLog("No DownloadInfos parsed! (empty xml file?)");
-                Console.ReadLine();
+                if(!NoErrorPrompts)
+                    Console.ReadLine();
                 Environment.Exit(-1);
             }
 
@@ -213,7 +217,8 @@ namespace YoutubePlaylistAlbumDownload
                         if (updateYoutubeDL.ExitCode != 0)
                         {
                             WriteToLog(string.Format("ERROR: update process exited with code {0}", updateYoutubeDL.ExitCode));
-                            Console.ReadLine();
+                            if (!NoErrorPrompts)
+                                Console.ReadLine();
                             Environment.Exit(-1);
                         }
                     }
@@ -221,7 +226,8 @@ namespace YoutubePlaylistAlbumDownload
                 catch (Exception e)
                 {
                     WriteToLog(e.ToString());
-                    Console.ReadLine();
+                    if (!NoErrorPrompts)
+                        Console.ReadLine();
                     Environment.Exit(-1);
                 }
             }
@@ -240,19 +246,9 @@ namespace YoutubePlaylistAlbumDownload
                     CheckMissingFile(Path.Combine(BinaryFolder, s));
 
                 //copy the binaries to each folder
-                foreach (DownloadInfo info in DownloadInfos)
+                foreach (DownloadInfo info in DownloadInfos.Where(temp => temp.DownloadType == DownloadType.YoutubeSong || temp.DownloadType == DownloadType.YoutubeMix))
                 {
-                    if (!Directory.Exists(info.Folder))
-                    {
-                        WriteToLog("ERROR: folder " + info.Folder + "does not exist!");
-                        Console.ReadLine();
-                        Environment.Exit(-1);
-                    }
-                    if (info.DownloadType == DownloadType.Other1)
-                    {
-                        WriteToLog(string.Format("skipping folder {0} (downloadType = other1)", info.Folder));
-                        continue;
-                    }
+                    CheckMissingFolder(info.Folder);
                     foreach (string binaryFile in BinaryFiles)
                     {
                         WriteToLog(string.Format("Copying file {0} into folder {1}", binaryFile, info.Folder));
@@ -367,7 +363,8 @@ namespace YoutubePlaylistAlbumDownload
                         WriteToLog("An error has occurred running a process, stopping all");
                         KillProcesses(processes);
                         WriteToLog(ex.ToString());
-                        Console.ReadLine();
+                        if (!NoErrorPrompts)
+                            Console.ReadLine();
                         Environment.Exit(-1);
                     }
                 }
@@ -410,8 +407,9 @@ namespace YoutubePlaylistAlbumDownload
                     XmlNode infoNode = doc.SelectSingleNode(xpath);
                     if (infoNode == null)
                     {
-                        WriteToLog("failed to save node back folder " + DownloadInfos[i].Folder);
-                        Console.ReadLine();
+                        WriteToLog("failed to save xml doc back folder " + DownloadInfos[i].Folder);
+                        if (!NoErrorPrompts)
+                            Console.ReadLine();
                         Environment.Exit(-1);
                     }
                     infoNode.Attributes["LastDate"].Value = DownloadInfos[i].LastDate;
@@ -461,48 +459,26 @@ namespace YoutubePlaylistAlbumDownload
                     if (firstEntryNumTrackNums != maxEntryNumTrackNums)
                     {
                         //inform and ask
-                        WriteToLog("Not equal! Pad entries?");
-                        bool continuePad = false;
-                        while (true)
+                        WriteToLog("Not equal, padding entries?");
+                        //use the last entry as reference point for how many paddings to do
+                        for (int i = 0; i < files.Count; i++)
                         {
-                            if (bool.TryParse(Console.ReadLine(), out bool res))
+                            string oldFileName = Path.GetFileName(files[i]);
+                            int numToPadOut = maxEntryNumTrackNums - oldFileName.Split('-')[0].Length;
+                            if (numToPadOut > 0)
                             {
-                                continuePad = res;
-                                break;
+                                string newFileName = oldFileName.PadLeft(oldFileName.Length + numToPadOut, '0');
+                                WriteToLog(string.Format("{0}\nrenamed to\n{1}", oldFileName, newFileName));
+                                File.Move(Path.Combine(info.Folder, oldFileName), Path.Combine(info.Folder, newFileName));
+                                files[i] = Path.Combine(info.Folder, newFileName);
                             }
                             else
                             {
-                                WriteToLog("Response must be true or false");
+                                WriteToLog(string.Format("{0}\nnot renamed", oldFileName));
                             }
                         }
-                        if (continuePad)
-                        {
-                            //use the last entry as reference point for how many paddings to do
-                            for (int i = 0; i < files.Count; i++)
-                            {
-                                string oldFileName = Path.GetFileName(files[i]);
-                                int numToPadOut = maxEntryNumTrackNums - oldFileName.Split('-')[0].Length;
-                                if (numToPadOut > 0)
-                                {
-                                    string newFileName = oldFileName.PadLeft(oldFileName.Length + numToPadOut, '0');
-                                    WriteToLog(string.Format("{0}\nrenamed to\n{1}", oldFileName, newFileName));
-                                    System.IO.File.Move(Path.Combine(info.Folder, oldFileName), Path.Combine(info.Folder, newFileName));
-                                    files[i] = Path.Combine(info.Folder, newFileName);
-                                }
-                                else
-                                {
-                                    WriteToLog(string.Format("{0}\nnot renamed", oldFileName));
-                                }
-                            }
-                            //and re-sort if afterwards
-                            files.Sort();
-                        }
-                        else
-                        {
-                            WriteToLog("Exiting!");
-                            Console.ReadLine();
-                            Environment.Exit(-1);
-                        }
+                        //and re-sort if afterwards
+                        files.Sort();
                     }
 
                     //step 1: parse the tag info
@@ -522,7 +498,8 @@ namespace YoutubePlaylistAlbumDownload
                         catch (Exception ex)
                         {
                             WriteToLog(ex.ToString());
-                            Console.ReadLine();
+                            if (!NoErrorPrompts)
+                                Console.ReadLine();
                             Environment.Exit(-1);
                         }
 
@@ -616,7 +593,8 @@ namespace YoutubePlaylistAlbumDownload
                         catch (Exception ex)
                         {
                             WriteToLog(ex.ToString());
-                            Console.ReadLine();
+                            if (!NoErrorPrompts)
+                                Console.ReadLine();
                             Environment.Exit(-1);
                         }
                         //get the old name
@@ -626,19 +604,26 @@ namespace YoutubePlaylistAlbumDownload
                         //manual check to make sure track and title exist
                         if (file.Tag.Track == 0)
                         {
+                            WriteToLog(string.Format("ERROR: Track property is missing in file {0}", fileName));
+                            if (NoErrorPrompts)
+                                Environment.Exit(-1);
                             while (true)
                             {
-                                WriteToLog("ERROR: Track property is missing, please input manually!");
+                                WriteToLog("Please input unsigned int manually!");
                                 if (uint.TryParse(Console.ReadLine(), out uint result))
                                 {
                                     file.Tag.Track = result;
                                     file.Save();
+                                    break;
                                 }
                             }
                         }
                         if (string.IsNullOrWhiteSpace(file.Tag.Title))
                         {
-                            WriteToLog("ERROR: Title property is missing, please input manually!");
+                            WriteToLog(string.Format("ERROR: Title property is missing in file {0}", fileName));
+                            if (NoErrorPrompts)
+                                Environment.Exit(-1);
+                            WriteToLog("Please input manually!");
                             file.Tag.Title = Console.ReadLine();
                             file.Save();
                         }
@@ -654,7 +639,10 @@ namespace YoutubePlaylistAlbumDownload
                             case DownloadType.YoutubeSong:
                                 if (file.Tag.Performers == null || file.Tag.Performers.Count() == 0)
                                 {
-                                    WriteToLog("ERROR: Artist property is missing, please input manually!");
+                                    WriteToLog(string.Format("ERROR: Artist property is missing in file {0}", fileName));
+                                    if (NoErrorPrompts)
+                                        Environment.Exit(-1);
+                                    WriteToLog("Please input manually!");
                                     file.Tag.Performers = null;
                                     file.Tag.Performers = new string[] { Console.ReadLine() };
                                     file.Save();
@@ -663,7 +651,8 @@ namespace YoutubePlaylistAlbumDownload
                                 break;
                             default:
                                 WriteToLog("Invalid downloadtype: " + info.DownloadType.ToString());
-                                Console.ReadLine();
+                                if(!NoErrorPrompts)
+                                    Console.ReadLine();
                                 continue;
                         }
                         //check for padding
@@ -690,8 +679,9 @@ namespace YoutubePlaylistAlbumDownload
                     XmlNode infoNode = doc.SelectSingleNode(xpath);
                     if (infoNode == null)
                     {
-                        WriteToLog("failed to save node back folder " + info.Folder);
-                        Console.ReadLine();
+                        WriteToLog("failed to select node back folder " + info.Folder);
+                        if (!NoErrorPrompts)
+                            Console.ReadLine();
                         Environment.Exit(-1);
                     }
                     infoNode.Attributes["LastTrackNumber"].Value = info.LastTrackNumber.ToString();

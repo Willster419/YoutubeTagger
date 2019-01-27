@@ -7,6 +7,7 @@
     NoPrompts is for a complete automation system such that no user interaction is required, unless an error occurs.
     The elements here are presented in the order of which they would be executed-->
     <NoPrompts>True</NoPrompts>
+    <NoErrorPrompts>False</NoErrorPrompts>
     <UpdateYoutubeDL>True</UpdateYoutubeDL>
     <CopyBinaries>True</CopyBinaries>
     <HtmlParse>True</HtmlParse>
