@@ -113,7 +113,7 @@ namespace YoutubePlaylistAlbumDownload
                 YoutubeMixDurationCommandLine = doc.SelectSingleNode("//DownloadInfo.xml/CommandLine/YoutubeMixDuration").InnerText.Trim();
                 YoutubeSongDurationCommandLine = doc.SelectSingleNode("//DownloadInfo.xml/CommandLine/YoutubeSongDuration").InnerText.Trim();
                 //for each xml element "DownloadInfo" in element "DownloadInfo.xml"
-                foreach (XmlNode infosNode in doc.SelectNodes(string.Format("//{0}/{1}", DownloadInfoXml, nameof(DownloadInfo))))
+                foreach (XmlNode infosNode in doc.SelectNodes("//DownloadInfo.xml/DownloadInfos/DownloadInfo"))
                 {
                     //this works for inner elements
                     //string test = infosNode.SelectSingleNode("//Folder").InnerText;
@@ -165,6 +165,14 @@ namespace YoutubePlaylistAlbumDownload
             catch (Exception ex)
             {
                 WriteToLog(ex.ToString());
+                Console.ReadLine();
+                return;
+            }
+
+            //check to make sure we have at least one downloadInfo to run!
+            if(DownloadInfos.Count == 0)
+            {
+                WriteToLog("No DownloadInfos parsed! (empty xml file?)");
                 Console.ReadLine();
                 return;
             }
