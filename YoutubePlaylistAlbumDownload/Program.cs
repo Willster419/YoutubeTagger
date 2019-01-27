@@ -170,7 +170,7 @@ namespace YoutubePlaylistAlbumDownload
             }
 
             //if not silent, add start of application here
-            if(!NoPrompts)
+            if (!NoPrompts)
             {
                 WriteToLog("Press enter to start");
                 //https://stackoverflow.com/questions/11512821/how-to-stop-c-sharp-console-applications-from-closing-automatically
@@ -230,7 +230,7 @@ namespace YoutubePlaylistAlbumDownload
                 CheckMissingFolder(BinaryFolder);
                 foreach (string s in BinaryFiles)
                     CheckMissingFile(Path.Combine(BinaryFolder, s));
-                
+
                 //copy the binaries to each folder
                 foreach (DownloadInfo info in DownloadInfos)
                 {
@@ -314,7 +314,7 @@ namespace YoutubePlaylistAlbumDownload
                 //build and run the process list for youtube downloads
                 //build first
                 List<Process> processes = new List<Process>();
-                foreach (DownloadInfo info in DownloadInfos.Where(temp =>temp.DownloadType == DownloadType.YoutubeSong || temp.DownloadType==DownloadType.YoutubeMix))
+                foreach (DownloadInfo info in DownloadInfos.Where(temp => temp.DownloadType == DownloadType.YoutubeSong || temp.DownloadType == DownloadType.YoutubeMix))
                 {
                     //make sure folder path exists
                     CheckMissingFolder(info.Folder);
@@ -367,7 +367,7 @@ namespace YoutubePlaylistAlbumDownload
                 foreach (Process p in processes)
                 {
                     p.WaitForExit();
-                    if(p.ExitCode != 0)
+                    if (p.ExitCode != 0)
                     {
                         WriteToLog(string.Format("process of folder {0} exited of code {1}, killing all", p.StartInfo.WorkingDirectory, p.ExitCode));
                         KillProcesses(processes);
@@ -375,7 +375,7 @@ namespace YoutubePlaylistAlbumDownload
                     WriteToLog(string.Format("Process of folder {0} has finished or previously finished", p.StartInfo.WorkingDirectory));
                 }
                 //after all completed successfully, dispose of them
-                foreach(Process p in processes)
+                foreach (Process p in processes)
                     p.Dispose();
                 GC.Collect();
                 WriteToLog("All processes completed");
@@ -429,7 +429,7 @@ namespace YoutubePlaylistAlbumDownload
                     WriteToLog("-----------------------Parsing directory " + info.Folder + "----------------------");
                     CheckMissingFolder(info.Folder);
                     //make and filter out the lists
-                    List<string> files = Directory.GetFiles(info.Folder,"*",SearchOption.TopDirectoryOnly).Where(file => ValidExtensions.Contains(Path.GetExtension(file))).ToList();
+                    List<string> files = Directory.GetFiles(info.Folder, "*", SearchOption.TopDirectoryOnly).Where(file => ValidExtensions.Contains(Path.GetExtension(file))).ToList();
                     //check to make sure there are valid audio files before proceding
                     if (files.Count == 0)
                     {
@@ -530,7 +530,7 @@ namespace YoutubePlaylistAlbumDownload
                         }
                         //last saved number in the xml will be the last track number applied
                         //so up it first, then use it
-                        tag.Track = (uint)++info.LastTrackNumber;
+                        tag.Track = ++info.LastTrackNumber;
                         string fileNameToParse = Path.GetFileNameWithoutExtension(fileName);
                         //replace "–" with "-", as well as "?-" with "-"
                         fileNameToParse = fileNameToParse.Replace('–', '-').Replace("?-", "-");
@@ -707,7 +707,7 @@ namespace YoutubePlaylistAlbumDownload
                     DownloadInfo info = DownloadInfos[j];
                     CheckMissingFolder(info.Folder);
                     //make and filter out the lists
-                    List<string> files = Directory.GetFiles(info.Folder,"*",SearchOption.TopDirectoryOnly).Where(file => ValidExtensions.Contains(Path.GetExtension(file))).ToList();
+                    List<string> files = Directory.GetFiles(info.Folder, "*", SearchOption.TopDirectoryOnly).Where(file => ValidExtensions.Contains(Path.GetExtension(file))).ToList();
                     WriteToLog("");
                     WriteToLog("-----------------------CopyFiles for directory " + info.Folder + "----------------------");
                     if (files.Count == 0)
@@ -790,7 +790,7 @@ namespace YoutubePlaylistAlbumDownload
 
             //and we're all set here
             WriteToLog("Done");
-            if(!NoPrompts)
+            if (!NoPrompts)
                 Console.ReadLine();
         }
 
@@ -821,13 +821,13 @@ namespace YoutubePlaylistAlbumDownload
         //check if a folder path is missing. create and continue is true
         private static void CheckMissingFolder(string folderPath)
         {
-           if (!Directory.Exists(folderPath))
-                    Directory.CreateDirectory(folderPath);
+            if (!Directory.Exists(folderPath))
+                Directory.CreateDirectory(folderPath);
         }
         //check if a file is missing. error and exit if true
         private static void CheckMissingFile(string filePath)
         {
-            if(!File.Exists(filePath))
+            if (!File.Exists(filePath))
             {
                 WriteToLog(string.Format("ERROR: missing file {0} for path {1}", Path.GetFileName(filePath), filePath));
                 Console.ReadLine();
