@@ -24,5 +24,6 @@
         public string LastDate;
         public bool FirstRun;
         public string DownloadURL;
+        public uint BackupLastTrackNumber;
     }
 }

@@ -331,7 +331,7 @@ namespace YoutubePlaylistAlbumDownload
                         WriteToLog("Deleting old song file from previous run: " + Path.GetFileName(file));
                         File.Delete(file);
                     }
-                    WriteToLog(string.Format("build process info folder {0}", info.Folder));
+                    WriteToLog(string.Format("Build process info folder {0}", info.Folder));
                     processes.Add(new Process()
                     {
                         StartInfo = new ProcessStartInfo()
@@ -372,12 +372,31 @@ namespace YoutubePlaylistAlbumDownload
                 foreach (Process p in processes)
                 {
                     p.WaitForExit();
-                    if (p.ExitCode != 0)
-                    {
-                        WriteToLog(string.Format("process of folder {0} exited of code {1}, killing all", p.StartInfo.WorkingDirectory, p.ExitCode));
-                        KillProcesses(processes);
-                    }
                     WriteToLog(string.Format("Process of folder {0} has finished or previously finished", p.StartInfo.WorkingDirectory));
+                }
+                //check exit code status
+                bool forceExit = false;
+                foreach (Process p in processes)
+                {
+                    WriteToLog(string.Format("Process of folder {0} exited of code {1}", p.StartInfo.WorkingDirectory, p.ExitCode));
+                    if (p.ExitCode == 0 || p.ExitCode == 1)
+                    {
+                        WriteToLog("Valid exit code");
+                    }
+                    else
+                    {
+                        WriteToLog("Invalid exit code, marked to exit");
+                        forceExit = true;
+                    }
+                }
+                //determine if to quit
+                if (forceExit)
+                {
+                    WriteToLog("An exit code above was bad, exiting");
+                    KillProcesses(processes);
+                    if (!NoErrorPrompts)
+                        Console.ReadLine();
+                    Environment.Exit(-1);
                 }
                 //after all completed successfully, dispose of them
                 foreach (Process p in processes)
@@ -400,14 +419,14 @@ namespace YoutubePlaylistAlbumDownload
                 string newDate = string.Format("{0:yyyyMMdd}", DateTime.Now);
                 for (int i = 0; i < DownloadInfos.Count; i++)
                 {
-                    WriteToLog(string.Format("changing and saving xml old date from {0} to {1}", DownloadInfos[i].LastDate, newDate));
+                    WriteToLog(string.Format("Changing and saving xml old date from {0} to {1}", DownloadInfos[i].LastDate, newDate));
                     DownloadInfos[i].LastDate = newDate;
                     //then save it in xml
-                    string xpath = string.Format("//{0}/{1}[@Folder='{2}']", DownloadInfoXml, nameof(DownloadInfo), DownloadInfos[i].Folder);
+                    string xpath = string.Format("//DownloadInfo.xml/DownloadInfos/DownloadInfo[@Folder='{0}']", DownloadInfos[i].Folder);
                     XmlNode infoNode = doc.SelectSingleNode(xpath);
                     if (infoNode == null)
                     {
-                        WriteToLog("failed to save xml doc back folder " + DownloadInfos[i].Folder);
+                        WriteToLog("Failed to save xml doc back folder " + DownloadInfos[i].Folder);
                         if (!NoErrorPrompts)
                             Console.ReadLine();
                         Environment.Exit(-1);
@@ -431,6 +450,9 @@ namespace YoutubePlaylistAlbumDownload
                 for (int j = 0; j < DownloadInfos.Count; j++)
                 {
                     DownloadInfo info = DownloadInfos[j];
+                    //save the track number in a backup in case if copying is true, and there's a "same title with different track number" error
+                    //if that happends, the old number needs to be written back to disk because the whole naming process is not invalid
+                    info.BackupLastTrackNumber = info.LastTrackNumber;
                     WriteToLog("");
                     WriteToLog("-----------------------Parsing directory " + info.Folder + "----------------------");
                     CheckMissingFolder(info.Folder);
@@ -459,7 +481,7 @@ namespace YoutubePlaylistAlbumDownload
                     if (firstEntryNumTrackNums != maxEntryNumTrackNums)
                     {
                         //inform and ask
-                        WriteToLog("Not equal, padding entries?");
+                        WriteToLog("Not equal, padding entries");
                         //use the last entry as reference point for how many paddings to do
                         for (int i = 0; i < files.Count; i++)
                         {
@@ -670,16 +692,16 @@ namespace YoutubePlaylistAlbumDownload
                         string completeFolderPath = Path.GetDirectoryName(fileName);
                         string completeOldPath = Path.Combine(completeFolderPath, oldFileName + Path.GetExtension(fileName));
                         string completeNewPath = Path.Combine(completeFolderPath, newFileName + Path.GetExtension(fileName));
-                        WriteToLog(string.Format("renaming {0}\nto {1}", oldFileName, newFileName));
+                        WriteToLog(string.Format("Renaming {0}\nto {1}", oldFileName, newFileName));
                         File.Move(completeOldPath, completeNewPath);
                     }
 
                     //at the end of each folder, write the new value back to the xml file
-                    string xpath = string.Format("//{0}/{1}[@Folder='{2}']", DownloadInfoXml, nameof(DownloadInfo), info.Folder);
+                    string xpath = string.Format("//DownloadInfo.xml/DownloadInfos/DownloadInfo[@Folder='{0}']", info.Folder);
                     XmlNode infoNode = doc.SelectSingleNode(xpath);
                     if (infoNode == null)
                     {
-                        WriteToLog("failed to select node back folder " + info.Folder);
+                        WriteToLog("Failed to select node for saving LastTrackNumber back to folder " + info.Folder);
                         if (!NoErrorPrompts)
                             Console.ReadLine();
                         Environment.Exit(-1);
@@ -732,6 +754,18 @@ namespace YoutubePlaylistAlbumDownload
                                     WriteToLog("ERROR: file with similar name exists in" + info.Folder);
                                     WriteToLog(naveofPresentFileCheck);
                                     WriteToLog("Skipping, you will need to correct for duplicate entry and try again");
+                                    string xpath = string.Format("//DownloadInfo.xml/DownloadInfos/DownloadInfo[@Folder='{0}']", info.Folder);
+                                    XmlNode infoNode = doc.SelectSingleNode(xpath);
+                                    if (infoNode == null)
+                                    {
+                                        WriteToLog("Failed to select node for saving LastTrackNumber back to folder " + info.Folder);
+                                        if (!NoErrorPrompts)
+                                            Console.ReadLine();
+                                        Environment.Exit(-1);
+                                    }
+                                    infoNode.Attributes["LastTrackNumber"].Value = info.BackupLastTrackNumber.ToString();
+                                    doc.Save(DownloadInfoXml);
+                                    WriteToLog(string.Format("Revered LastTrackNumber of false {0} to {1}",info.LastTrackNumber, info.BackupLastTrackNumber));
                                     Console.ReadLine();
                                     breakout = true;
                                     break;
