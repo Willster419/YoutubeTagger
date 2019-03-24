@@ -541,7 +541,8 @@ namespace YoutubePlaylistAlbumDownload
                         string fileNameToParse = Path.GetFileNameWithoutExtension(fileName);
                         //replace "–" with "-", as well as "?-" with "-"
                         fileNameToParse = fileNameToParse.Replace('–', '-').Replace("?-", "-");
-                        string[] splitFileName = fileNameToParse.Split('-');
+                        //split based on "-" seperater, skipping the track entry
+                        string[] splitFileName = fileNameToParse.Split('-').Skip(1).ToArray();
                         //parse from name
                         switch (info.DownloadType)
                         {
@@ -553,42 +554,45 @@ namespace YoutubePlaylistAlbumDownload
                                 WriteToLog("Song treated as heartAtThis mix");
                                 break;
                             case DownloadType.YoutubeMix:
-                                //0 = track (discard), 1 = title
+                                //0 (remaining text) = title
                                 tag.Performers = null;
                                 tag.Performers = new string[] { "VA" };
                                 //trim is as well, just in case
                                 //and join the whole thing back together, in case the jackass publisher uses "-" in the title
                                 //https://stackoverflow.com/questions/12961868/split-and-join-c-sharp-string
-                                tag.Title = string.Join("-", splitFileName.Skip(1)).Trim();
+                                tag.Title = string.Join("-", splitFileName).Trim();
                                 WriteToLog("Song treated as youtube mix");
                                 break;
                             case DownloadType.YoutubeSong:
-                                //0 = track (discard), 1 = artist, 2 = title
+                                //labels divide the artist and title by " - ", not "-". so put the string back together (without the track), and split again based on new parameter
+                                string filenameWithoutTrack = string.Join("-", splitFileName).Trim();
+                                string[] splitArtistTitleName = filenameWithoutTrack.Split(new string[] { " - " }, StringSplitOptions.None);
+                                //0 = artist, 1 = title
                                 //need at least 3 entries for this to work
-                                if (splitFileName.Count() < 3)
+                                if (splitArtistTitleName.Count() < 2)
                                 {
-                                    WriteToLog("ERROR: not enough split entries for parsing, please enter manually! (count is " + splitFileName.Count() + " )");
+                                    WriteToLog("ERROR: not enough split entries for parsing, please enter manually! (count is " + splitArtistTitleName.Count() + " )");
                                     WriteToLog("Original: " + Path.GetFileNameWithoutExtension(fileName));
                                     WriteToLog("Enter new:");
                                     while (true)
                                     {
                                         string newFileName = Console.ReadLine();
-                                        if (newFileName.Split('-').Count() < 3)
+                                        if (newFileName.Split(new string[] { " - " }, StringSplitOptions.None).Count() < 3)
                                         {
                                             WriteToLog(string.Format("'{0}' does not have enough delimiters (need at least 3 to split)", newFileName));
                                         }
                                         else
                                         {
-                                            splitFileName = newFileName.Split('-');
+                                            splitArtistTitleName = newFileName.Split(new string[] { " - " }, StringSplitOptions.None);
                                             break;
                                         }
                                     }
                                 }
                                 tag.Performers = null;
-                                tag.Performers = new string[] { splitFileName[1].Trim() };
+                                tag.Performers = new string[] { splitFileName[0].Trim() };
                                 //trim it as well, just in case
                                 //include anything after it rather than just get the last one, in case there's more split characters
-                                tag.Title = string.Join("-", splitFileName.Skip(2)).Trim();
+                                tag.Title = string.Join(" - ", splitArtistTitleName.Skip(1)).Trim();
                                 WriteToLog("Song treated as youtube song");
                                 break;
                             default:
