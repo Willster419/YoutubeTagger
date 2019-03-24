@@ -84,6 +84,7 @@ namespace YoutubePlaylistAlbumDownload
                 Console.ReadLine();
                 Environment.Exit(-1);
             }
+            WriteToLog("---------------------------APPLICATION START---------------------------");
             WriteToLog("Loading XML document");
             XmlDocument doc = new XmlDocument();
             try
@@ -144,11 +145,19 @@ namespace YoutubePlaylistAlbumDownload
                             //check to make sure the path is valid before trying to use later
                             if (!Directory.Exists(paths.InnerText))
                             {
-                                WriteToLog("ERROR: the path");
-                                WriteToLog(paths.Value);
-                                WriteToLog("Does not exist!");
-                                Console.ReadLine();
-                                Environment.Exit(-1);
+                                if(temp.FirstRun)
+                                {
+                                    WriteToLog(string.Format("INFO: path {0} does not exist, but firstRun = true, creating path", paths.InnerText));
+                                    Directory.CreateDirectory(paths.InnerText);
+                                }
+                                else
+                                {
+                                    WriteToLog("ERROR: the path");
+                                    WriteToLog(paths.InnerText);
+                                    WriteToLog("Does not exist!");
+                                    Console.ReadLine();
+                                    Environment.Exit(-1);
+                                }
                             }
                             temp.CopyPaths[i++] = paths.InnerText;
                         }
@@ -221,6 +230,7 @@ namespace YoutubePlaylistAlbumDownload
                                 Console.ReadLine();
                             Environment.Exit(-1);
                         }
+                        System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10.0));
                     }
                 }
                 catch (Exception e)
