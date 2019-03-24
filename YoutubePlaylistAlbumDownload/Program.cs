@@ -717,6 +717,13 @@ namespace YoutubePlaylistAlbumDownload
                         File.Move(completeOldPath, completeNewPath);
                     }
 
+                    //also change firstRun to false if not done already
+                    if (info.FirstRun)
+                    {
+                        WriteToLog(string.Format("DEBUG: folder {0} firstRun is true, setting to false", info.Folder));
+                        info.FirstRun = false;
+                    }
+
                     //at the end of each folder, write the new value back to the xml file
                     string xpath = string.Format("//DownloadInfo.xml/DownloadInfos/DownloadInfo[@Folder='{0}']", info.Folder);
                     XmlNode infoNode = doc.SelectSingleNode(xpath);
@@ -728,6 +735,7 @@ namespace YoutubePlaylistAlbumDownload
                         Environment.Exit(-1);
                     }
                     infoNode.Attributes["LastTrackNumber"].Value = info.LastTrackNumber.ToString();
+                    infoNode.Attributes[nameof(info.FirstRun)].Value = info.FirstRun.ToString();
                     doc.Save(DownloadInfoXml);
                     WriteToLog("Saved LastTrackNumber for folder " + info.Folder);
                 }
