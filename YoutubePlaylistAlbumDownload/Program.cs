@@ -592,8 +592,25 @@ namespace YoutubePlaylistAlbumDownload
                                 tag.Performers = new string[] { splitFileName[0].Trim() };
                                 //trim it as well, just in case
                                 //include anything after it rather than just get the last one, in case there's more split characters
+                                //skip one for the artist name
                                 tag.Title = string.Join(" - ", splitArtistTitleName.Skip(1)).Trim();
-                                WriteToLog("Song treated as youtube song");
+                                //check here if the track title already exists in the list of places to copy it to
+                                //if it does, then delete the file and continue
+                                if(SongAlreadyExists(info.CopyPaths,tag.Title))
+                                {
+                                    WriteToLog(string.Format("WARNING: Song {0} already exists in a copy folder, deleting the entry!",tag.Title));
+                                    if (!NoPrompts)
+                                        Console.ReadLine();
+                                    File.Delete(fileName);
+                                    //also delete the entry from list of files to process
+                                    files.Remove(fileName);
+                                    //also put the counter back for track numbers
+                                    info.LastTrackNumber--;
+                                    //also decremant the counter as to not skip
+                                    i--;
+                                }
+                                else
+                                    WriteToLog("Song treated as youtube song");
                                 break;
                             default:
                                 WriteToLog("Invalid downloadtype: " + info.DownloadType.ToString());
@@ -856,6 +873,43 @@ namespace YoutubePlaylistAlbumDownload
                     WriteToLog("Response must be bool parse-able (i.e. true or false)");
                 }
             }
+        }
+        //check if a song with a same title exists based on what was just parsed
+        private static bool SongAlreadyExists(string[] copyFoldersToCheck, string titleOfSongToCheck)
+        {
+            bool doesSongAlreadyExist = false;
+            foreach(string copyFolderToCheck in copyFoldersToCheck)
+            {
+                //get a lsit of files in that copy folder (with media extension)
+                foreach(string fileInCopyFolder in Directory.GetFiles(copyFolderToCheck).Where(filename => ValidExtensions.Contains(Path.GetExtension(filename))))
+                {
+                    TagLib.Tag tag = null;
+                    TagLib.File file = null;
+                    //get the taglist entry for that file
+                    try
+                    {
+                        //https://stackoverflow.com/questions/40826094/how-do-i-use-taglib-sharp
+                        file = TagLib.File.Create(fileInCopyFolder);
+                        tag = file.Tag;
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteToLog(ex.ToString());
+                        if (!NoErrorPrompts)
+                            Console.ReadLine();
+                        Environment.Exit(-1);
+                    }
+                    if(tag.Title.Equals(titleOfSongToCheck))
+                    {
+                        doesSongAlreadyExist = true;
+                        break;
+                    }
+                    file.Dispose();
+                }
+                if (doesSongAlreadyExist)
+                    break;
+            }
+            return doesSongAlreadyExist;
         }
         //check if a folder path is missing. create and continue is true
         private static void CheckMissingFolder(string folderPath)
