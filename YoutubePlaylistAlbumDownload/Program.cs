@@ -516,6 +516,7 @@ namespace YoutubePlaylistAlbumDownload
                     //step 1: parse the tag info
                     for (int i = 0; i < files.Count; i++)
                     {
+                        bool fileDeleted = false;
                         string fileName = files[i];
                         WriteToLog("Parsing " + fileName);
 
@@ -571,7 +572,23 @@ namespace YoutubePlaylistAlbumDownload
                                 //and join the whole thing back together, in case the jackass publisher uses "-" in the title
                                 //https://stackoverflow.com/questions/12961868/split-and-join-c-sharp-string
                                 tag.Title = string.Join("-", splitFileName).Trim();
-                                WriteToLog("Song treated as youtube mix");
+                                if (SongAlreadyExists(info.CopyPaths, tag.Title))
+                                {
+                                    WriteToLog(string.Format("WARNING: Song {0} already exists in a copy folder, deleting the entry!", tag.Title));
+                                    if (!NoPrompts)
+                                        Console.ReadLine();
+                                    File.Delete(fileName);
+                                    //also delete the entry from list of files to process
+                                    files.Remove(fileName);
+                                    //also put the counter back for track numbers
+                                    info.LastTrackNumber--;
+                                    //also decremant the counter as to not skip
+                                    i--;
+                                    //also note it
+                                    fileDeleted = true;
+                                }
+                                else
+                                    WriteToLog("Song treated as youtube mix");
                                 break;
                             case DownloadType.YoutubeSong:
                                 //labels divide the artist and title by " - ", not "-". so put the string back together (without the track), and split again based on new parameter
@@ -587,9 +604,9 @@ namespace YoutubePlaylistAlbumDownload
                                     while (true)
                                     {
                                         string newFileName = Console.ReadLine();
-                                        if (newFileName.Split(new string[] { " - " }, StringSplitOptions.None).Count() < 3)
+                                        if (newFileName.Split(new string[] { " - " }, StringSplitOptions.None).Count() < 2)
                                         {
-                                            WriteToLog(string.Format("'{0}' does not have enough delimiters (need at least 3 to split)", newFileName));
+                                            WriteToLog(string.Format("'{0}' does not have enough delimiters (need at least 2 to split)", newFileName));
                                         }
                                         else
                                         {
@@ -618,6 +635,7 @@ namespace YoutubePlaylistAlbumDownload
                                     info.LastTrackNumber--;
                                     //also decremant the counter as to not skip
                                     i--;
+                                    fileDeleted = true;
                                 }
                                 else
                                     WriteToLog("Song treated as youtube song");
@@ -630,7 +648,8 @@ namespace YoutubePlaylistAlbumDownload
                         tag.Genres = null;
                         tag.Genres = new string[] { info.Genre };
                         tag.Year = (uint)DateTime.Now.Year;
-                        file.Save();
+                        if(!fileDeleted)
+                            file.Save();
                     }
 
                     //step 2: parse the filenames from the tags
