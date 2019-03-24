@@ -7,11 +7,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("YoutubePlaylistAlbumDownload")]
-[assembly: AssemblyDescription("Downloads youtube videos and tags the audio files based on an xml document")]
+[assembly: AssemblyDescription("Downloads youtube videos as audio and tags them based on an xml document")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("YoutubePlaylistAlbumDownload")]
-[assembly: AssemblyCopyright("Copyright ©  2018 Willard Wider")]
+[assembly: AssemblyCopyright("Copyright © 2019 Willard Wider")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -33,7 +33,7 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.3")]
-[assembly: AssemblyFileVersion("1.0.0.3")]
+[assembly: AssemblyVersion("1.0.1.0")]
+[assembly: AssemblyFileVersion("1.0.1.0")]
 [assembly: NeutralResourcesLanguage("en-US")]
 
