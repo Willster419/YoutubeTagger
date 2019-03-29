@@ -28,75 +28,75 @@
   <!-- Each element is a playlist/album/folder of songs you wish to have downloaded,tagged, and copied.
   Here's a sample, one of each type-->
   <DownloadInfos>
-    <DownloadInfo Folder="EDM_Treasures" Album="ElectroHouseSections Releases" AlbumArtist="EDM Treasures" Genre="Dance" DownloadType="YoutubeSong" LastTrackNumber="128" LastDate="20190324" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=UUIGtPvEVzyHdn01m4P36_yQ">
+    <DownloadInfo Folder="EDM_Treasures" Album="ElectroHouseSections Releases" AlbumArtist="EDM Treasures" Genre="Dance" DownloadType="YoutubeSong" LastTrackNumber="128" LastDate="20190329" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=UUIGtPvEVzyHdn01m4P36_yQ">
       <CopyPath>F:\Music\EDMTreasures</CopyPath>
       <CopyPath>F:\Converted Phone Music\EDMTreasures</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Folder="ElectroDanceMovement" Album="ElectroDanceMovement" AlbumArtist="DJ Styline" Genre="Dance" DownloadType="YoutubeMix" LastTrackNumber="153" LastDate="20190324" FirstRun="False" DownloadURL="https://www.youtube.com/user/ElectroDanceMovement/videos">
+    <DownloadInfo Folder="ElectroDanceMovement" Album="ElectroDanceMovement" AlbumArtist="DJ Styline" Genre="Dance" DownloadType="YoutubeMix" LastTrackNumber="153" LastDate="20190329" FirstRun="False" DownloadURL="https://www.youtube.com/user/ElectroDanceMovement/videos">
       <CopyPath>F:\Music\ElectroDanceMovement</CopyPath>
       <CopyPath>F:\Converted Phone Music\ElectroDanceMovement</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Folder="Eric_Clapman" Album="Eric Clapman Mixes" AlbumArtist="Eric Clapman" Genre="Dance" DownloadType="YoutubeMix" LastTrackNumber="97" LastDate="20190324" FirstRun="False" DownloadURL="https://www.youtube.com/user/ericclapman/videos">
+    <DownloadInfo Folder="Eric_Clapman" Album="Eric Clapman Mixes" AlbumArtist="Eric Clapman" Genre="Dance" DownloadType="YoutubeMix" LastTrackNumber="98" LastDate="20190329" FirstRun="False" DownloadURL="https://www.youtube.com/user/ericclapman/videos">
       <CopyPath>F:\Music\Eric Clapman</CopyPath>
       <CopyPath>F:\Converted Phone Music\Eric Clapman</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Folder="Hands_Up_Generation" Album="Hands Up Generation" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="1244" LastDate="20190324" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=UU-26WTlPONcXLec3pnIrCaA">
+    <DownloadInfo Folder="Hands_Up_Generation" Album="Hands Up Generation" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="1244" LastDate="20190329" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=UU-26WTlPONcXLec3pnIrCaA">
       <CopyPath>F:\Music\HandsUp Generation</CopyPath>
       <CopyPath>F:\Converted Phone Music\HandsUp Generation</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Folder="Hands_Up_Music" Album="HandsUp Music" AlbumArtist="HandsUp Music" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="1770" LastDate="20190324" FirstRun="False" DownloadURL="https://www.youtube.com/user/HandsUpMusicDj/videos">
+    <DownloadInfo Folder="Hands_Up_Music" Album="HandsUp Music" AlbumArtist="HandsUp Music" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="1770" LastDate="20190329" FirstRun="False" DownloadURL="https://www.youtube.com/user/HandsUpMusicDj/videos">
       <CopyPath>F:\Music\HandsUp Music</CopyPath>
       <CopyPath>F:\Converted Phone Music\HandsUp Music</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Folder="Hands_Up_Promotions" Album="Hands Up Promotions" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="365" LastDate="20190324" FirstRun="False" DownloadURL="https://www.youtube.com/channel/UCw2t2UoUOxC-6bMiWMlU6MA/videos">
+    <DownloadInfo Folder="Hands_Up_Promotions" Album="Hands Up Promotions" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="368" LastDate="20190329" FirstRun="False" DownloadURL="https://www.youtube.com/channel/UCw2t2UoUOxC-6bMiWMlU6MA/videos">
       <CopyPath>F:\Music\HandsUp Promotions</CopyPath>
       <CopyPath>F:\Converted Phone Music\HandsUp Promotions</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Folder="HHH_Sounds" Album="HHH Sounds" AlbumArtist="DJ HHH" Genre="Hands Up" DownloadType="YoutubeMix" LastTrackNumber="144" LastDate="20190324" FirstRun="False" DownloadURL="https://www.youtube.com/channel/UCpCB87jDAMiOVlZH3VD-DPw/videos">
+    <DownloadInfo Folder="HHH_Sounds" Album="HHH Sounds" AlbumArtist="DJ HHH" Genre="Hands Up" DownloadType="YoutubeMix" LastTrackNumber="145" LastDate="20190329" FirstRun="False" DownloadURL="https://www.youtube.com/channel/UCpCB87jDAMiOVlZH3VD-DPw/videos">
       <CopyPath>F:\Music\HHH Sounds</CopyPath>
       <CopyPath>F:\Converted Phone Music\HHH Sounds</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Folder="NCS_House" Album="NCS House" AlbumArtist="Willster419" Genre="House" DownloadType="YoutubeSong" LastTrackNumber="187" LastDate="20190324" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PLRBp0Fe2GpgmsW46rJyudVFlY6IYjFBIK">
+    <DownloadInfo Folder="NCS_House" Album="NCS House" AlbumArtist="Willster419" Genre="House" DownloadType="YoutubeSong" LastTrackNumber="187" LastDate="20190329" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PLRBp0Fe2GpgmsW46rJyudVFlY6IYjFBIK">
       <CopyPath>F:\Music\NCS\House</CopyPath>
       <CopyPath>F:\Converted Phone Music\NCS\House</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Folder="Vital_Tunes_Mixes" Album="Vital Tunes Mixes" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeMix" LastTrackNumber="285" LastDate="20190324" FirstRun="False" DownloadURL="https://www.youtube.com/user/VitalTunezMusic/videos">
+    <DownloadInfo Folder="Vital_Tunes_Mixes" Album="Vital Tunes Mixes" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeMix" LastTrackNumber="285" LastDate="20190329" FirstRun="False" DownloadURL="https://www.youtube.com/user/VitalTunezMusic/videos">
       <CopyPath>F:\Music\Vital Tunes\Mixes</CopyPath>
       <CopyPath>F:\Converted Phone Music\Vital Tunes\Mixes</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Folder="Vital_Tunes_Releases" Album="Vital Tunes Releases" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeSong" LastTrackNumber="1154" LastDate="20190324" FirstRun="False" DownloadURL="https://www.youtube.com/user/VitalTunezMusic/videos">
+    <DownloadInfo Folder="Vital_Tunes_Releases" Album="Vital Tunes Releases" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeSong" LastTrackNumber="1154" LastDate="20190329" FirstRun="False" DownloadURL="https://www.youtube.com/user/VitalTunezMusic/videos">
       <CopyPath>F:\Music\Vital Tunes\Releases</CopyPath>
       <CopyPath>F:\Converted Phone Music\Vital Tunes\Releases</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Folder="Waltrus_House" Album="Waltrus House" AlbumArtist="Willster419" Genre="House" DownloadType="YoutubeSong" LastTrackNumber="12" LastDate="20190324" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PLHJlC_5EPJgnmqwvNEOsT2sRDptEWxQxw">
+    <DownloadInfo Folder="Waltrus_House" Album="Waltrus House" AlbumArtist="Willster419" Genre="House" DownloadType="YoutubeSong" LastTrackNumber="12" LastDate="20190329" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PLHJlC_5EPJgnmqwvNEOsT2sRDptEWxQxw">
       <CopyPath>F:\Music\Waltrus\House</CopyPath>
       <CopyPath>F:\Converted Phone Music\Waltrus\House</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Folder="Flybeat_bass_up" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="Bass Up" DownloadType="Other1" LastTrackNumber="1" LastDate="20190324" FirstRun="False" DownloadURL="">
+    <DownloadInfo Folder="Flybeat_bass_up" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="Bass Up" DownloadType="Other1" LastTrackNumber="1" LastDate="20190329" FirstRun="False" DownloadURL="">
       <CopyPath>F:\Music\DJ FlyBeat\Bass Up</CopyPath>
       <CopyPath>F:\Converted Phone Music\DJ FlyBeat\Bass Up</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Folder="Flybeat_melbourne" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="Melbourne Bounce" DownloadType="Other1" LastTrackNumber="9" LastDate="20190324" FirstRun="False" DownloadURL="">
+    <DownloadInfo Folder="Flybeat_melbourne" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="Melbourne Bounce" DownloadType="Other1" LastTrackNumber="9" LastDate="20190329" FirstRun="False" DownloadURL="">
       <CopyPath>F:\Music\DJ FlyBeat\Melbourne Bounce</CopyPath>
       <CopyPath>F:\Converted Phone Music\DJ FlyBeat\Melbourne Bounce</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Folder="Flybeat_spytrance" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="PSYTrance" DownloadType="Other1" LastTrackNumber="1" LastDate="20190324" FirstRun="False" DownloadURL="">
+    <DownloadInfo Folder="Flybeat_spytrance" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="PSYTrance" DownloadType="Other1" LastTrackNumber="1" LastDate="20190329" FirstRun="False" DownloadURL="">
       <CopyPath>F:\Music\DJ FlyBeat\PSY Trance</CopyPath>
       <CopyPath>F:\Converted Phone Music\DJ FlyBeat\PSY Trance</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Folder="Flybeat_electro_house" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="Dance" DownloadType="Other1" LastTrackNumber="54" LastDate="20190324" FirstRun="False" DownloadURL="">
+    <DownloadInfo Folder="Flybeat_electro_house" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="Dance" DownloadType="Other1" LastTrackNumber="54" LastDate="20190329" FirstRun="False" DownloadURL="">
       <CopyPath>F:\Music\DJ FlyBeat\Electro &amp; House</CopyPath>
       <CopyPath>F:\Converted Phone Music\DJ FlyBeat\Electro &amp; House</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Folder="Flybeat_handsup" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="Other1" LastTrackNumber="55" LastDate="20190324" FirstRun="False" DownloadURL="">
+    <DownloadInfo Folder="Flybeat_handsup" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="Other1" LastTrackNumber="55" LastDate="20190329" FirstRun="False" DownloadURL="">
       <CopyPath>F:\Music\DJ FlyBeat\Hands Up</CopyPath>
       <CopyPath>F:\Converted Phone Music\DJ FlyBeat\Hands Up</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Folder="Flybeat_hardstyle" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="Hardstyle" DownloadType="Other1" LastTrackNumber="18" LastDate="20190324" FirstRun="False" DownloadURL="">
+    <DownloadInfo Folder="Flybeat_hardstyle" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="Hardstyle" DownloadType="Other1" LastTrackNumber="18" LastDate="20190329" FirstRun="False" DownloadURL="">
       <CopyPath>F:\Music\DJ FlyBeat\Hardstyle</CopyPath>
       <CopyPath>F:\Converted Phone Music\DJ FlyBeat\Hardstyle</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Folder="Flybeat_uplifting_trance" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="Uplifting Trance" DownloadType="Other1" LastTrackNumber="1" LastDate="20190324" FirstRun="False" DownloadURL="">
+    <DownloadInfo Folder="Flybeat_uplifting_trance" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="Uplifting Trance" DownloadType="Other1" LastTrackNumber="1" LastDate="20190329" FirstRun="False" DownloadURL="">
       <CopyPath>F:\Music\DJ FlyBeat\Uplifting Trance</CopyPath>
       <CopyPath>F:\Converted Phone Music\DJ FlyBeat\Uplifting Trance</CopyPath>
     </DownloadInfo>
