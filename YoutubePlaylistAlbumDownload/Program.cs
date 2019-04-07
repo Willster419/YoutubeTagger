@@ -514,7 +514,23 @@ namespace YoutubePlaylistAlbumDownload
                                 tag.Performers = null;
                                 tag.Performers = new string[] { "VA" };
                                 //tag.Title = splitFileName[1];//these already have title parsed
-                                WriteToLog("Song treated as heartAtThis mix");
+                                if (SongAlreadyExists(info.CopyPaths, tag.Title))
+                                {
+                                    WriteToLog(string.Format("WARNING: Song {0} already exists in a copy folder, deleting the entry!", tag.Title));
+                                    if (!NoPrompts)
+                                        Console.ReadLine();
+                                    File.Delete(fileName);
+                                    //also delete the entry from list of files to process
+                                    files.Remove(fileName);
+                                    //also put the counter back for track numbers
+                                    info.LastTrackNumber--;
+                                    //also decremant the counter as to not skip
+                                    i--;
+                                    //also note it
+                                    fileDeleted = true;
+                                }
+                                else
+                                    WriteToLog("Song treated as heartAtThis mix");
                                 break;
                             case DownloadType.YoutubeMix:
                                 //0 (remaining text) = title
