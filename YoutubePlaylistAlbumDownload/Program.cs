@@ -794,47 +794,10 @@ namespace YoutubePlaylistAlbumDownload
                         continue;
                     }
                     bool breakout = false;
-                    //using copy for all then delete because you can't move across drives
+                    //using copy for all then delete because you can't move across drives (easily)
                     foreach (string copypath in info.CopyPaths)
                     {
                         WriteToLog("Copying files to directory " + copypath);
-                        //get a list of files in the copy directory for checking later
-                        List<string> destinationDuplicateCheck = Directory.GetFiles(copypath).Where(file => ValidExtensions.Contains(Path.GetExtension(file))).ToList();
-                        foreach (string file in files)
-                        {
-                            //check for duplicates by spitting the names and checking if the title is the same (skipping the track name)
-                            string nameOfCurrentFileCheck = string.Join("-", Path.GetFileName(file).Split('-').Skip(1));
-                            foreach (string fileInDestToCheck in destinationDuplicateCheck)
-                            {
-                                string naveofPresentFileCheck = string.Join("-", Path.GetFileName(fileInDestToCheck).Split('-').Skip(1));
-                                if (naveofPresentFileCheck.Equals(nameOfCurrentFileCheck))
-                                {
-                                    WriteToLog("ERROR: file with similar name exists in" + info.Folder);
-                                    WriteToLog(naveofPresentFileCheck);
-                                    WriteToLog("Skipping, you will need to correct for duplicate entry and try again");
-                                    string xpath = string.Format("//DownloadInfo.xml/DownloadInfos/DownloadInfo[@Folder='{0}']", info.Folder);
-                                    XmlNode infoNode = doc.SelectSingleNode(xpath);
-                                    if (infoNode == null)
-                                    {
-                                        WriteToLog("Failed to select node for saving LastTrackNumber back to folder " + info.Folder);
-                                        if (!NoErrorPrompts)
-                                            Console.ReadLine();
-                                        Environment.Exit(-1);
-                                    }
-                                    infoNode.Attributes["LastTrackNumber"].Value = info.BackupLastTrackNumber.ToString();
-                                    doc.Save(DownloadInfoXml);
-                                    WriteToLog(string.Format("Revered LastTrackNumber of false {0} to {1}",info.LastTrackNumber, info.BackupLastTrackNumber));
-                                    Console.ReadLine();
-                                    breakout = true;
-                                    break;
-                                }
-                            }
-                            if (breakout)
-                                break;
-                        }
-                        if (breakout)
-                            break;
-                        //getting here means that all files were checked above and no duplicates exist
                         foreach (string file in files)
                         {
                             WriteToLog(Path.GetFileName(file));
