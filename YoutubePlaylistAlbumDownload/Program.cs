@@ -1,5 +1,4 @@
-﻿using HtmlAgilityPack;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -47,8 +46,6 @@ namespace YoutubePlaylistAlbumDownload
         public static bool NoPrompts = false;
         //if it should run the scripts
         public static bool RunScripts = false;
-        //try to perform the HTML parsing
-        public static bool HtmlParse = false;
         //if we should parse tags
         public static bool ParseTags = false;
         //if we should copy files
@@ -105,7 +102,6 @@ namespace YoutubePlaylistAlbumDownload
                 NoErrorPrompts = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/NoErrorPrompts").InnerText.Trim());
                 UpdateYoutubeDL = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/UpdateYoutubeDL").InnerText.Trim());
                 CopyBinaries = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/CopyBinaries").InnerText.Trim());
-                HtmlParse = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/HtmlParse").InnerText.Trim());
                 RunScripts = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/RunScripts").InnerText.Trim());
                 SaveNewDate = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/SaveNewDate").InnerText.Trim());
                 ParseTags = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/ParseTags").InnerText.Trim());
@@ -272,51 +268,6 @@ namespace YoutubePlaylistAlbumDownload
             else
                 WriteToLog("CopyBinaries skipped");
 
-            //html parsing (testing...)
-            if (!NoPrompts)
-            {
-                HtmlParse = GetUserResponse("HtmlParse?");
-            }
-            if (HtmlParse)
-            {
-                WriteToLog("Parsing HTML");
-                foreach (DownloadInfo info in DownloadInfos.Where(temp => temp.DownloadType == DownloadType.Other1))
-                {
-                    //make sure download folder exists
-                    CheckMissingFolder(info.Folder);
-                    //delete any previous entries
-                    foreach (string file in Directory.GetFiles(info.Folder, "*", SearchOption.TopDirectoryOnly))
-                    {
-                        if (ValidExtensions.Contains(Path.GetExtension(file)))
-                            File.Delete(file);
-                    }
-                    WriteToLog("TODO: HTML PARSE");
-                    continue;
-                    using (WebClient client = new WebClient())
-                    {
-                        HtmlDocument document = new HtmlDocument();
-                        document.LoadHtml(client.DownloadString("https://hearthis.at/djflybeat/"));
-                        //"/html[1]/body[1]/div[4]/div[1]/div[1]/section[1]/section[2]/div[1]/div[2]/div[1]/div[1]/ul[1]"
-                        //https://stackoverflow.com/questions/15826875/html-agility-pack-using-xpath-to-get-a-single-node-object-reference-not-set
-                        HtmlNode node = document.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[4]/div[1]/div[1]/section[1]/section[2]/div[1]/div[2]/div[1]/div[1]/ul[1]");
-                        List<HtmlNode> musicEntries = node.ChildNodes.Skip(1).ToList();
-                        //.Where(element => element.properties
-                        musicEntries = musicEntries.Where(entry => entry.Name.Equals("li")).ToList();
-                        foreach (HtmlNode musicEntry in musicEntries)
-                        {
-                            HtmlNode article = musicEntry.ChildNodes[1];
-                            HtmlNode span = article.ChildNodes[1];
-                            HtmlNode entity = span.ChildNodes[0];
-                            string page = entity.Attributes["href"].Value;
-                            HtmlDocument songPage = new HtmlDocument();
-                            songPage.LoadHtml(client.DownloadString(page));
-                        }
-                    }
-                }
-            }
-            else
-                WriteToLog("HtmlParse skipped");
-
             //ask user if we will run the scripts
             if (!NoPrompts)
             {
@@ -328,6 +279,7 @@ namespace YoutubePlaylistAlbumDownload
                 //build and run the process list for youtube downloads
                 //build first
                 List<Process> processes = new List<Process>();
+                //only create processes for youtube download types
                 foreach (DownloadInfo info in DownloadInfos.Where(temp => temp.DownloadType == DownloadType.YoutubeSong || temp.DownloadType == DownloadType.YoutubeMix))
                 {
                     //make sure folder path exists
