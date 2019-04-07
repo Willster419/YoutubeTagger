@@ -1,0 +1,1 @@
+youtube-dl -i -f m4a --embed-thumbnail https://www.youtube.com/watch?v=uJU7lG1IjGA -o %%(autonumber)s--%%(title)s--%%(upload_date)s.%%(ext)s
