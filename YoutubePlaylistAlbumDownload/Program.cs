@@ -129,6 +129,7 @@ namespace YoutubePlaylistAlbumDownload
                         LastDate = infosNode.Attributes[nameof(DownloadInfo.LastDate)].Value.Trim(),
                         DownloadURL = infosNode.Attributes[nameof(DownloadInfo.DownloadURL)].Value.Trim(),
                         FirstRun = bool.Parse(infosNode.Attributes[nameof(DownloadInfo.FirstRun)].Value.Trim()),
+                        CustomYoutubedlCommands = infosNode.Attributes[nameof(DownloadInfo.CustomYoutubedlCommands)].Value.Trim()
                     };
                     XmlNodeList pathsList = infosNode.ChildNodes;
                     //i can do it without lists
@@ -304,10 +305,11 @@ namespace YoutubePlaylistAlbumDownload
                             WorkingDirectory = info.Folder,
                             FileName = YoutubeDL,
                             CreateNoWindow = false,
-                            Arguments = string.Format(DefaultCommandLine,
-                                info.FirstRun ? string.Empty : DateAfterCommandLine,
-                                info.FirstRun ? string.Empty : info.LastDate,
-                                info.DownloadType == DownloadType.YoutubeMix ? YoutubeMixDurationCommandLine : YoutubeSongDurationCommandLine,
+                            Arguments = string.Format(DefaultCommandLine,//from xml
+                                info.FirstRun ? string.Empty : DateAfterCommandLine,//date after (youtube-dl command line key)
+                                info.FirstRun ? string.Empty : info.LastDate,//date after (youtube-dl command line arg)
+                                info.DownloadType == DownloadType.YoutubeMix ? YoutubeMixDurationCommandLine : YoutubeSongDurationCommandLine,//youtube-dl match filter duration selector
+                                string.IsNullOrEmpty(info.CustomYoutubedlCommands)? string.Empty : info.CustomYoutubedlCommands,
                                 info.DownloadURL)
                         }
                     });
