@@ -472,6 +472,7 @@ namespace YoutubePlaylistAlbumDownload
                         string fileName = files[i];
                         WriteToLog("Parsing " + fileName);
 
+                        //create TagLib instance
                         TagLib.Tag tag = null;
                         TagLib.File file = null;
                         try
@@ -488,9 +489,10 @@ namespace YoutubePlaylistAlbumDownload
                             Environment.Exit(-1);
                         }
 
-                        //assign tag infos
+                        //assign tag infos from xml properties
                         //album
                         tag.Album = info.Album;
+
                         //album artist
                         //https://stackoverflow.com/questions/17292142/taglib-sharp-not-editing-artist
                         if (!string.IsNullOrEmpty(info.AlbumArtist))
@@ -498,124 +500,108 @@ namespace YoutubePlaylistAlbumDownload
                             tag.AlbumArtists = null;
                             tag.AlbumArtists = new string[] { info.AlbumArtist };
                         }
+
+                        //track number
                         //last saved number in the xml will be the last track number applied
                         //so up it first, then use it
                         tag.Track = ++info.LastTrackNumber;
-                        string fileNameToParse = Path.GetFileNameWithoutExtension(fileName);
-                        //replace "–" with "-", as well as "?-" with "-"
-                        fileNameToParse = fileNameToParse.Replace('–', '-').Replace("?-", "-");
-                        //split based on "-" seperater, skipping the track entry
-                        string[] splitFileName = fileNameToParse.Split('-').Skip(1).ToArray();
-                        //parse from name
-                        switch (info.DownloadType)
+
+                        //genre
+                        tag.Genres = null;
+                        tag.Genres = new string[] { info.Genre };
+
+                        if(info.DownloadType == DownloadType.Other1)
                         {
-                            case DownloadType.Other1:
-                                //0 = track (discard), 1 = title
+                            //Other1 is mixes, add current year and artist as VA
+                            tag.Performers = null;
+                            tag.Performers = new string[] { "VA" };
+                            tag.Year = (uint)DateTime.Now.Year;
+                            WriteToLog("Song treated as heartAtThis mix");
+                        }
+                        else//youtube mix and song
+                        {
+                            //artist and title and year from filename
+                            //get the name of the file to parse tag info to
+                            string fileNameToParse = Path.GetFileNameWithoutExtension(fileName);
+                            //replace "–" with "-", as well as "?-" with "-"
+                            fileNameToParse = fileNameToParse.Replace('–', '-').Replace("?-", "-");
+                            //split based on "--" unique separater
+                            string[] splitFileName = fileNameToParse.Split(new string[] { "--" }, StringSplitOptions.RemoveEmptyEntries);
+
+                            //split into mix parsing and song parsing
+                            if (info.DownloadType == DownloadType.YoutubeMix)
+                            {
+                                //from youtube-dl output template:
+                                //[0] = autonumber (discard), [1] = title (actual title), [2] = upload year
+                                //title
+                                tag.Title = splitFileName[1].Trim();
+                                //year is YYYMMDD, only want YYYY
+                                tag.Year = uint.Parse(splitFileName[2].Substring(0, 4).Trim());
+                                //artist (is VA for mixes)
                                 tag.Performers = null;
                                 tag.Performers = new string[] { "VA" };
-                                //tag.Title = splitFileName[1];//these already have title parsed
-                                if (SongAlreadyExists(info.CopyPaths, tag.Title))
+                                WriteToLog("Song treated as youtube mix");
+                            }
+                            else//youtube song
+                            {
+                                //from youtube-dl output template:
+                                //[0] = autonumber (discard), [1] = title (artist and title), [2] = upload year
+
+                                //first get the artist title combo from parsed filename form youtube-dl
+                                string filenameArtistTitle = splitFileName[1].Trim();
+                                string[] splitArtistTitleName = null;
+
+                                bool validArtistTitleParse = false;
+                                while(!validArtistTitleParse)
                                 {
-                                    WriteToLog(string.Format("WARNING: Song {0} already exists in a copy folder, deleting the entry!", tag.Title));
-                                    if (!NoPrompts)
-                                        Console.ReadLine();
-                                    File.Delete(fileName);
-                                    //also delete the entry from list of files to process
-                                    files.Remove(fileName);
-                                    //also put the counter back for track numbers
-                                    info.LastTrackNumber--;
-                                    //also decremant the counter as to not skip
-                                    i--;
-                                    //also note it
-                                    fileDeleted = true;
-                                }
-                                else
-                                    WriteToLog("Song treated as heartAtThis mix");
-                                break;
-                            case DownloadType.YoutubeMix:
-                                //0 (remaining text) = title
-                                tag.Performers = null;
-                                tag.Performers = new string[] { "VA" };
-                                //trim is as well, just in case
-                                //and join the whole thing back together, in case the jackass publisher uses "-" in the title
-                                //https://stackoverflow.com/questions/12961868/split-and-join-c-sharp-string
-                                tag.Title = string.Join("-", splitFileName).Trim();
-                                if (SongAlreadyExists(info.CopyPaths, tag.Title))
-                                {
-                                    WriteToLog(string.Format("WARNING: Song {0} already exists in a copy folder, deleting the entry!", tag.Title));
-                                    if (!NoPrompts)
-                                        Console.ReadLine();
-                                    File.Delete(fileName);
-                                    //also delete the entry from list of files to process
-                                    files.Remove(fileName);
-                                    //also put the counter back for track numbers
-                                    info.LastTrackNumber--;
-                                    //also decremant the counter as to not skip
-                                    i--;
-                                    //also note it
-                                    fileDeleted = true;
-                                }
-                                else
-                                    WriteToLog("Song treated as youtube mix");
-                                break;
-                            case DownloadType.YoutubeSong:
-                                //labels divide the artist and title by " - ", not "-". so put the string back together (without the track), and split again based on new parameter
-                                string filenameWithoutTrack = string.Join("-", splitFileName).Trim();
-                                string[] splitArtistTitleName = filenameWithoutTrack.Split(new string[] { " - " }, StringSplitOptions.None);
-                                //0 = artist, 1 = title
-                                //need at least 3 entries for this to work
-                                if (splitArtistTitleName.Count() < 2)
-                                {
-                                    WriteToLog("ERROR: not enough split entries for parsing, please enter manually! (count is " + splitArtistTitleName.Count() + " )");
-                                    WriteToLog("Original: " + Path.GetFileNameWithoutExtension(fileName));
-                                    WriteToLog("Enter new:");
-                                    while (true)
+                                    //labels divide the artist and title by " - "
+                                    //split into artist [0] and title [1]
+                                    splitArtistTitleName = filenameArtistTitle.Split(new string[] { " - " }, StringSplitOptions.None);
+
+                                    //should be 2 entries for this to work
+                                    if (splitArtistTitleName.Count() != 2)
                                     {
-                                        string newFileName = Console.ReadLine();
-                                        if (newFileName.Split(new string[] { " - " }, StringSplitOptions.None).Count() < 2)
-                                        {
-                                            WriteToLog(string.Format("'{0}' does not have enough delimiters (need at least 2 to split)", newFileName));
-                                        }
-                                        else
-                                        {
-                                            splitArtistTitleName = newFileName.Split(new string[] { " - " }, StringSplitOptions.None);
-                                            break;
-                                        }
+                                        WriteToLog("ERROR: not enough split entries for parsing, please enter manually! (count is " + splitArtistTitleName.Count() + " )");
+                                        WriteToLog("Original: " + filenameArtistTitle);
+                                        WriteToLog("Enter new:");
+                                        filenameArtistTitle = Console.ReadLine();
                                     }
+                                    else
+                                        validArtistTitleParse = true;
                                 }
+
+                                //get the artist name from split
                                 tag.Performers = null;
-                                tag.Performers = new string[] { splitFileName[0].Trim() };
-                                //trim it as well, just in case
+                                tag.Performers = new string[] { splitArtistTitleName[0].Trim() };
+
                                 //include anything after it rather than just get the last one, in case there's more split characters
                                 //skip one for the artist name
                                 tag.Title = string.Join(" - ", splitArtistTitleName.Skip(1)).Trim();
-                                //check here if the track title already exists in the list of places to copy it to
-                                //if it does, then delete the file and continue
-                                if(SongAlreadyExists(info.CopyPaths,tag.Title))
-                                {
-                                    WriteToLog(string.Format("WARNING: Song {0} already exists in a copy folder, deleting the entry!",tag.Title));
-                                    if (!NoPrompts)
-                                        Console.ReadLine();
-                                    File.Delete(fileName);
-                                    //also delete the entry from list of files to process
-                                    files.Remove(fileName);
-                                    //also put the counter back for track numbers
-                                    info.LastTrackNumber--;
-                                    //also decremant the counter as to not skip
-                                    i--;
-                                    fileDeleted = true;
-                                }
-                                else
-                                    WriteToLog("Song treated as youtube song");
-                                break;
-                            default:
-                                WriteToLog("Invalid downloadtype: " + info.DownloadType.ToString());
-                                continue;
+
+                                //year is YYYMMDD, only want YYYY
+                                tag.Year = uint.Parse(splitFileName[2].Substring(0, 4).Trim());
+                                WriteToLog("Song treated as youtube song");
+                            }
                         }
-                        //genre and year applied the same ways for all
-                        tag.Genres = null;
-                        tag.Genres = new string[] { info.Genre };
-                        tag.Year = (uint)DateTime.Now.Year;
+                        //check to make sure song doesn't already exist (but only if it's not the first time downloading
+                        if(!info.FirstRun)
+                        {
+                            if (SongAlreadyExists(info.CopyPaths, tag.Title))
+                            {
+                                WriteToLog(string.Format("WARNING: Song {0} already exists in a copy folder, deleting the entry!", tag.Title));
+                                if (!NoPrompts)
+                                    Console.ReadLine();
+                                File.Delete(fileName);
+                                //also delete the entry from list of files to process
+                                files.Remove(fileName);
+                                //also put the counter back for track numbers
+                                info.LastTrackNumber--;
+                                //also decremant the counter as to not skip
+                                i--;
+                                //also note it
+                                fileDeleted = true;
+                            }
+                        }
                         if(!fileDeleted)
                             file.Save();
                     }
