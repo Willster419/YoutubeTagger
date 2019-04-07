@@ -862,6 +862,8 @@ namespace YoutubePlaylistAlbumDownload
             bool doesSongAlreadyExist = false;
             foreach(string copyFolderToCheck in copyFoldersToCheck)
             {
+                if (!Directory.Exists(copyFolderToCheck))
+                    continue;
                 //get a lsit of files in that copy folder (with media extension)
                 foreach(string fileInCopyFolder in Directory.GetFiles(copyFolderToCheck).Where(filename => ValidExtensions.Contains(Path.GetExtension(filename))))
                 {
