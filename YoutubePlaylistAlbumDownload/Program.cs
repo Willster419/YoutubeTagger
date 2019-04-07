@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Xml;
+using System.Reflection;
+using System.ComponentModel;
 
 namespace YoutubePlaylistAlbumDownload
 {
@@ -119,7 +121,7 @@ namespace YoutubePlaylistAlbumDownload
                     //string test = infosNode.SelectSingleNode("//Folder").InnerText;
                     DownloadInfo temp = new DownloadInfo
                     {
-                        //Folder = 
+                        /*
                         Folder = infosNode.Attributes[nameof(DownloadInfo.Folder)].Value.Trim(),
                         Album = infosNode.Attributes[nameof(DownloadInfo.Album)].Value.Trim(),
                         AlbumArtist = infosNode.Attributes[nameof(DownloadInfo.AlbumArtist)].Value.Trim(),
@@ -129,8 +131,19 @@ namespace YoutubePlaylistAlbumDownload
                         LastDate = infosNode.Attributes[nameof(DownloadInfo.LastDate)].Value.Trim(),
                         DownloadURL = infosNode.Attributes[nameof(DownloadInfo.DownloadURL)].Value.Trim(),
                         FirstRun = bool.Parse(infosNode.Attributes[nameof(DownloadInfo.FirstRun)].Value.Trim()),
-                        CustomYoutubedlCommands = infosNode.Attributes[nameof(DownloadInfo.CustomYoutubedlCommands)].Value.Trim()
+                        CustomYoutubedlCommands = infosNode.Attributes[nameof(DownloadInfo.CustomYoutubedlCommands)].Value.Trim(),
+                        Enabled = bool.Parse(infosNode.Attributes[nameof(DownloadInfo.Enabled)].Value.Trim())
+                        */
                     };
+                    List<FieldInfo> fields = temp.GetType().GetFields().ToList();
+                    foreach(XmlAttribute attribute in infosNode.Attributes)
+                    {
+                        FieldInfo field = fields.Where(fieldd => fieldd.Name.Equals(attribute.Name)).ToList()[0];
+                        var converter = TypeDescriptor.GetConverter(field.FieldType);
+                        //settingField.SetValue(classInstance, converter.ConvertFrom(settings[i].InnerText));
+                        //field.SetValue(temp, attribute.Value);
+                        field.SetValue(temp, converter.ConvertFrom(attribute.Value));
+                    }
                     XmlNodeList pathsList = infosNode.ChildNodes;
                     //i can do it without lists
                     if (pathsList.Count > 0)
@@ -186,6 +199,19 @@ namespace YoutubePlaylistAlbumDownload
                     Console.ReadLine();
                 Environment.Exit(-1);
             }
+
+            //check to make sure at least one downloadInfo enabled
+            List<DownloadInfo> enabledInfos = DownloadInfos.Where(info => info.Enabled).ToList();
+            if(enabledInfos.Count == 0)
+            {
+                WriteToLog("No DownloadInfos enabled!");
+                if (!NoErrorPrompts)
+                    Console.ReadLine();
+                Environment.Exit(-1);
+            }
+
+            //only process enabled infos
+            DownloadInfos = enabledInfos;
 
             //if not silent, add start of application here
             if (!NoPrompts)

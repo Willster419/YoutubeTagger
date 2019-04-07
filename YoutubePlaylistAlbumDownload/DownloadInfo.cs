@@ -25,6 +25,7 @@
         public bool FirstRun;
         public string DownloadURL;
         public uint BackupLastTrackNumber;
-        public string CustomYoutubedlCommands;
+        public string CustomYoutubedlCommands = string.Empty;
+        public bool Enabled = true;
     }
 }
