@@ -421,7 +421,14 @@ namespace YoutubePlaylistAlbumDownload
                             Console.ReadLine();
                         Environment.Exit(-1);
                     }
-                    infoNode.Attributes["LastDate"].Value = DownloadInfos[i].LastDate;
+                    XmlAttribute lastDate = infoNode.Attributes["LastDate"];
+                    if(lastDate == null)
+                    {
+                        //make it first then
+                        lastDate = doc.CreateAttribute("LastDate");
+                        infoNode.Attributes.Append(lastDate);
+                    }
+                    lastDate.Value = DownloadInfos[i].LastDate;
                     doc.Save(DownloadInfoXml);
                 }
             }
@@ -497,6 +504,7 @@ namespace YoutubePlaylistAlbumDownload
                     for (int i = 0; i < files.Count; i++)
                     {
                         bool fileDeleted = false;
+                        bool skipFile = false;
                         string fileName = files[i];
                         WriteToLog("Parsing " + fileName);
 
@@ -555,6 +563,12 @@ namespace YoutubePlaylistAlbumDownload
                             fileNameToParse = fileNameToParse.Replace('–', '-').Replace("?-", "-");
                             //split based on "--" unique separater
                             string[] splitFileName = fileNameToParse.Split(new string[] { "--" }, StringSplitOptions.RemoveEmptyEntries);
+                            //if the count is 1, then there are no "--", implies a run in this directory already happened
+                            if(splitFileName.Count() == 1)
+                            {
+                                WriteToLog(string.Format("File {0} seems to have already been parsed, skipping", splitFileName[0]));
+                                continue;
+                            }
 
                             //split into mix parsing and song parsing
                             if (info.DownloadType == DownloadType.YoutubeMix)
@@ -563,8 +577,30 @@ namespace YoutubePlaylistAlbumDownload
                                 //[0] = autonumber (discard), [1] = title (actual title), [2] = upload year
                                 //title
                                 tag.Title = splitFileName[1].Trim();
+
                                 //year is YYYMMDD, only want YYYY
-                                tag.Year = uint.Parse(splitFileName[2].Substring(0, 4).Trim());
+                                bool validYear = false;
+                                string yearString = string.Empty;
+                                yearString = splitFileName[2].Substring(0, 4).Trim();
+                                //remove any extra "-" characters
+                                yearString = yearString.Replace("-", string.Empty).Trim();
+                                while (!validYear)
+                                {
+                                    try
+                                    {
+                                        tag.Year = uint.Parse(yearString);
+                                        validYear = true;
+                                    }
+                                    catch
+                                    {
+                                        Console.Beep(1000, 500);
+                                        WriteToLog("ERROR: Invalid year, please manually type");
+                                        WriteToLog("Original: " + yearString);
+                                        WriteToLog("Enter new (ONLY \"YYYY\")");
+                                        yearString = Console.ReadLine().Trim();
+                                    }
+                                }
+
                                 //artist (is VA for mixes)
                                 tag.Performers = null;
                                 tag.Performers = new string[] { "VA" };
@@ -587,15 +623,27 @@ namespace YoutubePlaylistAlbumDownload
                                     splitArtistTitleName = filenameArtistTitle.Split(new string[] { " - " }, StringSplitOptions.None);
 
                                     //should be 2 entries for this to work
-                                    if (splitArtistTitleName.Count() != 2)
+                                    if (splitArtistTitleName.Count() < 2)
                                     {
+                                        Console.Beep(1000, 500);
                                         WriteToLog("ERROR: not enough split entries for parsing, please enter manually! (count is " + splitArtistTitleName.Count() + " )");
                                         WriteToLog("Original: " + filenameArtistTitle);
-                                        WriteToLog("Enter new:");
-                                        filenameArtistTitle = Console.ReadLine();
+                                        WriteToLog("Enter new: (just arist - title combo)");
+                                        WriteToLog("Or \"skip\" to remove song from parsing");
+                                        filenameArtistTitle = Console.ReadLine().Trim();
+                                        if(filenameArtistTitle.Equals("skip"))
+                                        {
+                                            skipFile = true;
+                                            break;
+                                        }
                                     }
                                     else
                                         validArtistTitleParse = true;
+                                }
+
+                                if (skipFile)
+                                {
+                                    filenameArtistTitle = "skipping - skipping--6969";
                                 }
 
                                 //get the artist name from split
@@ -607,12 +655,45 @@ namespace YoutubePlaylistAlbumDownload
                                 tag.Title = string.Join(" - ", splitArtistTitleName.Skip(1)).Trim();
 
                                 //year is YYYMMDD, only want YYYY
-                                tag.Year = uint.Parse(splitFileName[2].Substring(0, 4).Trim());
+                                bool validYear = false;
+                                string yearString = string.Empty;
+                                yearString = splitFileName[2].Substring(0, 4).Trim();
+                                //remove any extra "-" characters
+                                yearString = yearString.Replace("-", string.Empty).Trim();
+                                while (!validYear)
+                                {
+                                    try
+                                    {
+                                        tag.Year = uint.Parse(yearString);
+                                        validYear = true;
+                                    }
+                                    catch
+                                    {
+                                        Console.Beep(1000, 500);
+                                        WriteToLog("ERROR: Invalid year, please manually type");
+                                        WriteToLog("Original: " + yearString);
+                                        WriteToLog("Enter new (ONLY \"YYYY\")");
+                                        yearString = Console.ReadLine().Trim();
+                                    }
+                                }
                                 WriteToLog("Song treated as youtube song");
                             }
                         }
+                        if (skipFile)
+                        {
+                            WriteToLog(string.Format("Skipping song {0}", tag.Title));
+                            File.Delete(fileName);
+                            //also delete the entry from list of files to process
+                            files.Remove(fileName);
+                            //also put the counter back for track numbers
+                            info.LastTrackNumber--;
+                            //also decremant the counter as to not skip
+                            i--;
+                            //also note it
+                            fileDeleted = true;
+                        }
                         //check to make sure song doesn't already exist (but only if it's not the first time downloading
-                        if(!info.FirstRun)
+                        else if (!info.FirstRun)
                         {
                             if (SongAlreadyExists(info.CopyPaths, tag.Title))
                             {
@@ -724,7 +805,7 @@ namespace YoutubePlaylistAlbumDownload
                         string completeFolderPath = Path.GetDirectoryName(fileName);
                         string completeOldPath = Path.Combine(completeFolderPath, oldFileName + Path.GetExtension(fileName));
                         string completeNewPath = Path.Combine(completeFolderPath, newFileName + Path.GetExtension(fileName));
-                        WriteToLog(string.Format("Renaming {0}\nto {1}", oldFileName, newFileName));
+                        WriteToLog(string.Format("Renaming {0}\n                           to {1}", oldFileName, newFileName));
                         File.Move(completeOldPath, completeNewPath);
                     }
 
@@ -738,6 +819,7 @@ namespace YoutubePlaylistAlbumDownload
                     //at the end of each folder, write the new value back to the xml file
                     string xpath = string.Format("//DownloadInfo.xml/DownloadInfos/DownloadInfo[@Folder='{0}']", info.Folder);
                     XmlNode infoNode = doc.SelectSingleNode(xpath);
+
                     if (infoNode == null)
                     {
                         WriteToLog("Failed to select node for saving LastTrackNumber back to folder " + info.Folder);
@@ -745,7 +827,15 @@ namespace YoutubePlaylistAlbumDownload
                             Console.ReadLine();
                         Environment.Exit(-1);
                     }
-                    infoNode.Attributes["LastTrackNumber"].Value = info.LastTrackNumber.ToString();
+
+                    XmlAttribute lastTrackNumber = infoNode.Attributes["LastTrackNumber"];
+                    if(lastTrackNumber == null)
+                    {
+                        lastTrackNumber = doc.CreateAttribute("LastTrackNumber");
+                        infoNode.Attributes.Append(lastTrackNumber);
+                    }
+                    lastTrackNumber.Value = info.LastTrackNumber.ToString();
+                    
                     infoNode.Attributes[nameof(info.FirstRun)].Value = info.FirstRun.ToString();
                     doc.Save(DownloadInfoXml);
                     WriteToLog("Saved LastTrackNumber for folder " + info.Folder);
