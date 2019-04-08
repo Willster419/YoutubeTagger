@@ -10,7 +10,6 @@
     <NoErrorPrompts>True</NoErrorPrompts>
     <UpdateYoutubeDL>True</UpdateYoutubeDL>
     <CopyBinaries>True</CopyBinaries>
-    <HtmlParse>True</HtmlParse>
     <RunScripts>True</RunScripts>
     <SaveNewDate>True</SaveNewDate>
     <ParseTags>True</ParseTags>
@@ -30,69 +29,69 @@
   Here's a sample, one of each type -->
   <DownloadInfos>
     <!-- Electro House -->
-    <DownloadInfo Enabled="True" Folder="EDM_Treasures" Album="ElectroHouseSections Releases" AlbumArtist="EDM Treasures" Genre="Dance" DownloadType="YoutubeSong" LastTrackNumber="128" LastDate="20190406" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=UUIGtPvEVzyHdn01m4P36_yQ">
+    <DownloadInfo Enabled="True" Folder="EDM_Treasures" Album="ElectroHouseSections Releases" AlbumArtist="EDM Treasures" Genre="Dance" DownloadType="YoutubeSong" LastTrackNumber="128" LastDate="20190407" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=UUIGtPvEVzyHdn01m4P36_yQ">
       <CopyPath>F:\Music\EDMTreasures</CopyPath>
       <CopyPath>F:\Converted Phone Music\EDMTreasures</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="ElectroDanceMovement" Album="ElectroDanceMovement" AlbumArtist="DJ Styline" Genre="Dance" DownloadType="YoutubeMix" LastTrackNumber="154" LastDate="20190406" FirstRun="False" DownloadURL="https://www.youtube.com/user/ElectroDanceMovement/videos">
+    <DownloadInfo Enabled="True" Folder="ElectroDanceMovement" Album="ElectroDanceMovement" AlbumArtist="DJ Styline" Genre="Dance" DownloadType="YoutubeMix" LastTrackNumber="154" LastDate="20190407" FirstRun="False" DownloadURL="https://www.youtube.com/user/ElectroDanceMovement/videos">
       <CopyPath>F:\Music\ElectroDanceMovement</CopyPath>
       <CopyPath>F:\Converted Phone Music\ElectroDanceMovement</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Eric_Clapman" Album="Eric Clapman Mixes" AlbumArtist="Eric Clapman" Genre="Dance" DownloadType="YoutubeMix" LastTrackNumber="99" LastDate="20190406" FirstRun="False" DownloadURL="https://www.youtube.com/user/ericclapman/videos">
+    <DownloadInfo Enabled="True" Folder="Eric_Clapman" Album="Eric Clapman Mixes" AlbumArtist="Eric Clapman" Genre="Dance" DownloadType="YoutubeMix" LastTrackNumber="99" LastDate="20190407" FirstRun="False" DownloadURL="https://www.youtube.com/user/ericclapman/videos">
       <CopyPath>F:\Music\Eric Clapman</CopyPath>
       <CopyPath>F:\Converted Phone Music\Eric Clapman</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="NCS_House" Album="NCS House" AlbumArtist="Willster419" Genre="House" DownloadType="YoutubeSong" LastTrackNumber="188" LastDate="20190406" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PLRBp0Fe2GpgmsW46rJyudVFlY6IYjFBIK">
+    <DownloadInfo Enabled="True" Folder="NCS_House" Album="NCS House" AlbumArtist="Willster419" Genre="House" DownloadType="YoutubeSong" LastTrackNumber="188" LastDate="20190407" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PLRBp0Fe2GpgmsW46rJyudVFlY6IYjFBIK">
       <CopyPath>F:\Music\NCS\House</CopyPath>
       <CopyPath>F:\Converted Phone Music\NCS\House</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Waltrus_House" Album="Waltrus House" AlbumArtist="Willster419" Genre="House" DownloadType="YoutubeSong" LastTrackNumber="12" LastDate="20190406" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PLHJlC_5EPJgnmqwvNEOsT2sRDptEWxQxw">
+    <DownloadInfo Enabled="True" Folder="Waltrus_House" Album="Waltrus House" AlbumArtist="Willster419" Genre="House" DownloadType="YoutubeSong" LastTrackNumber="12" LastDate="20190407" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PLHJlC_5EPJgnmqwvNEOsT2sRDptEWxQxw">
       <CopyPath>F:\Music\Waltrus\House</CopyPath>
       <CopyPath>F:\Converted Phone Music\Waltrus\House</CopyPath>
     </DownloadInfo>
     <!-- Hands Up -->
-    <DownloadInfo Enabled="True" Folder="CX_Music" Album="CX Music" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeMix" FirstRun="True" DownloadURL="https://www.youtube.com/user/Cyberx1000/videos">
+    <DownloadInfo Enabled="True" Folder="CX_Music" Album="CX Music" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeMix" FirstRun="False" DownloadURL="https://www.youtube.com/user/Cyberx1000/videos" LastDate="20190407" LastTrackNumber="194">
       <CopyPath>F:\Music\CX Music</CopyPath>
       <CopyPath>F:\Converted Phone Music\CX Music</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="HHH_Sounds" Album="HHH Sounds" AlbumArtist="DJ HHH" Genre="Hands Up" DownloadType="YoutubeMix" LastTrackNumber="146" LastDate="20190406" FirstRun="False" DownloadURL="https://www.youtube.com/channel/UCpCB87jDAMiOVlZH3VD-DPw/videos">
+    <DownloadInfo Enabled="True" Folder="HHH_Sounds" Album="HHH Sounds" AlbumArtist="DJ HHH" Genre="Hands Up" DownloadType="YoutubeMix" LastTrackNumber="142" LastDate="20190407" FirstRun="False" DownloadURL="https://www.youtube.com/channel/UCpCB87jDAMiOVlZH3VD-DPw/videos">
       <CopyPath>F:\Music\HHH Sounds</CopyPath>
       <CopyPath>F:\Converted Phone Music\HHH Sounds</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Hands_Up_Germany_Mixes" Album="Hands Up Germany Mixes" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeMix" FirstRun="True" DownloadURL="https://www.youtube.com/channel/UCp_W5JnkK4qQsq0H82c8CtQ/videos">
+    <DownloadInfo Enabled="True" Folder="Hands_Up_Germany_Mixes" Album="Hands Up Germany Mixes" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeMix" FirstRun="False" DownloadURL="https://www.youtube.com/channel/UCp_W5JnkK4qQsq0H82c8CtQ/videos" LastDate="20190407" LastTrackNumber="47">
       <CopyPath>F:\Music\HandsUp Germany\Mixes</CopyPath>
       <CopyPath>F:\Converted Phone Music\HandsUp Germany\Mixes</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="False" Folder="Hands_Up_Generation" Album="Hands Up Generation" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="1244" LastDate="20190406" FirstRun="True" DownloadURL="https://www.youtube.com/playlist?list=UU-26WTlPONcXLec3pnIrCaA">
+    <DownloadInfo Enabled="True" Folder="Hands_Up_Generation" Album="Hands Up Generation" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="1244" LastDate="20190406" FirstRun="True" DownloadURL="https://www.youtube.com/playlist?list=UU-26WTlPONcXLec3pnIrCaA">
       <CopyPath>F:\Music\HandsUp Generation</CopyPath>
       <CopyPath>F:\Converted Phone Music\HandsUp Generation</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Hands_Up_Music" Album="HandsUp Music" AlbumArtist="HandsUp Music" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="1770" LastDate="20190406" FirstRun="True" DownloadURL="https://www.youtube.com/user/HandsUpMusicDj/videos">
+    <DownloadInfo Enabled="True" Folder="Hands_Up_Music" Album="HandsUp Music" AlbumArtist="HandsUp Music" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="1767" LastDate="20190407" FirstRun="False" DownloadURL="https://www.youtube.com/user/HandsUpMusicDj/videos">
       <CopyPath>F:\Music\HandsUp Music</CopyPath>
       <CopyPath>F:\Converted Phone Music\HandsUp Music</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Hands_Up_Promotions" Album="Hands Up Promotions" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="371" LastDate="20190406" FirstRun="True" DownloadURL="https://www.youtube.com/channel/UCw2t2UoUOxC-6bMiWMlU6MA/videos">
+    <DownloadInfo Enabled="True" Folder="Hands_Up_Promotions" Album="Hands Up Promotions" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="369" LastDate="20190407" FirstRun="False" DownloadURL="https://www.youtube.com/channel/UCw2t2UoUOxC-6bMiWMlU6MA/videos">
       <CopyPath>F:\Music\HandsUp Promotions</CopyPath>
       <CopyPath>F:\Converted Phone Music\HandsUp Promotions</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Handz_Up_Loverz" Album="Handz Up Lovez" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" FirstRun="True" DownloadURL="https://www.youtube.com/channel/UCIQR6V3nSCBUqWKYI-9inwA/videos">
+    <DownloadInfo Enabled="True" Folder="Handz_Up_Loverz" Album="Handz Up Lovez" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" FirstRun="False" DownloadURL="https://www.youtube.com/channel/UCIQR6V3nSCBUqWKYI-9inwA/videos" LastDate="20190407" LastTrackNumber="77">
       <CopyPath>F:\Music\HandzUp Loverz</CopyPath>
       <CopyPath>F:\Converted Phone Music\HandzUp Loverz</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Hands_Up_Loverz" Album="Hands_Up_Loverz" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" FirstRun="True" DownloadURL="https://www.youtube.com/channel/UC76IxIErhmQWKNqsVDfrILg/videos">
+    <DownloadInfo Enabled="True" Folder="Hands_Up_Loverz" Album="Hands_Up_Loverz" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" FirstRun="False" DownloadURL="https://www.youtube.com/channel/UC76IxIErhmQWKNqsVDfrILg/videos" LastDate="20190407" LastTrackNumber="34">
       <CopyPath>F:\Music\HandsUp Loverz</CopyPath>
       <CopyPath>F:\Converted Phone Music\HandsUp Loverz</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Hands_Up_Germany_Songs" Album="Hands Up Germany Songs" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" FirstRun="True" DownloadURL="https://www.youtube.com/channel/UCp_W5JnkK4qQsq0H82c8CtQ/videos">
+    <DownloadInfo Enabled="True" Folder="Hands_Up_Germany_Songs" Album="Hands Up Germany Songs" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" FirstRun="True" DownloadURL="https://www.youtube.com/channel/UCp_W5JnkK4qQsq0H82c8CtQ/videos" LastDate="20190407" LastTrackNumber="254">
       <CopyPath>F:\Music\HandsUp Germany\Songs</CopyPath>
       <CopyPath>F:\Converted Phone Music\HandsUp Germany\Songs</CopyPath>
     </DownloadInfo>
     <!-- Trance -->
-    <DownloadInfo Enabled="True" Folder="Vital_Tunes_Mixes" Album="Vital Tunes Mixes" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeMix" LastTrackNumber="287" LastDate="20190406" FirstRun="True" DownloadURL="https://www.youtube.com/user/VitalTunezMusic/videos">
+    <DownloadInfo Enabled="True" Folder="Vital_Tunes_Mixes" Album="Vital Tunes Mixes" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeMix" LastTrackNumber="278" LastDate="20190407" FirstRun="False" DownloadURL="https://www.youtube.com/user/VitalTunezMusic/videos">
       <CopyPath>F:\Music\Vital Tunes\Mixes</CopyPath>
       <CopyPath>F:\Converted Phone Music\Vital Tunes\Mixes</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Vital_Tunes_Releases" Album="Vital Tunes Releases" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeSong" LastTrackNumber="1159" LastDate="20190406" FirstRun="True" DownloadURL="https://www.youtube.com/user/VitalTunezMusic/videos">
+    <DownloadInfo Enabled="True" Folder="Vital_Tunes_Releases" Album="Vital Tunes Releases" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeSong" LastTrackNumber="1164" LastDate="20190407" FirstRun="False" DownloadURL="https://www.youtube.com/user/VitalTunezMusic/videos">
       <CopyPath>F:\Music\Vital Tunes\Releases</CopyPath>
       <CopyPath>F:\Converted Phone Music\Vital Tunes\Releases</CopyPath>
     </DownloadInfo>
