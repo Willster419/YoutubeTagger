@@ -567,6 +567,8 @@ namespace YoutubePlaylistAlbumDownload
                             if(splitFileName.Count() == 1)
                             {
                                 WriteToLog(string.Format("File {0} seems to have already been parsed, skipping", splitFileName[0]));
+                                //decrease the number, it's not a new song
+                                info.LastTrackNumber--;
                                 continue;
                             }
 
