@@ -13,7 +13,7 @@
     <RunScripts>True</RunScripts>
     <SaveNewDate>True</SaveNewDate>
     <ParseTags>True</ParseTags>
-    <CopyFiles>False</CopyFiles>
+    <CopyFiles>True</CopyFiles>
     <DeleteBinaries>True</DeleteBinaries>
   </Settings>
   <CommandLine>
