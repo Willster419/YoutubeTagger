@@ -1,1 +1,1 @@
-youtube-dl -i -f m4a --embed-thumbnail https://www.youtube.com/watch?v=dRTXHu5Svsw
+youtube-dl -i -f m4a --embed-thumbnail https://www.youtube.com/watch?v=rv0m-jWAjc4 -o %%(title)s.%%(ext)s
