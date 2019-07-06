@@ -75,6 +75,21 @@ namespace YoutubePlaylistAlbumDownload
 
         static int Main(string[] args)
         {
+            //handle any assembly resolves
+            //https://stackoverflow.com/a/19806004/3128017
+            AppDomain.CurrentDomain.AssemblyResolve += (sender2, bargs) =>
+            {
+                string dllName = new AssemblyName(bargs.Name).Name + ".dll";
+                Assembly assem = Assembly.GetExecutingAssembly();
+                string resourceName = assem.GetManifestResourceNames().FirstOrDefault(rn => rn.EndsWith(dllName));
+                using (Stream stream = assem.GetManifestResourceStream(resourceName))
+                {
+                    byte[] assemblyData = new byte[stream.Length];
+                    stream.Read(assemblyData, 0, assemblyData.Length);
+                    WriteToLog("loaded assembly: " + resourceName);
+                    return Assembly.Load(assemblyData);
+                }
+            };
             //init tag parsing, load xml data
             //check to make sure download info xml file is present
             if (!File.Exists(DownloadInfoXml))
