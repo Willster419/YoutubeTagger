@@ -8,7 +8,7 @@ using System.Xml;
 using System.Reflection;
 using System.ComponentModel;
 
-namespace YoutubePlaylistAlbumDownload
+namespace YoutubeTagger
 {
 
     class Program

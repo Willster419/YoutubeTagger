@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{4AE3AEA3-8DFA-47CC-8817-090B04DDF108}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>YoutubePlaylistAlbumDownload</RootNamespace>
-    <AssemblyName>YoutubePlaylistAlbumDownload</AssemblyName>
+    <RootNamespace>YoutubeTagger</RootNamespace>
+    <AssemblyName>YoutubeTagger</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -29,7 +29,8 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>

@@ -1,4 +1,4 @@
-﻿namespace YoutubePlaylistAlbumDownload
+﻿namespace YoutubeTagger
 {
     public enum DownloadType
     {
