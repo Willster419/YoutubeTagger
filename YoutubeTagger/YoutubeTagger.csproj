@@ -54,7 +54,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>YoutubePlaylistAlbumDownload.Program</StartupObject>
+    <StartupObject>YoutubeTagger.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
