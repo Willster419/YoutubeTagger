@@ -72,8 +72,20 @@ namespace YoutubeTagger
         private static string YoutubeMixDurationCommandLine = "duration > 600";
         #endregion
 
+        static void Init()
+        {
+            //hook up assembly resolver
+            //https://stackoverflow.com/a/25990979/3128017
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+        }
 
         static int Main(string[] args)
+        {
+            Init();
+            return RunProgram(args);
+        }
+
+        static int RunProgram(string[] args)
         {
             //init tag parsing, load xml data
             //check to make sure download info xml file is present
@@ -136,7 +148,7 @@ namespace YoutubeTagger
                         */
                     };
                     List<FieldInfo> fields = temp.GetType().GetFields().ToList();
-                    foreach(XmlAttribute attribute in infosNode.Attributes)
+                    foreach (XmlAttribute attribute in infosNode.Attributes)
                     {
                         FieldInfo field = fields.Where(fieldd => fieldd.Name.Equals(attribute.Name)).ToList()[0];
                         var converter = TypeDescriptor.GetConverter(field.FieldType);
@@ -155,7 +167,7 @@ namespace YoutubeTagger
                             //check to make sure the path is valid before trying to use later
                             if (!Directory.Exists(paths.InnerText))
                             {
-                                if(temp.FirstRun)
+                                if (temp.FirstRun)
                                 {
                                     WriteToLog(string.Format("INFO: path {0} does not exist, but firstRun = true, creating path", paths.InnerText));
                                     Directory.CreateDirectory(paths.InnerText);
@@ -192,17 +204,17 @@ namespace YoutubeTagger
             }
 
             //check to make sure we have at least one downloadInfo to run!
-            if(DownloadInfos.Count == 0)
+            if (DownloadInfos.Count == 0)
             {
                 WriteToLog("No DownloadInfos parsed! (empty xml file?)");
-                if(!NoErrorPrompts)
+                if (!NoErrorPrompts)
                     Console.ReadLine();
                 Environment.Exit(-1);
             }
 
             //check to make sure at least one downloadInfo enabled
             List<DownloadInfo> enabledInfos = DownloadInfos.Where(info => info.Enabled).ToList();
-            if(enabledInfos.Count == 0)
+            if (enabledInfos.Count == 0)
             {
                 WriteToLog("No DownloadInfos enabled!");
                 if (!NoErrorPrompts)
@@ -335,7 +347,7 @@ namespace YoutubeTagger
                                 info.FirstRun ? string.Empty : DateAfterCommandLine,//date after (youtube-dl command line key)
                                 info.FirstRun ? string.Empty : info.LastDate,//date after (youtube-dl command line arg)
                                 info.DownloadType == DownloadType.YoutubeMix ? YoutubeMixDurationCommandLine : YoutubeSongDurationCommandLine,//youtube-dl match filter duration selector
-                                string.IsNullOrEmpty(info.CustomYoutubedlCommands)? string.Empty : info.CustomYoutubedlCommands,
+                                string.IsNullOrEmpty(info.CustomYoutubedlCommands) ? string.Empty : info.CustomYoutubedlCommands,
                                 info.DownloadURL)
                         }
                     });
@@ -422,7 +434,7 @@ namespace YoutubeTagger
                         Environment.Exit(-1);
                     }
                     XmlAttribute lastDate = infoNode.Attributes["LastDate"];
-                    if(lastDate == null)
+                    if (lastDate == null)
                     {
                         //make it first then
                         lastDate = doc.CreateAttribute("LastDate");
@@ -546,7 +558,7 @@ namespace YoutubeTagger
                         tag.Genres = null;
                         tag.Genres = new string[] { info.Genre };
 
-                        if(info.DownloadType == DownloadType.Other1)
+                        if (info.DownloadType == DownloadType.Other1)
                         {
                             //Other1 is mixes, add current year and artist as VA
                             tag.Performers = null;
@@ -564,7 +576,7 @@ namespace YoutubeTagger
                             //split based on "--" unique separater
                             string[] splitFileName = fileNameToParse.Split(new string[] { "--" }, StringSplitOptions.RemoveEmptyEntries);
                             //if the count is 1, then there are no "--", implies a run in this directory already happened
-                            if(splitFileName.Count() == 1)
+                            if (splitFileName.Count() == 1)
                             {
                                 WriteToLog(string.Format("File {0} seems to have already been parsed, skipping", splitFileName[0]));
                                 //decrease the number, it's not a new song
@@ -618,7 +630,7 @@ namespace YoutubeTagger
                                 string[] splitArtistTitleName = null;
 
                                 bool validArtistTitleParse = false;
-                                while(!validArtistTitleParse)
+                                while (!validArtistTitleParse)
                                 {
                                     //labels divide the artist and title by " - "
                                     //split into artist [0] and title [1]
@@ -633,7 +645,7 @@ namespace YoutubeTagger
                                         WriteToLog("Enter new: (just arist - title combo)");
                                         WriteToLog("Or \"skip\" to remove song from parsing");
                                         filenameArtistTitle = Console.ReadLine().Trim();
-                                        if(filenameArtistTitle.Equals("skip"))
+                                        if (filenameArtistTitle.Equals("skip"))
                                         {
                                             skipFile = true;
                                             break;
@@ -713,7 +725,7 @@ namespace YoutubeTagger
                                 fileDeleted = true;
                             }
                         }
-                        if(!fileDeleted)
+                        if (!fileDeleted)
                             file.Save();
                     }
 
@@ -788,7 +800,7 @@ namespace YoutubeTagger
                                 break;
                             default:
                                 WriteToLog("Invalid downloadtype: " + info.DownloadType.ToString());
-                                if(!NoErrorPrompts)
+                                if (!NoErrorPrompts)
                                     Console.ReadLine();
                                 continue;
                         }
@@ -831,13 +843,13 @@ namespace YoutubeTagger
                     }
 
                     XmlAttribute lastTrackNumber = infoNode.Attributes["LastTrackNumber"];
-                    if(lastTrackNumber == null)
+                    if (lastTrackNumber == null)
                     {
                         lastTrackNumber = doc.CreateAttribute("LastTrackNumber");
                         infoNode.Attributes.Append(lastTrackNumber);
                     }
                     lastTrackNumber.Value = info.LastTrackNumber.ToString();
-                    
+
                     infoNode.Attributes[nameof(info.FirstRun)].Value = info.FirstRun.ToString();
                     doc.Save(DownloadInfoXml);
                     WriteToLog("Saved LastTrackNumber for folder " + info.Folder);
@@ -925,12 +937,27 @@ namespace YoutubeTagger
         }
 
         #region Helper Methods
+
+        private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            string dllName = new AssemblyName(args.Name).Name + ".dll";
+            Assembly assem = Assembly.GetExecutingAssembly();
+            string resourceName = assem.GetManifestResourceNames().FirstOrDefault(rn => rn.EndsWith(dllName));
+            using (Stream stream = assem.GetManifestResourceStream(resourceName))
+            {
+                byte[] assemblyData = new byte[stream.Length];
+                stream.Read(assemblyData, 0, assemblyData.Length);
+                return Assembly.Load(assemblyData);
+            }
+        }
+
         //write to the console and the logfile
         private static void WriteToLog(string logMessage)
         {
             Console.WriteLine(logMessage);
             File.AppendAllText(Logfile, string.Format("{0}:   {1}{2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), logMessage, Environment.NewLine));
         }
+
         //get the response to a user question
         private static bool GetUserResponse(string question)
         {
@@ -948,6 +975,7 @@ namespace YoutubeTagger
                 }
             }
         }
+
         //check if a song with a same title exists based on what was just parsed
         private static bool SongAlreadyExists(string[] copyFoldersToCheck, string titleOfSongToCheck)
         {
@@ -987,12 +1015,14 @@ namespace YoutubeTagger
             }
             return doesSongAlreadyExist;
         }
+
         //check if a folder path is missing. create and continue is true
         private static void CheckMissingFolder(string folderPath)
         {
             if (!Directory.Exists(folderPath))
                 Directory.CreateDirectory(folderPath);
         }
+
         //check if a file is missing. error and exit if true
         private static void CheckMissingFile(string filePath)
         {
@@ -1004,6 +1034,7 @@ namespace YoutubeTagger
                 Environment.Exit(-1);
             }
         }
+
         //kill all running youtube download processes in list, then dispose of all of them
         private static void KillProcesses(List<Process> processes)
         {
