@@ -256,14 +256,14 @@ namespace YoutubeTagger
 
                 //check if youtube-dl is missing, if so download it
                 string youtubeDLPath = Path.Combine(BinaryFolder, YoutubeDL);
-                if (!File.Exists(YoutubeDL))
+                if (!File.Exists(youtubeDLPath))
                 {
                     WriteToLog("Youtube-dl.exe does not exist, download it");
                     try
                     {
                         using (WebClient client = new WebClient())
                         {
-                            client.DownloadFile("https://yt-dl.org/latest/youtube-dl.exe", YoutubeDL);
+                            client.DownloadFile("https://yt-dl.org/latest/youtube-dl.exe", youtubeDLPath);
                         }
                     }
                     catch (WebException ex)
@@ -1000,7 +1000,7 @@ namespace YoutubeTagger
             string resourceNameFound = assem.GetManifestResourceNames().FirstOrDefault(rn => rn.Contains(resourceName));
             if (!string.IsNullOrWhiteSpace(resourceNameFound))
             {
-                using (Stream stream = assem.GetManifestResourceStream(resourceName))
+                using (Stream stream = assem.GetManifestResourceStream(resourceNameFound))
                 {
                     byte[] assemblyData = new byte[stream.Length];
                     stream.Read(assemblyData, 0, assemblyData.Length);
