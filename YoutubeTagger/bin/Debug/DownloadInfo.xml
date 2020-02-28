@@ -8,6 +8,7 @@
     The elements here are presented in the order of which they would be executed -->
     <NoPrompts>True</NoPrompts>
     <NoErrorPrompts>False</NoErrorPrompts>
+    <ForceWriteFFBinaries>True</ForceWriteFFBinaries>
     <UpdateYoutubeDL>True</UpdateYoutubeDL>
     <CopyBinaries>True</CopyBinaries>
     <RunScripts>True</RunScripts>

@@ -30,6 +30,12 @@ namespace YoutubeTagger
             "ffprobe.exe",
             YoutubeDL
         };
+        private static readonly string[] EmbeddedBinaryFiles = new string[]
+        {
+            "AtomicParsley.exe",
+            "ffmpeg.exe",
+            "ffprobe.exe"
+        };
         //name of youtube-dl application
         private const string YoutubeDL = "youtube-dl.exe";
         //name of folder to keep above binary files
@@ -62,6 +68,8 @@ namespace YoutubeTagger
         public static bool SaveNewDate = true;
         //if we should stop the application at error message prompts
         public static bool NoErrorPrompts = false;
+        //if we should force write ff binaries to disk
+        public static bool ForceWriteFFBinaries = false;
         //the default command line args passed into youtube-dl
         private static string DefaultCommandLine = "-i --playlist-reverse --youtube-skip-dash-manifest {0} {1} --match-filter \"{2}\" -o \"%(autonumber)s-%(title)s.%(ext)s\" --format m4a --embed-thumbnail {3}";
         //the start of the dateafter command line arg
@@ -114,6 +122,7 @@ namespace YoutubeTagger
                 //get some default settings
                 NoPrompts = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/NoPrompts").InnerText.Trim());
                 NoErrorPrompts = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/NoErrorPrompts").InnerText.Trim());
+                ForceWriteFFBinaries = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/ForceWriteFFBinaries").InnerText.Trim());
                 UpdateYoutubeDL = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/UpdateYoutubeDL").InnerText.Trim());
                 CopyBinaries = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/CopyBinaries").InnerText.Trim());
                 RunScripts = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/RunScripts").InnerText.Trim());
@@ -242,8 +251,32 @@ namespace YoutubeTagger
             if (UpdateYoutubeDL)
             {
                 WriteToLog("Update YoutubeDL");
+                //create folder if it does not already exist
                 CheckMissingFolder(BinaryFolder);
-                CheckMissingFile(Path.Combine(BinaryFolder, YoutubeDL));
+
+                //check if youtube-dl is missing, if so download it
+                string youtubeDLPath = Path.Combine(BinaryFolder, YoutubeDL);
+                if (!File.Exists(YoutubeDL))
+                {
+                    WriteToLog("Youtube-dl.exe does not exist, download it");
+                    try
+                    {
+                        using (WebClient client = new WebClient())
+                        {
+                            client.DownloadFile("https://yt-dl.org/latest/youtube-dl.exe", YoutubeDL);
+                        }
+                    }
+                    catch (WebException ex)
+                    {
+                        WriteToLog("Failed to download youtube-dl.exe");
+                        WriteToLog(ex.ToString());
+                        if (!NoErrorPrompts)
+                            Console.ReadLine();
+                        Environment.Exit(-1);
+                    }
+                }
+                else
+                    WriteToLog("Youtube-dl.exe exists");
                 try
                 {
                     using (Process updateYoutubeDL = new Process())
@@ -287,8 +320,17 @@ namespace YoutubeTagger
             {
                 WriteToLog("Copy Binaries");
                 CheckMissingFolder(BinaryFolder);
-                foreach (string s in BinaryFiles)
-                    CheckMissingFile(Path.Combine(BinaryFolder, s));
+
+                //if embedded binary does not exist, OR force binary embedded write, then write it
+                foreach (string s in EmbeddedBinaryFiles)
+                {
+                    string binaryPath = Path.Combine(BinaryFolder, s);
+                    if (!File.Exists(binaryPath) || ForceWriteFFBinaries)
+                    {
+                        WriteToLog(string.Format("File {0} does not exist or ForceWriteFFBinaries is on, writing binaries to disk", s));
+                        File.WriteAllBytes(binaryPath, GetEmbeddedResource(Path.GetFileNameWithoutExtension(s)));
+                    }
+                }
 
                 //copy the binaries to each folder
                 foreach (DownloadInfo info in DownloadInfos.Where(temp => temp.DownloadType == DownloadType.YoutubeSong || temp.DownloadType == DownloadType.YoutubeMix))
@@ -949,6 +991,24 @@ namespace YoutubeTagger
                 stream.Read(assemblyData, 0, assemblyData.Length);
                 return Assembly.Load(assemblyData);
             }
+        }
+
+        private static byte[] GetEmbeddedResource(string resourceName)
+        {
+            Assembly assem = Assembly.GetExecutingAssembly();
+            //https://stackoverflow.com/questions/1024559/when-to-use-first-and-when-to-use-firstordefault-with-linq
+            string resourceNameFound = assem.GetManifestResourceNames().FirstOrDefault(rn => rn.Contains(resourceName));
+            if (!string.IsNullOrWhiteSpace(resourceNameFound))
+            {
+                using (Stream stream = assem.GetManifestResourceStream(resourceName))
+                {
+                    byte[] assemblyData = new byte[stream.Length];
+                    stream.Read(assemblyData, 0, assemblyData.Length);
+                    return assemblyData;
+                }
+            }
+            else
+                return null;
         }
 
         //write to the console and the logfile
