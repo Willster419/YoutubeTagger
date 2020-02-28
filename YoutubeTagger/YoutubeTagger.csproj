@@ -94,5 +94,8 @@
   <ItemGroup>
     <EmbeddedResource Include="TagLibSharp.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\DownloadInfo.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
