@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="bin\Debug\logfile.log" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
@@ -95,7 +96,10 @@
     <EmbeddedResource Include="TagLibSharp.dll" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AtomicParsley.exe" />
     <Content Include="bin\Debug\DownloadInfo.xml" />
+    <EmbeddedResource Include="ffmpeg.exe" />
+    <EmbeddedResource Include="ffprobe.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
