@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<DownloadInfo.xml>
+  <!-- Your comment -->
+  <Settings>
+    <!-- Each of the following settings directly enables or disabled a feature in the application. For example,
+    if all are set to false (except NoPromps), the application won't actually do anything.
+    NoPrompts is for a complete automation system such that no user interaction is required, unless an error occurs.
+    The elements here are presented in the order of which they would be executed -->
+    <NoPrompts>True</NoPrompts>
+    <NoErrorPrompts>False</NoErrorPrompts>
+    <ForceWriteFFBinaries>True</ForceWriteFFBinaries>
+    <UpdateYoutubeDL>True</UpdateYoutubeDL>
+    <CopyBinaries>True</CopyBinaries>
+    <RunScripts>True</RunScripts>
+    <SaveNewDate>False</SaveNewDate>
+    <ParseTags>True</ParseTags>
+    <CopyFiles>True</CopyFiles>
+    <DeleteBinaries>True</DeleteBinaries>
+  </Settings>
+  <CommandLine>
+    <!-- Command line options. these get sent directly into youtube-dl, after replacing the macros-->
+    <!-- {0}=DateAfter (prefix), {1}=Actual Date, {2}=YoutubeSong/MixDuration (inner argument), {3}=Custom command lines, {4}=URL -->
+    <Default>-i --playlist-reverse --youtube-skip-dash-manifest --geo-bypass -o "%(autonumber)s--%(title)s--%(upload_date)s.%(ext)s" --format m4a --embed-thumbnail --download-archive archive.txt {3} {4}</Default>
+    <DateAfter>--dateafter</DateAfter>
+    <!-- time moved to 11 mins cause some trance songs are long -->
+    <YoutubeSongDuration>duration &lt; 660</YoutubeSongDuration>
+    <YoutubeMixDuration>duration &gt; 660</YoutubeMixDuration>
+  </CommandLine>
+  <DownloadInfos>
+    <DownloadInfo Enabled="True" Folder="DJ_Playlist" Album="DJ Playlist" AlbumArtist="Willster419" Genre="Progressive" DownloadType="YoutubeSong" LastTrackNumber="5" LastDate="0" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PLJvSsumjZ8FQVD7PwS4MCxTRbyQ9k57p7">
+      <CopyPath>F:\Music\Dj Playlist</CopyPath>
+      <CopyPath>F:\Converted Phone Music\Dj Playlist</CopyPath>
+    </DownloadInfo>
+  </DownloadInfos>
+</DownloadInfo.xml>
