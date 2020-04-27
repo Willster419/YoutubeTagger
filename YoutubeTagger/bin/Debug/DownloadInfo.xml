@@ -30,95 +30,95 @@
   Here's a sample, one of each type -->
   <DownloadInfos>
     <!-- Synthwave -->
-    <DownloadInfo Enabled="True" Folder="Synthwave_Outrun" Album="OUTRUN" AlbumArtist="ThePrimeThanatos" Genre="Synthwave" DownloadType="YoutubeMix" LastTrackNumber="5" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PL_MHjKxnHz1sm0YARyIdgev09N9A-3FEP" LastDate="20200328">
+    <DownloadInfo Enabled="True" Folder="Synthwave_Outrun" Album="OUTRUN" AlbumArtist="ThePrimeThanatos" Genre="Synthwave" DownloadType="YoutubeMix" LastTrackNumber="5" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PL_MHjKxnHz1sm0YARyIdgev09N9A-3FEP" LastDate="20200424">
       <CopyPath>F:\Music\ThePrimeThanatos\OUTRUN</CopyPath>
       <CopyPath>F:\Converted Phone Music\ThePrimeThanatos\OUTRUN</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Synthwave_80s" Album="Back to the 80s" AlbumArtist="ThePrimeThanatos" Genre="Synthwave" DownloadType="YoutubeMix" LastTrackNumber="20" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PL_MHjKxnHz1vGIan1NvtfR1NLMk3qkG8j" LastDate="20200328">
+    <DownloadInfo Enabled="True" Folder="Synthwave_80s" Album="Back to the 80s" AlbumArtist="ThePrimeThanatos" Genre="Synthwave" DownloadType="YoutubeMix" LastTrackNumber="20" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PL_MHjKxnHz1vGIan1NvtfR1NLMk3qkG8j" LastDate="20200424">
       <CopyPath>F:\Music\ThePrimeThanatos\Back to the 80s</CopyPath>
       <CopyPath>F:\Converted Phone Music\ThePrimeThanatos\Back to the 80s</CopyPath>
     </DownloadInfo>
     <!-- Eurobeat -->
-    <DownloadInfo Enabled="True" Folder="EUTOBEAT" Album="EUROBEATS" AlbumArtist="VA" Genre="Eutobeat" DownloadType="YoutubeMix" LastTrackNumber="19" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PLAZCk8xCc7mZbuQOpzt7xt_UpHrWkPuOm" LastDate="20200328">
+    <DownloadInfo Enabled="True" Folder="EUTOBEAT" Album="EUROBEATS" AlbumArtist="VA" Genre="Eutobeat" DownloadType="YoutubeMix" LastTrackNumber="19" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PLAZCk8xCc7mZbuQOpzt7xt_UpHrWkPuOm" LastDate="20200424">
       <CopyPath>F:\Music\EUROBEATS</CopyPath>
       <CopyPath>F:\Converted Phone Music\EUROBEATS</CopyPath>
     </DownloadInfo>
     <!-- Electro House -->
-    <DownloadInfo Enabled="True" Folder="Eric_Clapman" Album="Eric Clapman Mixes" AlbumArtist="Eric Clapman" Genre="Dance" DownloadType="YoutubeMix" LastTrackNumber="141" LastDate="20200328" FirstRun="False" DownloadURL="https://www.youtube.com/user/ericclapman/videos">
+    <DownloadInfo Enabled="True" Folder="Eric_Clapman" Album="Eric Clapman Mixes" AlbumArtist="Eric Clapman" Genre="Dance" DownloadType="YoutubeMix" LastTrackNumber="142" LastDate="20200424" FirstRun="False" DownloadURL="https://www.youtube.com/user/ericclapman/videos">
       <CopyPath>F:\Music\Eric Clapman</CopyPath>
       <CopyPath>F:\Converted Phone Music\Eric Clapman</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="NCS_House" Album="NCS House" AlbumArtist="Willster419" Genre="House" DownloadType="YoutubeSong" LastTrackNumber="197" LastDate="20200328" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PLRBp0Fe2GpgmsW46rJyudVFlY6IYjFBIK">
+    <DownloadInfo Enabled="True" Folder="NCS_House" Album="NCS House" AlbumArtist="Willster419" Genre="House" DownloadType="YoutubeSong" LastTrackNumber="197" LastDate="20200424" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PLRBp0Fe2GpgmsW46rJyudVFlY6IYjFBIK">
       <CopyPath>F:\Music\NCS\House</CopyPath>
       <CopyPath>F:\Converted Phone Music\NCS\House</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Nick_Cooper_electro_house" Album="Nick Cooper - Electro House" AlbumArtist="VA" Genre="Electro House" DownloadType="YoutubeSong" LastTrackNumber="527" LastDate="20200328" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PL4E3D21C21A3B8901">
+    <DownloadInfo Enabled="True" Folder="Nick_Cooper_electro_house" Album="Nick Cooper - Electro House" AlbumArtist="VA" Genre="Electro House" DownloadType="YoutubeSong" LastTrackNumber="532" LastDate="20200424" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PL4E3D21C21A3B8901">
       <CopyPath>F:\Music\Nick Cooper\Electro House</CopyPath>
       <CopyPath>F:\Converted Phone Music\Nick Cooper\Electro House</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="dj_ekki_charts" Album="DJ Ekki - Charts" AlbumArtist="VA" Genre="Electro House" DownloadType="YoutubeMix" LastTrackNumber="29" LastDate="20200328" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PLF9wqcynIHBxFWDGTuQa2y4Kuod0-rC_D">
+    <DownloadInfo Enabled="True" Folder="dj_ekki_charts" Album="DJ Ekki - Charts" AlbumArtist="VA" Genre="Electro House" DownloadType="YoutubeMix" LastTrackNumber="29" LastDate="20200424" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PLF9wqcynIHBxFWDGTuQa2y4Kuod0-rC_D">
       <CopyPath>F:\Music\DJ Ekki\Charts</CopyPath>
       <CopyPath>F:\Converted Phone Music\DJ Ekki\Charts</CopyPath>
     </DownloadInfo>
     <!-- EDM -->
-    <DownloadInfo Enabled="True" Folder="proximity" Album="Proximity Releases" AlbumArtist="VA" Genre="EDM" DownloadType="YoutubeSong" LastTrackNumber="1489" LastDate="20200328" FirstRun="False" DownloadURL="https://www.youtube.com/user/PandoraMuslc/videos">
+    <DownloadInfo Enabled="True" Folder="proximity" Album="Proximity Releases" AlbumArtist="VA" Genre="EDM" DownloadType="YoutubeSong" LastTrackNumber="1498" LastDate="20200424" FirstRun="False" DownloadURL="https://www.youtube.com/user/PandoraMuslc/videos">
       <CopyPath>F:\Music\Proximity</CopyPath>
       <CopyPath>F:\Converted Phone Music\Proximity</CopyPath>
     </DownloadInfo>
     <!-- Dance -->
-    <DownloadInfo Enabled="True" Folder="You_love_dance_tv" Album="YouLoveDance.tv" AlbumArtist="VA" Genre="Dance" DownloadType="YoutubeSong" LastTrackNumber="1346" LastDate="20200328" FirstRun="False" DownloadURL="https://www.youtube.com/user/Planetpunkmusic/videos">
+    <DownloadInfo Enabled="True" Folder="You_love_dance_tv" Album="YouLoveDance.tv" AlbumArtist="VA" Genre="Dance" DownloadType="YoutubeSong" LastTrackNumber="1356" LastDate="20200424" FirstRun="False" DownloadURL="https://www.youtube.com/user/Planetpunkmusic/videos">
       <CopyPath>F:\Music\YouLoveDance.TV</CopyPath>
       <CopyPath>F:\Converted Phone Music\YouLoveDance.TV</CopyPath>
     </DownloadInfo>
     <!-- Progressive -->
-    <DownloadInfo Enabled="True" Folder="Revealed_tv" Album="Revealed TV" AlbumArtist="VA" Genre="Progressive" DownloadType="YoutubeSong" LastTrackNumber="783" LastDate="20200328" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PLUHdivV5QCGf6vCG17JiAV91V4WMUzkCP">
+    <DownloadInfo Enabled="True" Folder="Revealed_tv" Album="Revealed TV" AlbumArtist="VA" Genre="Progressive" DownloadType="YoutubeSong" LastTrackNumber="788" LastDate="20200424" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PLUHdivV5QCGf6vCG17JiAV91V4WMUzkCP">
       <CopyPath>F:\Music\Revealed TV</CopyPath>
       <CopyPath>F:\Converted Phone Music\Revealed TV</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Nick_Cooper_progressive" Album="Nick Cooper - Progressive" AlbumArtist="VA" Genre="Progressive" DownloadType="YoutubeSong" LastTrackNumber="512" LastDate="20200328" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PL4C9F90A46845CCB1">
+    <DownloadInfo Enabled="True" Folder="Nick_Cooper_progressive" Album="Nick Cooper - Progressive" AlbumArtist="VA" Genre="Progressive" DownloadType="YoutubeSong" LastTrackNumber="513" LastDate="20200424" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PL4C9F90A46845CCB1">
       <CopyPath>F:\Music\Nick Cooper\Progressive</CopyPath>
       <CopyPath>F:\Converted Phone Music\Nick Cooper\Progressive</CopyPath>
     </DownloadInfo>
     <!-- Hardstyle -->
-    <DownloadInfo Enabled="True" Folder="EuphoricHardStyleZ" Album="EuphoricHardStyleZ" AlbumArtist="VA" Genre="Hardstyle" DownloadType="YoutubeSong" LastTrackNumber="3251" LastDate="20200328" FirstRun="False" DownloadURL="https://www.youtube.com/user/EuphoricHardStyleZ/videos">
+    <DownloadInfo Enabled="True" Folder="EuphoricHardStyleZ" Album="EuphoricHardStyleZ" AlbumArtist="VA" Genre="Hardstyle" DownloadType="YoutubeSong" LastTrackNumber="3278" LastDate="20200424" FirstRun="False" DownloadURL="https://www.youtube.com/user/EuphoricHardStyleZ/videos">
       <CopyPath>F:\Music\EuphoricHardStyleZ</CopyPath>
       <CopyPath>F:\Converted Phone Music\EuphoricHardStyleZ</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Hardstyle_of_choice" Album="Hardstyle of choice" AlbumArtist="VA" Genre="Hardstyle" DownloadType="YoutubeMix" LastTrackNumber="190" LastDate="20200328" FirstRun="False" DownloadURL="https://www.youtube.com/user/Hardstyleofchoice/videos">
+    <DownloadInfo Enabled="True" Folder="Hardstyle_of_choice" Album="Hardstyle of choice" AlbumArtist="VA" Genre="Hardstyle" DownloadType="YoutubeMix" LastTrackNumber="190" LastDate="20200424" FirstRun="False" DownloadURL="https://www.youtube.com/user/Hardstyleofchoice/videos">
       <CopyPath>F:\Music\Hardstyle of choice</CopyPath>
       <CopyPath>F:\Converted Phone Music\Hardstyle of choice</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Hardstyle_Promotions" Album="Hardstyle Promotions" AlbumArtist="VA" Genre="Hardstyle" DownloadType="YoutubeSong" LastTrackNumber="516" LastDate="20200328" FirstRun="False" DownloadURL="https://www.youtube.com/user/SwEKlingan/videos">
+    <DownloadInfo Enabled="True" Folder="Hardstyle_Promotions" Album="Hardstyle Promotions" AlbumArtist="VA" Genre="Hardstyle" DownloadType="YoutubeSong" LastTrackNumber="526" LastDate="20200424" FirstRun="False" DownloadURL="https://www.youtube.com/user/SwEKlingan/videos">
       <CopyPath>F:\Music\Hardstyle Promotions</CopyPath>
       <CopyPath>F:\Converted Phone Music\Hardstyle Promotions</CopyPath>
     </DownloadInfo>
     <!-- Hands Up -->
-    <DownloadInfo Enabled="True" Folder="CX_Music" Album="CX Music" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeMix" FirstRun="False" DownloadURL="https://www.youtube.com/user/Cyberx1000/videos" LastDate="20200328" LastTrackNumber="231">
+    <DownloadInfo Enabled="True" Folder="CX_Music" Album="CX Music" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeMix" FirstRun="False" DownloadURL="https://www.youtube.com/user/Cyberx1000/videos" LastDate="20200424" LastTrackNumber="231">
       <CopyPath>F:\Music\CX Music</CopyPath>
       <CopyPath>F:\Converted Phone Music\CX Music</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="HHH_Sounds" Album="HHH Sounds" AlbumArtist="DJ HHH" Genre="Hands Up" DownloadType="YoutubeMix" LastTrackNumber="206" LastDate="20200328" FirstRun="False" DownloadURL="https://www.youtube.com/channel/UCpCB87jDAMiOVlZH3VD-DPw/videos">
+    <DownloadInfo Enabled="True" Folder="HHH_Sounds" Album="HHH Sounds" AlbumArtist="DJ HHH" Genre="Hands Up" DownloadType="YoutubeMix" LastTrackNumber="210" LastDate="20200424" FirstRun="False" DownloadURL="https://www.youtube.com/channel/UCpCB87jDAMiOVlZH3VD-DPw/videos">
       <CopyPath>F:\Music\HHH Sounds</CopyPath>
       <CopyPath>F:\Converted Phone Music\HHH Sounds</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Hands_Up_Generation" Album="Hands Up Generation" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="1716" LastDate="20200328" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=UU-26WTlPONcXLec3pnIrCaA">
+    <DownloadInfo Enabled="True" Folder="Hands_Up_Generation" Album="Hands Up Generation" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="1734" LastDate="20200424" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=UU-26WTlPONcXLec3pnIrCaA">
       <CopyPath>F:\Music\HandsUp Generation</CopyPath>
       <CopyPath>F:\Converted Phone Music\HandsUp Generation</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Hands_Up_Music" Album="HandsUp Music" AlbumArtist="HandsUp Music" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="1793" LastDate="20200328" FirstRun="False" DownloadURL="https://www.youtube.com/user/HandsUpMusicDj/videos">
+    <DownloadInfo Enabled="True" Folder="Hands_Up_Music" Album="HandsUp Music" AlbumArtist="HandsUp Music" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="1793" LastDate="20200424" FirstRun="False" DownloadURL="https://www.youtube.com/user/HandsUpMusicDj/videos">
       <CopyPath>F:\Music\HandsUp Music</CopyPath>
       <CopyPath>F:\Converted Phone Music\HandsUp Music</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Hands_Up_Promotions" Album="Hands Up Promotions" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="479" LastDate="20200328" FirstRun="False" DownloadURL="https://www.youtube.com/channel/UCw2t2UoUOxC-6bMiWMlU6MA/videos">
+    <DownloadInfo Enabled="True" Folder="Hands_Up_Promotions" Album="Hands Up Promotions" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="479" LastDate="20200424" FirstRun="False" DownloadURL="https://www.youtube.com/channel/UCw2t2UoUOxC-6bMiWMlU6MA/videos">
       <CopyPath>F:\Music\HandsUp Promotions</CopyPath>
       <CopyPath>F:\Converted Phone Music\HandsUp Promotions</CopyPath>
     </DownloadInfo>
     <!-- Trance -->
-    <DownloadInfo Enabled="True" Folder="Vital_Tunes_Mixes" Album="Vital Tunes Mixes" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeMix" LastTrackNumber="292" LastDate="20200328" FirstRun="False" DownloadURL="https://www.youtube.com/user/VitalTunezMusic/videos">
+    <DownloadInfo Enabled="True" Folder="Vital_Tunes_Mixes" Album="Vital Tunes Mixes" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeMix" LastTrackNumber="292" LastDate="20200424" FirstRun="False" DownloadURL="https://www.youtube.com/user/VitalTunezMusic/videos">
       <CopyPath>F:\Music\Vital Tunes\Mixes</CopyPath>
       <CopyPath>F:\Converted Phone Music\Vital Tunes\Mixes</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Vital_Tunes_Releases" Album="Vital Tunes Releases" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeSong" LastTrackNumber="1234" LastDate="20200328" FirstRun="False" DownloadURL="https://www.youtube.com/user/VitalTunezMusic/videos">
+    <DownloadInfo Enabled="True" Folder="Vital_Tunes_Releases" Album="Vital Tunes Releases" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeSong" LastTrackNumber="1234" LastDate="20200424" FirstRun="False" DownloadURL="https://www.youtube.com/user/VitalTunezMusic/videos">
       <CopyPath>F:\Music\Vital Tunes\Releases</CopyPath>
       <CopyPath>F:\Converted Phone Music\Vital Tunes\Releases</CopyPath>
     </DownloadInfo>
