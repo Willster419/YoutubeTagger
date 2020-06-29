@@ -51,25 +51,25 @@ namespace YoutubeTagger
         //also using initializers as defaults
         #region XML parsed Settings
         //if prompts should be used from command line entry
-        public static bool NoPrompts = false;
+        private static bool NoPrompts = false;
         //if it should run the scripts
-        public static bool RunScripts = false;
+        private static bool RunScripts = false;
         //if we should parse tags
-        public static bool ParseTags = false;
+        private static bool ParseTags = false;
         //if we should copy files
-        public static bool CopyFiles = false;
+        private static bool CopyFiles = false;
         //if we shuld copy binary files
-        public static bool CopyBinaries = true;
+        private static bool CopyBinaries = true;
         //if we should delete binary files
-        public static bool DeleteBinaries = true;
+        private static bool DeleteBinaries = true;
         //if we should update youtubedl
-        public static bool UpdateYoutubeDL = true;
+        private static bool UpdateYoutubeDL = true;
         //if we are saving the new date for the last time the script was run
-        public static bool SaveNewDate = true;
+        private static bool SaveNewDate = true;
         //if we should stop the application at error message prompts
-        public static bool NoErrorPrompts = false;
+        private static bool NoErrorPrompts = false;
         //if we should force write ff binaries to disk
-        public static bool ForceWriteFFBinaries = false;
+        private static bool ForceWriteFFBinaries = false;
         //the default command line args passed into youtube-dl
         private static string DefaultCommandLine = "-i --playlist-reverse --youtube-skip-dash-manifest {0} {1} --match-filter \"{2}\" -o \"%(autonumber)s-%(title)s.%(ext)s\" --format m4a --embed-thumbnail {3}";
         //the start of the dateafter command line arg
@@ -104,7 +104,7 @@ namespace YoutubeTagger
                 Environment.Exit(-1);
             }
             WriteToLog("---------------------------APPLICATION START---------------------------");
-            WriteToLog("Loading XML document");
+            WriteToLog("Loading Xml document");
             XmlDocument doc = new XmlDocument();
             try
             {
@@ -112,6 +112,7 @@ namespace YoutubeTagger
             }
             catch (XmlException ex)
             {
+                WriteToLog("Failed to load Xml document");
                 WriteToLog(ex.ToString());
                 Console.ReadLine();
                 Environment.Exit(-1);
@@ -130,43 +131,42 @@ namespace YoutubeTagger
                 ParseTags = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/ParseTags").InnerText.Trim());
                 CopyFiles = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/CopyFiles").InnerText.Trim());
                 DeleteBinaries = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/DeleteBinaries").InnerText.Trim());
+
                 //and some default command line settings
                 DefaultCommandLine = doc.SelectSingleNode("//DownloadInfo.xml/CommandLine/Default").InnerText.Trim();
                 DateAfterCommandLine = doc.SelectSingleNode("//DownloadInfo.xml/CommandLine/DateAfter").InnerText.Trim();
                 YoutubeMixDurationCommandLine = doc.SelectSingleNode("//DownloadInfo.xml/CommandLine/YoutubeMixDuration").InnerText.Trim();
                 YoutubeSongDurationCommandLine = doc.SelectSingleNode("//DownloadInfo.xml/CommandLine/YoutubeSongDuration").InnerText.Trim();
+
                 //for each xml element "DownloadInfo" in element "DownloadInfo.xml"
                 foreach (XmlNode infosNode in doc.SelectNodes("//DownloadInfo.xml/DownloadInfos/DownloadInfo"))
                 {
-                    //this works for inner elements
-                    //string test = infosNode.SelectSingleNode("//Folder").InnerText;
-                    DownloadInfo temp = new DownloadInfo
-                    {
-                        /*
-                        Folder = infosNode.Attributes[nameof(DownloadInfo.Folder)].Value.Trim(),
-                        Album = infosNode.Attributes[nameof(DownloadInfo.Album)].Value.Trim(),
-                        AlbumArtist = infosNode.Attributes[nameof(DownloadInfo.AlbumArtist)].Value.Trim(),
-                        Genre = infosNode.Attributes[nameof(DownloadInfo.Genre)].Value.Trim(),
-                        LastTrackNumber = uint.Parse(infosNode.Attributes[nameof(DownloadInfo.LastTrackNumber)].Value.Trim()),
-                        DownloadType = (DownloadType)Enum.Parse(typeof(DownloadType), infosNode.Attributes[nameof(DownloadInfo.DownloadType)].Value.Trim()),
-                        LastDate = infosNode.Attributes[nameof(DownloadInfo.LastDate)].Value.Trim(),
-                        DownloadURL = infosNode.Attributes[nameof(DownloadInfo.DownloadURL)].Value.Trim(),
-                        FirstRun = bool.Parse(infosNode.Attributes[nameof(DownloadInfo.FirstRun)].Value.Trim()),
-                        CustomYoutubedlCommands = infosNode.Attributes[nameof(DownloadInfo.CustomYoutubedlCommands)].Value.Trim(),
-                        Enabled = bool.Parse(infosNode.Attributes[nameof(DownloadInfo.Enabled)].Value.Trim())
-                        */
-                    };
+                    DownloadInfo temp = new DownloadInfo();
+
+                    //get list of fields in the DownloadInfo class
                     List<FieldInfo> fields = temp.GetType().GetFields().ToList();
                     foreach (XmlAttribute attribute in infosNode.Attributes)
                     {
-                        FieldInfo field = fields.Where(fieldd => fieldd.Name.Equals(attribute.Name)).ToList()[0];
+                        //find a field with the matching attribute name
+                        FieldInfo field = fields.Find(fieldd => fieldd.Name.Equals(attribute.Name));
+
+                        //convert the string value to the data type
                         var converter = TypeDescriptor.GetConverter(field.FieldType);
-                        //settingField.SetValue(classInstance, converter.ConvertFrom(settings[i].InnerText));
-                        //field.SetValue(temp, attribute.Value);
-                        field.SetValue(temp, converter.ConvertFrom(attribute.Value));
+                        try
+                        {
+                            field.SetValue(temp, converter.ConvertFrom(attribute.Value));
+                        }
+                        catch(Exception ex)
+                        {
+                            WriteToLog(string.Format("ERROR: Failed to parse xml attribute '{0}' to data type", field.Name));
+                            WriteToLog(ex.ToString());
+                            Console.ReadLine();
+                            Environment.Exit(-1);
+                        }
                     }
+
+                    //get the list of paths that the parsed music files should be copied to
                     XmlNodeList pathsList = infosNode.ChildNodes;
-                    //i can do it without lists
                     if (pathsList.Count > 0)
                     {
                         temp.CopyPaths = new string[pathsList.Count];
@@ -178,14 +178,12 @@ namespace YoutubeTagger
                             {
                                 if (temp.FirstRun)
                                 {
-                                    WriteToLog(string.Format("INFO: path {0} does not exist, but firstRun = true, creating path", paths.InnerText));
+                                    WriteToLog(string.Format("INFO: Path {0} does not exist, but firstRun = true, creating path", paths.InnerText));
                                     Directory.CreateDirectory(paths.InnerText);
                                 }
                                 else
                                 {
-                                    WriteToLog("ERROR: the path");
-                                    WriteToLog(paths.InnerText);
-                                    WriteToLog("Does not exist!");
+                                    WriteToLog(string.Format("ERROR: The folder '{0}' declared in the xml does not exist",paths.InnerText));
                                     Console.ReadLine();
                                     Environment.Exit(-1);
                                 }
@@ -195,12 +193,14 @@ namespace YoutubeTagger
                     }
                     else
                     {
-                        WriteToLog("ERROR: paths count is 0! for downloadFolder of folder attribute " + infosNode.Attributes[nameof(DownloadInfo.Folder)].Value);
+                        WriteToLog("ERROR: Paths count is 0 for downloadFolder of folder attribute " + infosNode.Attributes[nameof(DownloadInfo.Folder)].Value);
                         Environment.Exit(-1);
                     }
+
                     //if it's the first time running, then we can set the last track count to 0 (if not already)
                     if (temp.FirstRun)
                         temp.LastTrackNumber = 0;
+
                     //and finally add it to the list
                     DownloadInfos.Add(temp);
                 }
