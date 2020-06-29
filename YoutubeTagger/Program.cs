@@ -78,6 +78,8 @@ namespace YoutubeTagger
         private static string YoutubeSongDurationCommandLine = "duration < 600";
         //the duration match filter for youtube mixes (600 = 600 seconds -> 10 mins, more indicates a mix)
         private static string YoutubeMixDurationCommandLine = "duration > 600";
+        //default download URL of youtube-dl program
+        private static string YoutubeDlUrl = "https://yt-dl.org/latest/youtube-dl.exe";
         #endregion
 
         static void Init()
@@ -121,22 +123,23 @@ namespace YoutubeTagger
             {
                 //https://www.freeformatter.com/xpath-tester.html#ad-output
                 //get some default settings
-                NoPrompts = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/NoPrompts").InnerText.Trim());
-                NoErrorPrompts = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/NoErrorPrompts").InnerText.Trim());
-                ForceWriteFFBinaries = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/ForceWriteFFBinaries").InnerText.Trim());
-                UpdateYoutubeDL = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/UpdateYoutubeDL").InnerText.Trim());
-                CopyBinaries = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/CopyBinaries").InnerText.Trim());
-                RunScripts = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/RunScripts").InnerText.Trim());
-                SaveNewDate = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/SaveNewDate").InnerText.Trim());
-                ParseTags = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/ParseTags").InnerText.Trim());
-                CopyFiles = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/CopyFiles").InnerText.Trim());
-                DeleteBinaries = bool.Parse(doc.SelectSingleNode("//DownloadInfo.xml/Settings/DeleteBinaries").InnerText.Trim());
+                NoPrompts = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/NoPrompts").InnerText.Trim());
+                NoErrorPrompts = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/NoErrorPrompts").InnerText.Trim());
+                ForceWriteFFBinaries = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/ForceWriteFFBinaries").InnerText.Trim());
+                UpdateYoutubeDL = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/UpdateYoutubeDL").InnerText.Trim());
+                CopyBinaries = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/CopyBinaries").InnerText.Trim());
+                RunScripts = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/RunScripts").InnerText.Trim());
+                SaveNewDate = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/SaveNewDate").InnerText.Trim());
+                ParseTags = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/ParseTags").InnerText.Trim());
+                CopyFiles = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/CopyFiles").InnerText.Trim());
+                DeleteBinaries = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/DeleteBinaries").InnerText.Trim());
 
                 //and some default command line settings
-                DefaultCommandLine = doc.SelectSingleNode("//DownloadInfo.xml/CommandLine/Default").InnerText.Trim();
-                DateAfterCommandLine = doc.SelectSingleNode("//DownloadInfo.xml/CommandLine/DateAfter").InnerText.Trim();
-                YoutubeMixDurationCommandLine = doc.SelectSingleNode("//DownloadInfo.xml/CommandLine/YoutubeMixDuration").InnerText.Trim();
-                YoutubeSongDurationCommandLine = doc.SelectSingleNode("//DownloadInfo.xml/CommandLine/YoutubeSongDuration").InnerText.Trim();
+                DefaultCommandLine = doc.SelectSingleNode("/DownloadInfo.xml/CommandLine/Default").InnerText.Trim();
+                DateAfterCommandLine = doc.SelectSingleNode("/DownloadInfo.xml/CommandLine/DateAfter").InnerText.Trim();
+                YoutubeMixDurationCommandLine = doc.SelectSingleNode("/DownloadInfo.xml/CommandLine/YoutubeMixDuration").InnerText.Trim();
+                YoutubeSongDurationCommandLine = doc.SelectSingleNode("/DownloadInfo.xml/CommandLine/YoutubeSongDuration").InnerText.Trim();
+                YoutubeDlUrl = UpdateTextFromXmlEntry(nameof(YoutubeDlUrl), YoutubeDlUrl, doc, "/DownloadInfo.xml/CommandLine/YoutubeDlUrl");
 
                 //for each xml element "DownloadInfo" in element "DownloadInfo.xml"
                 foreach (XmlNode infosNode in doc.SelectNodes("//DownloadInfo.xml/DownloadInfos/DownloadInfo"))
@@ -263,7 +266,7 @@ namespace YoutubeTagger
                     {
                         using (WebClient client = new WebClient())
                         {
-                            client.DownloadFile("https://yt-dl.org/latest/youtube-dl.exe", youtubeDLPath);
+                            client.DownloadFile(YoutubeDlUrl, youtubeDLPath);
                         }
                     }
                     catch (WebException ex)
@@ -1117,6 +1120,22 @@ namespace YoutubeTagger
                     //WriteToLog("process " + proc.Id + "not stopped");
                 }
             }
+        }
+
+        //update text if an xml element is found
+        private static string UpdateTextFromXmlEntry(string stringName, string defaultEntry, XmlDocument doc, string xpath)
+        {
+            XmlNode node = doc.SelectSingleNode(xpath);
+            if(node == null)
+            {
+                WriteToLog(string.Format("The xml node '{0}' was not found, using default: {1}", stringName, defaultEntry));
+                return defaultEntry;
+            }
+            string result = node.InnerText.Trim();
+            if (result != defaultEntry)
+                return node.InnerText.Trim();
+            else
+                return defaultEntry;
         }
         #endregion
     }
