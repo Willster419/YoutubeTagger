@@ -21,10 +21,12 @@
     <!-- Command line options. these get sent directly into youtube-dl, after replacing the macros-->
     <!-- {0}=DateAfter (prefix), {1}=Actual Date, {2}=YoutubeSong/MixDuration (inner argument), {3}=Custom command lines, {4}=URL -->
     <Default>-i --playlist-reverse --youtube-skip-dash-manifest --geo-bypass -o "%(autonumber)s--%(title)s--%(upload_date)s.%(ext)s" --format m4a --embed-thumbnail --download-archive archive.txt {3} {4}</Default>
+    <!-- DateAfter is only applied to the youtube-dl process is firstRun = true, is why it's custom defined out here -->
     <DateAfter>--dateafter</DateAfter>
     <!-- time moved to 11 mins cause some trance songs are long -->
     <YoutubeSongDuration>duration &lt; 660</YoutubeSongDuration>
     <YoutubeMixDuration>duration &gt; 660</YoutubeMixDuration>
+    <YoutubeDlUrl>https://yt-dl.org/latest/youtube-dl.exe</YoutubeDlUrl>
   </CommandLine>
   <DownloadInfos>
     <DownloadInfo Enabled="True" Folder="DJ_Playlist_Electro" Album="DJ Playlist" AlbumArtist="Willster419" Genre="Electro" DownloadType="YoutubeSong" LastTrackNumber="5" LastDate="0" FirstRun="False" DownloadURL="https://www.youtube.com/playlist?list=PLJvSsumjZ8FQVD7PwS4MCxTRbyQ9k57p7">
