@@ -933,11 +933,19 @@ namespace YoutubeTagger
                         {
                             WriteToLog(Path.GetFileName(file));
                             string newPath = Path.Combine(copypath, Path.GetFileName(file));
-                            File.Copy(file, newPath);
+                            if(File.Exists(newPath))
+                            {
+                                WriteToLog("WARNING: The file '{0}' already exists, this could indicate multiple copyTo targets! Skipping!");
+                                if (!NoPrompts)
+                                    Console.ReadLine();
+                            }
+                            else
+                                File.Copy(file, newPath);
                         }
                     }
                     if (breakout)
                         continue;
+
                     //now delete
                     WriteToLog("Deleting files in infos folder");
                     foreach (string file in files)
