@@ -512,7 +512,7 @@ namespace YoutubeTagger
                     //check to make sure there are valid audio files before proceding
                     if (files.Count == 0)
                     {
-                        WriteToLog("no valid audio files in directory");
+                        WriteToLog("No valid audio files in directory");
                         continue;
                     }
 
@@ -527,7 +527,7 @@ namespace YoutubeTagger
                         if (currentEntryNumTrackNums > maxEntryNumTrackNums)
                             maxEntryNumTrackNums = currentEntryNumTrackNums;
                     }
-                    WriteToLog(string.Format("first entry, track number padding = {0}\nmax entry, track number padding = {1}\n",
+                    WriteToLog(string.Format("First entry, track number padding = {0}\nmax entry, track number padding = {1}\n",
                         firstEntryNumTrackNums, maxEntryNumTrackNums));
                     if (firstEntryNumTrackNums != maxEntryNumTrackNums)
                     {
