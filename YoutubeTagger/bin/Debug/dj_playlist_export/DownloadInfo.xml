@@ -31,11 +31,11 @@
   <DownloadInfos>
     <DownloadInfo Enabled="True" Folder="DJ_Playlist_Electro" Album="DJ Playlist" AlbumArtist="Willster419" Genre="Electro" DownloadType="YoutubeSong" LastTrackNumber="5" LastDate="0" FirstRun="False" CustomYoutubedlCommands="" DownloadURL="https://www.youtube.com/playlist?list=PLJvSsumjZ8FQVD7PwS4MCxTRbyQ9k57p7">
       <CopyPath>F:\Music\DJ Playlists\Electro</CopyPath>
-      <CopyPath>F:\Music\DJ Playlists\Electro</CopyPath>
+      <CopyPath>F:\Converted Phone Music\DJ Playlists\Electro</CopyPath>
     </DownloadInfo>
     <DownloadInfo Enabled="True" Folder="DJ_Playlist_Handsup" Album="DJ Playlist" AlbumArtist="Willster419" Genre="Handsup" DownloadType="YoutubeSong" LastTrackNumber="24" LastDate="0" FirstRun="False" CustomYoutubedlCommands="" DownloadURL="https://www.youtube.com/playlist?list=PLJvSsumjZ8FToQJz1YU5HGf8kjBlLjTh7">
       <CopyPath>F:\Music\DJ Playlists\Handsup</CopyPath>
-      <CopyPath>F:\Music\DJ Playlists\Handsup</CopyPath>
+      <CopyPath>F:\Converted Phone Music\DJ Playlists\Handsup</CopyPath>
     </DownloadInfo>
   </DownloadInfos>
 </DownloadInfo.xml>
