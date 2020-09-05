@@ -106,7 +106,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
+    <PreBuildEvent>if exist "$(OutDir)TagLibSharp.dll" copy "$(OutDir)TagLibSharp.dll" "$(ProjectDir)TagLibSharp.dll"</PreBuildEvent>
   </PropertyGroup>
 </Project>
