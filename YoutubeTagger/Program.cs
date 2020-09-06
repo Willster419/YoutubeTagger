@@ -17,141 +17,19 @@ namespace YoutubeTagger
         //list to be parse of info from above defined xml file
         private static List<DownloadInfo> DownloadInfos = new List<DownloadInfo>();
 
-        static void AttachAssemblyResolver()
-        {
-            //hook up assembly resolver
-            //https://stackoverflow.com/a/25990979/3128017
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-        }
+        //parsed downloadInfo.xml document
+        private static XmlDocument doc = null;
 
         static int Main(string[] args)
         {
             AttachAssemblyResolver();
+            ParseDownloadInfoXml();
             return RunProgram(args);
         }
 
         static int RunProgram(string[] args)
         {
-            //init tag parsing, load xml data
-            //check to make sure download info xml file is present
-            if (!File.Exists(DownloadInfoXml))
-            {
-                WriteToLog(string.Format("{0} is missing, application cannot continue", DownloadInfoXml));
-                Console.ReadLine();
-                Environment.Exit(-1);
-            }
-            WriteToLog("---------------------------APPLICATION START---------------------------");
-            WriteToLog("Loading Xml document");
-            XmlDocument doc = new XmlDocument();
-            try
-            {
-                doc.Load(DownloadInfoXml);
-            }
-            catch (XmlException ex)
-            {
-                WriteToLog("Failed to load Xml document");
-                WriteToLog(ex.ToString());
-                Console.ReadLine();
-                Environment.Exit(-1);
-            }
-            try
-            {
-                //https://www.freeformatter.com/xpath-tester.html#ad-output
-                //get some default settings
-                NoPrompts = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/NoPrompts").InnerText.Trim());
-                NoErrorPrompts = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/NoErrorPrompts").InnerText.Trim());
-                ForceWriteFFBinaries = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/ForceWriteFFBinaries").InnerText.Trim());
-                UpdateYoutubeDL = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/UpdateYoutubeDL").InnerText.Trim());
-                CopyBinaries = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/CopyBinaries").InnerText.Trim());
-                RunScripts = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/RunScripts").InnerText.Trim());
-                SaveNewDate = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/SaveNewDate").InnerText.Trim());
-                ParseTags = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/ParseTags").InnerText.Trim());
-                CopyFiles = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/CopyFiles").InnerText.Trim());
-                DeleteBinaries = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/DeleteBinaries").InnerText.Trim());
-                DeleteOutputLogs = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/DeleteOutputLogs").InnerText.Trim());
-
-                //and some default command line settings
-                DefaultCommandLine = doc.SelectSingleNode("/DownloadInfo.xml/CommandLine/Default").InnerText.Trim();
-                DateAfterCommandLine = doc.SelectSingleNode("/DownloadInfo.xml/CommandLine/DateAfter").InnerText.Trim();
-                YoutubeMixDurationCommandLine = doc.SelectSingleNode("/DownloadInfo.xml/CommandLine/YoutubeMixDuration").InnerText.Trim();
-                YoutubeSongDurationCommandLine = doc.SelectSingleNode("/DownloadInfo.xml/CommandLine/YoutubeSongDuration").InnerText.Trim();
-                YoutubeDlUrl = UpdateTextFromXmlEntry(nameof(YoutubeDlUrl), YoutubeDlUrl, doc, "/DownloadInfo.xml/CommandLine/YoutubeDlUrl");
-
-                //for each xml element "DownloadInfo" in element "DownloadInfo.xml"
-                foreach (XmlNode infosNode in doc.SelectNodes("//DownloadInfo.xml/DownloadInfos/DownloadInfo"))
-                {
-                    DownloadInfo temp = new DownloadInfo();
-
-                    //get list of fields in the DownloadInfo class
-                    List<FieldInfo> fields = temp.GetType().GetFields().ToList();
-                    foreach (XmlAttribute attribute in infosNode.Attributes)
-                    {
-                        //find a field with the matching attribute name
-                        FieldInfo field = fields.Find(fieldd => fieldd.Name.Equals(attribute.Name));
-
-                        //convert the string value to the data type
-                        var converter = TypeDescriptor.GetConverter(field.FieldType);
-                        try
-                        {
-                            field.SetValue(temp, converter.ConvertFrom(attribute.Value));
-                        }
-                        catch(Exception ex)
-                        {
-                            WriteToLog(string.Format("ERROR: Failed to parse xml attribute '{0}' to data type", field.Name));
-                            WriteToLog(ex.ToString());
-                            Console.ReadLine();
-                            Environment.Exit(-1);
-                        }
-                    }
-
-                    //get the list of paths that the parsed music files should be copied to
-                    XmlNodeList pathsList = infosNode.ChildNodes;
-                    if (pathsList.Count > 0)
-                    {
-                        temp.CopyPaths = new string[pathsList.Count];
-                        int i = 0;
-                        foreach (XmlNode paths in pathsList)
-                        {
-                            //check to make sure the path is valid before trying to use later
-                            if (!Directory.Exists(paths.InnerText))
-                            {
-                                if (temp.FirstRun)
-                                {
-                                    WriteToLog(string.Format("INFO: Path {0} does not exist, but firstRun = true, creating path", paths.InnerText));
-                                    Directory.CreateDirectory(paths.InnerText);
-                                }
-                                else
-                                {
-                                    WriteToLog(string.Format("ERROR: The folder '{0}' declared in the xml does not exist",paths.InnerText));
-                                    Console.ReadLine();
-                                    Environment.Exit(-1);
-                                }
-                            }
-                            temp.CopyPaths[i++] = paths.InnerText;
-                        }
-                    }
-                    else
-                    {
-                        WriteToLog("ERROR: Paths count is 0 for downloadFolder of folder attribute " + infosNode.Attributes[nameof(DownloadInfo.Folder)].Value);
-                        Environment.Exit(-1);
-                    }
-
-                    //if it's the first time running, then we can set the last track count to 0 (if not already)
-                    if (temp.FirstRun)
-                        temp.LastTrackNumber = 0;
-
-                    //and finally add it to the list
-                    DownloadInfos.Add(temp);
-                }
-            }
-            catch (Exception ex)
-            {
-                WriteToLog(ex.ToString());
-                Console.ReadLine();
-                Environment.Exit(-1);
-            }
-
-            //check to make sure we have at least one downloadInfo to run!
+            //check to make sure we have at least one downloadInfo to run
             if (DownloadInfos.Count == 0)
             {
                 WriteToLog("No DownloadInfos parsed! (empty xml file?)");
@@ -312,23 +190,28 @@ namespace YoutubeTagger
             if (RunScripts)
             {
                 WriteToLog("Running scripts");
+
                 //build and run the process list for youtube downloads
                 //build first
                 List<Process> processes = new List<Process>();
+
                 //only create processes for youtube download types
                 foreach (DownloadInfo info in DownloadInfos.Where(temp => temp.DownloadType == DownloadType.YoutubeSong || temp.DownloadType == DownloadType.YoutubeMix))
                 {
                     //make sure folder path exists
                     CheckMissingFolder(info.Folder);
+
                     //make sure required binaries exist
                     foreach (string binaryFile in BinaryFiles)
                         CheckMissingFile(Path.Combine(info.Folder, binaryFile));
+
                     //delete any previous song file entries
                     foreach (string file in Directory.GetFiles(info.Folder, "*", SearchOption.TopDirectoryOnly).Where(file => ValidExtensions.Contains(Path.GetExtension(file))))
                     {
                         WriteToLog("Deleting old song file from previous run: " + Path.GetFileName(file));
                         File.Delete(file);
                     }
+
                     WriteToLog(string.Format("Build process info folder {0}", info.Folder));
                     processes.Add(new Process()
                     {
@@ -349,6 +232,7 @@ namespace YoutubeTagger
                         }
                     });
                 }
+
                 //run them all now
                 foreach (Process p in processes)
                 {
@@ -367,12 +251,14 @@ namespace YoutubeTagger
                         Environment.Exit(-1);
                     }
                 }
+
                 //iterate to wait for all to complete
                 foreach (Process p in processes)
                 {
                     p.WaitForExit();
                     WriteToLog(string.Format("Process of folder {0} has finished or previously finished", p.StartInfo.WorkingDirectory));
                 }
+
                 //check exit code status
                 bool forceExit = false;
                 foreach (Process p in processes)
@@ -388,6 +274,7 @@ namespace YoutubeTagger
                         forceExit = true;
                     }
                 }
+
                 //determine if to quit
                 if (forceExit)
                 {
@@ -397,6 +284,7 @@ namespace YoutubeTagger
                         Console.ReadLine();
                     Environment.Exit(-1);
                 }
+
                 //after all completed successfully, dispose of them
                 foreach (Process p in processes)
                     p.Dispose();
@@ -414,12 +302,14 @@ namespace YoutubeTagger
             if (SaveNewDate)
             {
                 WriteToLog("Saving new date");
+
                 //https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings
                 string newDate = string.Format("{0:yyyyMMdd}", DateTime.Now);
                 for (int i = 0; i < DownloadInfos.Count; i++)
                 {
                     WriteToLog(string.Format("Changing and saving xml old date from {0} to {1}", DownloadInfos[i].LastDate, newDate));
                     DownloadInfos[i].LastDate = newDate;
+
                     //then save it in xml
                     string xpath = string.Format("//DownloadInfo.xml/DownloadInfos/DownloadInfo[@Folder='{0}']", DownloadInfos[i].Folder);
                     XmlNode infoNode = doc.SelectSingleNode(xpath);
@@ -430,6 +320,7 @@ namespace YoutubeTagger
                             Console.ReadLine();
                         Environment.Exit(-1);
                     }
+
                     XmlAttribute lastDate = infoNode.Attributes["LastDate"];
                     if (lastDate == null)
                     {
@@ -456,14 +347,17 @@ namespace YoutubeTagger
                 for (int j = 0; j < DownloadInfos.Count; j++)
                 {
                     DownloadInfo info = DownloadInfos[j];
+
                     //save the track number in a backup in case if copying is true, and there's a "same title with different track number" error
                     //if that happends, the old number needs to be written back to disk because the whole naming process is not invalid
                     info.BackupLastTrackNumber = info.LastTrackNumber;
                     WriteToLog("");
                     WriteToLog("-----------------------Parsing directory " + info.Folder + "----------------------");
                     CheckMissingFolder(info.Folder);
+
                     //make and filter out the lists
                     List<string> files = Directory.GetFiles(info.Folder, "*", SearchOption.TopDirectoryOnly).Where(file => ValidExtensions.Contains(Path.GetExtension(file))).ToList();
+
                     //check to make sure there are valid audio files before proceding
                     if (files.Count == 0)
                     {
@@ -482,6 +376,7 @@ namespace YoutubeTagger
                         if (currentEntryNumTrackNums > maxEntryNumTrackNums)
                             maxEntryNumTrackNums = currentEntryNumTrackNums;
                     }
+
                     WriteToLog(string.Format("First entry, track number padding = {0}\nmax entry, track number padding = {1}\n",
                         firstEntryNumTrackNums, maxEntryNumTrackNums));
                     if (firstEntryNumTrackNums != maxEntryNumTrackNums)
@@ -669,6 +564,7 @@ namespace YoutubeTagger
                                 bool validYear = false;
                                 string yearString = string.Empty;
                                 yearString = splitFileName[2].Substring(0, 4).Trim();
+
                                 //remove any extra "-" characters
                                 yearString = yearString.Replace("-", string.Empty).Trim();
                                 while (!validYear)
@@ -694,12 +590,16 @@ namespace YoutubeTagger
                         {
                             WriteToLog(string.Format("Skipping song {0}", tag.Title));
                             File.Delete(fileName);
+
                             //also delete the entry from list of files to process
                             files.Remove(fileName);
+
                             //also put the counter back for track numbers
                             info.LastTrackNumber--;
-                            //also decremant the counter as to not skip
+
+                            //also decrement the counter as to not skip
                             i--;
+
                             //also note it
                             fileDeleted = true;
                         }
@@ -712,12 +612,16 @@ namespace YoutubeTagger
                                 if (!NoPrompts)
                                     Console.ReadLine();
                                 File.Delete(fileName);
+
                                 //also delete the entry from list of files to process
                                 files.Remove(fileName);
+
                                 //also put the counter back for track numbers
                                 info.LastTrackNumber--;
-                                //also decremant the counter as to not skip
+
+                                //also decrement the counter as to not skip
                                 i--;
+
                                 //also note it
                                 fileDeleted = true;
                             }
@@ -743,10 +647,13 @@ namespace YoutubeTagger
                                 Console.ReadLine();
                             Environment.Exit(-1);
                         }
+
                         //get the old name
                         string oldFileName = Path.GetFileNameWithoutExtension(fileName);
+
                         //prepare the new name
                         string newFileName = string.Empty;
+
                         //manual check to make sure track and title exist
                         if (file.Tag.Track == 0)
                         {
@@ -801,6 +708,7 @@ namespace YoutubeTagger
                                     Console.ReadLine();
                                 continue;
                         }
+
                         //check for padding
                         //set padding to highest number of tracknumbers
                         //(if tracks go from 1-148, make sure filename for 1 is 001)
@@ -812,6 +720,7 @@ namespace YoutubeTagger
                             int numToPad = maxTrackNumPaddingLength - trackPaddingLength;
                             newFileName = newFileName.PadLeft(newFileName.Length + numToPad, '0');
                         }
+
                         //save the complete folder path
                         string completeFolderPath = Path.GetDirectoryName(fileName);
                         string completeOldPath = Path.Combine(completeFolderPath, oldFileName + Path.GetExtension(fileName));
@@ -867,6 +776,7 @@ namespace YoutubeTagger
                 {
                     DownloadInfo info = DownloadInfos[j];
                     CheckMissingFolder(info.Folder);
+
                     //make and filter out the lists
                     List<string> files = Directory.GetFiles(info.Folder, "*", SearchOption.TopDirectoryOnly).Where(file => ValidExtensions.Contains(Path.GetExtension(file))).ToList();
                     WriteToLog("");
@@ -877,6 +787,7 @@ namespace YoutubeTagger
                         continue;
                     }
                     bool breakout = false;
+
                     //using copy for all then delete because you can't move across drives (easily)
                     foreach (string copypath in info.CopyPaths)
                     {
@@ -936,6 +847,7 @@ namespace YoutubeTagger
             WriteToLog("Done");
             if (!NoPrompts)
                 Console.ReadLine();
+
             Environment.ExitCode = 0;
             Environment.Exit(0);
             return 0;
