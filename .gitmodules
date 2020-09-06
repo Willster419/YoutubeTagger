@@ -1,4 +1,0 @@
-[submodule "tagLibSharp"]
-	path = tagLibSharp
-	url = https://github.com/mono/taglib-sharp.git
-	branch = master
