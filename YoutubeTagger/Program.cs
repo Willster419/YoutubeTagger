@@ -828,26 +828,47 @@ namespace YoutubeTagger
             //delete the binaries in each folder
             if (!NoPrompts)
             {
-                DeleteBinaries = GetUserResponse("DeleteBinaries?");
+                DeleteBinaries = GetUserResponse("Delete binaries?");
             }
             if (DeleteBinaries)
             {
                 WriteToLog("Delete Binaries");
-                CheckMissingFolder(BinaryFolder);
+
                 foreach (DownloadInfo info in DownloadInfos.Where(temp => temp.DownloadType == DownloadType.YoutubeSong || temp.DownloadType == DownloadType.YoutubeMix))
                 {
                     CheckMissingFolder(info.Folder);
                     foreach (string binaryFile in BinaryFiles)
                     {
                         WriteToLog(string.Format("Deleting file {0} in folder {1} if exist", binaryFile, info.Folder));
-                        string fileToCopy = Path.Combine(info.Folder, binaryFile);
-                        if (File.Exists(fileToCopy))
-                            File.Delete(fileToCopy);
+
+                        string fileToDelete = Path.Combine(info.Folder, binaryFile);
+                        if (File.Exists(fileToDelete))
+                            File.Delete(fileToDelete);
                     }
                 }
             }
             else
                 WriteToLog("DeleteBinaries skipped");
+
+            //delete the output log files in each folder
+            if (!NoPrompts)
+            {
+                DeleteOutputLogs = GetUserResponse("Delete youtube-dl output logs?");
+            }
+            if (DeleteOutputLogs)
+            {
+                WriteToLog("Delete youtube-dl output logs");
+
+                foreach (DownloadInfo info in DownloadInfos.Where(temp => temp.DownloadType == DownloadType.YoutubeSong || temp.DownloadType == DownloadType.YoutubeMix))
+                {
+                    CheckMissingFolder(info.Folder);
+                    WriteToLog(string.Format("Deleting youtube-dl log in folder {0} if exist", info.Folder));
+
+                    string fileToDelete = Path.Combine(info.Folder, CommandLineWrapperLogfile);
+                    if (File.Exists(fileToDelete))
+                        File.Delete(fileToDelete);
+                }
+            }
 
             //and we're all set here
             WriteToLog("Done");

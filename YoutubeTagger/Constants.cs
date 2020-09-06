@@ -40,5 +40,8 @@ namespace YoutubeTagger
 
         //logile for the application
         private const string Logfile = "logfile.log";
+
+        //name of logfile from command line shell wrapper
+        private const string CommandLineWrapperLogfile = "Output.Log";
     }
 }
