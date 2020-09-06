@@ -1,34 +1,87 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <DownloadInfo.xml>
-  <!-- Your comment -->
+  <!-- Application settings -->
   <Settings>
-    <!-- Each of the following settings directly enables or disabled a feature in the application. For example,
-    if all are set to false (except NoPromps), the application won't actually do anything.
-    NoPrompts is for a complete automation system such that no user interaction is required, unless an error occurs.
-    The elements here are presented in the order of which they would be executed -->
+    <!-- Each of the following settings eithor directly enables or disables a feature in the application,
+    or modifies the behavior of a parent feature. For example, if NoPromps is set to false (except NoPromps),
+    the application won't actually do anything. But, ForceDownloadYoutubeDl is a behavior modifier, not feature switch.
+    The elements here are presented in the order of which they would be executed, with child modifiers. -->
+    
+    <!-- NoPrompts is for a complete automation system such that no user interaction is required, unless an error occurs. -->
     <NoPrompts>True</NoPrompts>
+    
+    <!-- NoErrorPrompts is for a complete automation system, if the end result is to output in invalid exit code rather then
+    wait for user interaction. Combine with NoPrompts (true) for a complete solution. -->
     <NoErrorPrompts>False</NoErrorPrompts>
+    
+    <!-- Behavior modifier. By default, the application will only download or export the exe files in the bin folder if they 
+    don't already exist. Setting this to true will write the binaries every time. Reccomended for an automated system, if the
+    binaries are updated with an application release for example. -->
     <ForceWriteFFBinaries>True</ForceWriteFFBinaries>
+    
+    <!-- Feature switch. Control if the updating of the youtube-dl binary should be executed. -->
     <UpdateYoutubeDL>True</UpdateYoutubeDL>
+
+    <!-- Behavior modifier. If true, the application will attempt to download youtube-dl.exe from their static latest url
+    everytime. If false, the application will launch a shell process "youtube-dl.exe - -update" to update/check for updates
+    using the application's built-in update feature. If the exe does not exist, then it will download from the url. -->
+    <ForceDownloadYoutubeDl>True</ForceDownloadYoutubeDl>
+    
+    <!-- Fetaure switch. If true, the application will copy all exe files from the bin folder to each run directory of
+    (enabled) DownloadInfo run folders. This allows for the applications to be using those exe's during usage, rather
+    then what may bein your path. -->
     <CopyBinaries>True</CopyBinaries>
+    
+    <!-- Feature switch. If true, the application will run the youtube-dl commands. Not sure why someone would want to
+    turn this off, but it's here. -->
     <RunScripts>True</RunScripts>
+    
+    <!-- Feature switch. If true, the application will get the day in the expected format of youtube-dl for the data-after match
+    into each DownloadInfo's lastDate attribute. -->
     <SaveNewDate>True</SaveNewDate>
+    
+    <!-- Feature switch. If true, the application will:
+    1. Check if the number of files requires an increase of 0-based padding. For example, having 100 to 999 songs will make
+    all filenames start with a track number of at least 3 digits (song #420 will be filename 420, song #69 will be filename 069,
+    song #3 will be filename 003. 
+    2. Parse the downloaded filename into the tag metadata 
+    3. Re-create the filename based on tag metadata. (The first name is from youtube-dl to get as many params as possible into the 
+    filename, they get parsed into the tag. Now we're forming the actual filename based on tag information. -->
     <ParseTags>True</ParseTags>
+    
+    <!-- Feature switch. If true, the application will copy the files into the corresponding copy directories and skip if a song with
+    the same name already exists. -->
     <CopyFiles>True</CopyFiles>
+    
+    <!-- Feature switch. If true, the application will delete all exe binaries originally copied to the DownloadInfo folders. -->
     <DeleteBinaries>True</DeleteBinaries>
+    
+    <!-- Feature switch. If true, the application will delete the output logs originally made by running youtube-dl. -->
+    <DeleteOutputLogs>True</DeleteOutputLogs>
   </Settings>
+
+  <!-- Application command line settings -->
   <CommandLine>
     <!-- Command line options. these get sent directly into youtube-dl, after replacing the macros-->
     <!-- {0}=DateAfter (prefix), {1}=Actual Date, {2}=YoutubeSong/MixDuration (inner argument), {3}=Custom command lines, {4}=URL -->
     <!-- Note the requirement to escape quotes with \" -->
     <Default>-i --playlist-reverse --youtube-skip-dash-manifest --geo-bypass {0} {1} --match-filter \"{2}\" -o \"%(autonumber)s--%(title)s--%(upload_date)s.%(ext)s\" --format m4a --embed-thumbnail {3} {4}</Default>
+    
     <!-- DateAfter is only applied to the youtube-dl process is firstRun = true, is why it's custom defined out here -->
     <DateAfter>--dateafter</DateAfter>
-    <!-- time moved to 11 mins cause some trance songs are long -->
+    
+    <!-- Time in seconds to represent the maximum length of a video to consider as a song. For example, if a channel posts songs and
+    DJ mixes, setting this to 660 (11 minutes), will mean that videos that are less then that are actually parsed as songs. Videos
+    that are longer are likly the mixes and are skipped. This argument is in the youtube-dl match filter format. -->
     <YoutubeSongDuration>duration &lt; 660</YoutubeSongDuration>
+    
+    <!-- Time in second to represent the minimum lentgh of a video to consider as a DJ mix. See YoutubeSongDuration description. -->
     <YoutubeMixDuration>duration &gt; 660</YoutubeMixDuration>
+    
+    <!-- URL for where to download the latest youtube-dl executable. -->
     <YoutubeDlUrl>https://yt-dl.org/latest/youtube-dl.exe</YoutubeDlUrl>
   </CommandLine>
+
   <!-- Each element is a playlist/album/folder of songs you wish to have downloaded,tagged, and copied.
   Here's a sample, one of each type -->
   <DownloadInfos>
@@ -125,9 +178,7 @@
       <CopyPath>F:\Music\Vital Tunes\Releases</CopyPath>
       <CopyPath>F:\Converted Phone Music\Vital Tunes\Releases</CopyPath>
     </DownloadInfo>
-    <!-- non-youtube -->
-    <!-- personally, i convert these specifically to m4a for file size purposes (originals are in mp3)-->
-    <!-- kept commented for example -->
+    <!-- non-youtube, kept as example -->
     <DownloadInfo Enabled="False" Folder="Flybeat_bass_up" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="Bass Up" DownloadType="Other1" LastTrackNumber="1" LastDate="20191201" FirstRun="False">
       <CopyPath>F:\Music\DJ FlyBeat\Bass Up</CopyPath>
       <CopyPath>F:\Converted Phone Music\DJ FlyBeat\Bass Up</CopyPath>
