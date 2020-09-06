@@ -67,6 +67,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="TagLibSharp, Version=2.2.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
+      <HintPath>..\packages\TagLibSharp.2.2.0\lib\net45\TagLibSharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
@@ -79,6 +82,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="bin\Debug\logfile.log" />
+    <None Include="bin\Debug\DownloadInfo.xml" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -94,22 +98,31 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\tagLibSharp\src\TaglibSharp\TaglibSharp.csproj">
-      <Project>{5c28a4ba-7d63-4c90-9d55-cdef2d8eb7a6}</Project>
-      <Name>TaglibSharp</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TagLibSharp.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="AtomicParsley.exe" />
-    <Content Include="bin\Debug\DownloadInfo.xml" />
-    <EmbeddedResource Include="ffmpeg.exe" />
-    <EmbeddedResource Include="ffprobe.exe" />
+    <EmbeddedResource Include="exe\AtomicParsley.exe" />
+    <EmbeddedResource Include="exe\ffmpeg.exe" />
+    <EmbeddedResource Include="exe\ffprobe.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>if exist "$(OutDir)TagLibSharp.dll" copy "$(OutDir)TagLibSharp.dll" "$(ProjectDir)TagLibSharp.dll"</PreBuildEvent>
-  </PropertyGroup>
+  <!-- Copy the nuget dlls to the project's dll directory by overiding a predefined target -->
+  <!-- https://docs.microsoft.com/en-us/visualstudio/msbuild/how-to-extend-the-visual-studio-build-process?view=vs-2019 -->
+  <Target Name="BeforeBuild">
+    <!-- Item group of only dlls from nuget -->
+    <ItemGroup>
+      <Filtered Include="%(Reference.HintPath)" Condition=" '%(Reference.HintPath)' != '' " />
+    </ItemGroup>
+    <Message Text="Copying dlls" />
+    <!-- <Message Text="@(Filtered)" /> -->
+    <!-- Get the dlls to include by determining if they have a hint path. Any with it are nuget dlls to include-->
+    <!-- https://docs.microsoft.com/en-us/visualstudio/msbuild/makedir-task?view=vs-2019 -->
+    <MakeDir Directories="dll" />
+    <!-- https://docs.microsoft.com/en-us/visualstudio/msbuild/copy-task?view=vs-2019 -->
+    <Copy SourceFiles="@(Filtered)" DestinationFolder="dll" />
+  </Target>
+  <!-- Then include the newly copied files as embeded resources -->
+  <ItemGroup>
+    <EmbeddedResource Include="dll\TagLibSharp.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="dll\DotNetZip.dll" />
+  </ItemGroup>
 </Project>
