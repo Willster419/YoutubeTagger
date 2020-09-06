@@ -73,13 +73,15 @@ namespace YoutubeTagger
 
                 //check if youtube-dl is missing, if so download it
                 string youtubeDLPath = Path.Combine(BinaryFolder, YoutubeDL);
-                if (!File.Exists(youtubeDLPath))
+                if (!File.Exists(youtubeDLPath) || ForceDownloadYoutubeDl)
                 {
-                    WriteToLog("Youtube-dl.exe does not exist, download it");
+                    WriteToLog("Youtube-dl.exe does not exist, or ForceDownloadYoutubeDl = true, download it");
                     try
                     {
                         using (WebClient client = new WebClient())
                         {
+                            if (File.Exists(youtubeDLPath))
+                                File.Delete(youtubeDLPath);
                             client.DownloadFile(YoutubeDlUrl, youtubeDLPath);
                         }
                     }
@@ -93,37 +95,41 @@ namespace YoutubeTagger
                     }
                 }
                 else
+                {
                     WriteToLog("Youtube-dl.exe exists");
-                try
-                {
-                    using (Process updateYoutubeDL = new Process())
+
+                    //try to launch youtube-dl to update youtube-dl
+                    try
                     {
-                        //set properties
-                        updateYoutubeDL.StartInfo.RedirectStandardError = false;
-                        updateYoutubeDL.StartInfo.RedirectStandardOutput = false;
-                        updateYoutubeDL.StartInfo.UseShellExecute = true;
-                        updateYoutubeDL.StartInfo.WorkingDirectory = BinaryFolder;
-                        updateYoutubeDL.StartInfo.FileName = YoutubeDL;
-                        updateYoutubeDL.StartInfo.CreateNoWindow = false;
-                        updateYoutubeDL.StartInfo.Arguments = "--update";
-                        updateYoutubeDL.Start();
-                        updateYoutubeDL.WaitForExit();
-                        if (updateYoutubeDL.ExitCode != 0)
+                        using (Process updateYoutubeDL = new Process())
                         {
-                            WriteToLog(string.Format("ERROR: update process exited with code {0}", updateYoutubeDL.ExitCode));
-                            if (!NoErrorPrompts)
-                                Console.ReadLine();
-                            Environment.Exit(-1);
+                            //set properties
+                            updateYoutubeDL.StartInfo.RedirectStandardError = false;
+                            updateYoutubeDL.StartInfo.RedirectStandardOutput = false;
+                            updateYoutubeDL.StartInfo.UseShellExecute = true;
+                            updateYoutubeDL.StartInfo.WorkingDirectory = BinaryFolder;
+                            updateYoutubeDL.StartInfo.FileName = YoutubeDL;
+                            updateYoutubeDL.StartInfo.CreateNoWindow = false;
+                            updateYoutubeDL.StartInfo.Arguments = "--update";
+                            updateYoutubeDL.Start();
+                            updateYoutubeDL.WaitForExit();
+                            if (updateYoutubeDL.ExitCode != 0)
+                            {
+                                WriteToLog(string.Format("ERROR: update process exited with code {0}", updateYoutubeDL.ExitCode));
+                                if (!NoErrorPrompts)
+                                    Console.ReadLine();
+                                Environment.Exit(-1);
+                            }
+                            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10.0));
                         }
-                        System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10.0));
                     }
-                }
-                catch (Exception e)
-                {
-                    WriteToLog(e.ToString());
-                    if (!NoErrorPrompts)
-                        Console.ReadLine();
-                    Environment.Exit(-1);
+                    catch (Exception e)
+                    {
+                        WriteToLog(e.ToString());
+                        if (!NoErrorPrompts)
+                            Console.ReadLine();
+                        Environment.Exit(-1);
+                    }
                 }
             }
             else

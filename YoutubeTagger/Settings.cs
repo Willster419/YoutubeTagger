@@ -22,7 +22,7 @@
         //if we should delete binary files
         private static bool DeleteBinaries = true;
 
-        //if we should update youtubedl
+        //if we should update youtube-dl
         private static bool UpdateYoutubeDL = true;
 
         //if we are saving the new date for the last time the script was run
@@ -33,6 +33,9 @@
 
         //if we should force write ff binaries to disk
         private static bool ForceWriteFFBinaries = false;
+
+        //if we should force the download of youtube-dl from the youtube-dl website
+        private static bool ForceDownloadYoutubeDl = false;
 
         //if we should delete the output log files from each info folder
         private static bool DeleteOutputLogs = false;
