@@ -14,7 +14,10 @@ namespace YoutubeTagger
 
     partial class Program
     {
-        static void Init()
+        //list to be parse of info from above defined xml file
+        private static List<DownloadInfo> DownloadInfos = new List<DownloadInfo>();
+
+        static void AttachAssemblyResolver()
         {
             //hook up assembly resolver
             //https://stackoverflow.com/a/25990979/3128017
@@ -23,7 +26,7 @@ namespace YoutubeTagger
 
         static int Main(string[] args)
         {
-            Init();
+            AttachAssemblyResolver();
             return RunProgram(args);
         }
 
@@ -65,6 +68,7 @@ namespace YoutubeTagger
                 ParseTags = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/ParseTags").InnerText.Trim());
                 CopyFiles = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/CopyFiles").InnerText.Trim());
                 DeleteBinaries = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/DeleteBinaries").InnerText.Trim());
+                DeleteOutputLogs = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/DeleteOutputLogs").InnerText.Trim());
 
                 //and some default command line settings
                 DefaultCommandLine = doc.SelectSingleNode("/DownloadInfo.xml/CommandLine/Default").InnerText.Trim();
