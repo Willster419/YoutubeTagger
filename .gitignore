@@ -338,3 +338,5 @@ desktop.ini
 *.jpg
 *.part
 /YoutubeTagger/bin/Debug/dj_playlist
+*.webp
+/YoutubeTagger/dll
