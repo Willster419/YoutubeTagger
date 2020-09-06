@@ -225,6 +225,7 @@ namespace YoutubeTagger
                 NoErrorPrompts = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/NoErrorPrompts").InnerText.Trim());
                 ForceWriteFFBinaries = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/ForceWriteFFBinaries").InnerText.Trim());
                 UpdateYoutubeDL = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/UpdateYoutubeDL").InnerText.Trim());
+                ForceDownloadYoutubeDl = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/ForceDownloadYoutubeDl").InnerText.Trim());
                 CopyBinaries = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/CopyBinaries").InnerText.Trim());
                 RunScripts = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/RunScripts").InnerText.Trim());
                 SaveNewDate = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/SaveNewDate").InnerText.Trim());
