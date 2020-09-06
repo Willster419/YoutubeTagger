@@ -24,7 +24,7 @@
         //if we should force write ff binaries to disk
         private static bool ForceWriteFFBinaries = false;
         //the default command line args passed into youtube-dl
-        private static string DefaultCommandLine = "-i --playlist-reverse --youtube-skip-dash-manifest {0} {1} --match-filter \"{2}\" -o \"%(autonumber)s-%(title)s.%(ext)s\" --format m4a --embed-thumbnail {3}";
+        private static string DefaultCommandLine = "-i --playlist-reverse --youtube-skip-dash-manifest {0} {1} --match-filter \\\"{2}\\\" -o \\\"%(autonumber)s-%(title)s.%(ext)s\\\" --format m4a --embed-thumbnail {3}";
         //the start of the dateafter command line arg
         private static string DateAfterCommandLine = "--dateafter";
         //the duration match filter for youtube songs (600 = 600 seconds -> 10 mins, less indicates a song)

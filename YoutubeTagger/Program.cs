@@ -257,17 +257,21 @@ namespace YoutubeTagger
                 CheckMissingFolder(BinaryFolder);
 
                 //if embedded binary does not exist, OR force binary embedded write, then write it
-                string binaryPath = Path.Combine(BinaryFolder, AtomicParsley);
-                if (!File.Exists(binaryPath) || ForceWriteFFBinaries)
+                string[] exesToGet = { AtomicParsley, CommandShellWrapper };
+                foreach (string exeToGet in exesToGet)
                 {
-                    WriteToLog(string.Format("File {0} does not exist or ForceWriteFFBinaries is on, writing binaries to disk", AtomicParsley));
-                    File.WriteAllBytes(binaryPath, GetEmbeddedResource(Path.GetFileNameWithoutExtension(AtomicParsley)));
+                    string binaryPath = Path.Combine(BinaryFolder, exeToGet);
+                    if (!File.Exists(binaryPath) || ForceWriteFFBinaries)
+                    {
+                        WriteToLog(string.Format("File {0} does not exist or ForceWriteFFBinaries is on, writing binaries to disk", exeToGet));
+                        File.WriteAllBytes(binaryPath, GetEmbeddedResource(Path.GetFileNameWithoutExtension(exeToGet)));
+                    }
                 }
 
                 string[] zipsToGet = { "ffmpeg.zip", "ffprobe.zip" };
                 foreach (string zipToGet in zipsToGet)
                 {
-                    binaryPath = Path.Combine(BinaryFolder, string.Format("{0}.{1}",Path.GetFileNameWithoutExtension(zipToGet),"exe"));
+                    string binaryPath = Path.Combine(BinaryFolder, string.Format("{0}.{1}",Path.GetFileNameWithoutExtension(zipToGet),"exe"));
                     if (!File.Exists(binaryPath) || ForceWriteFFBinaries)
                     {
                         WriteToLog(string.Format("File {0} does not exist or ForceWriteFFBinaries is on, writing binaries to disk", zipToGet));
@@ -330,9 +334,9 @@ namespace YoutubeTagger
                             RedirectStandardOutput = false,
                             UseShellExecute = true,
                             WorkingDirectory = info.Folder,
-                            FileName = YoutubeDL,
+                            FileName = CommandShellWrapper,
                             CreateNoWindow = false,
-                            Arguments = string.Format(DefaultCommandLine,//from xml
+                            Arguments = YoutubeDL + " " + string.Format(DefaultCommandLine,//from xml
                                 info.FirstRun ? string.Empty : DateAfterCommandLine,//date after (youtube-dl command line key)
                                 info.FirstRun ? string.Empty : info.LastDate,//date after (youtube-dl command line arg)
                                 info.DownloadType == DownloadType.YoutubeMix ? YoutubeMixDurationCommandLine : YoutubeSongDurationCommandLine,//youtube-dl match filter duration selector

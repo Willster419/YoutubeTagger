@@ -18,8 +18,11 @@ namespace YoutubeTagger
             "AtomicParsley.exe",
             "ffmpeg.exe",
             "ffprobe.exe",
-            YoutubeDL
+            YoutubeDL,
+            CommandShellWrapper
         };
+        //name of command shell wrapper application
+        private const string CommandShellWrapper = "CommandShellWrapper.exe";
         //name of youtube-dl application
         private const string YoutubeDL = "youtube-dl.exe";
         //name of folder to keep above binary files

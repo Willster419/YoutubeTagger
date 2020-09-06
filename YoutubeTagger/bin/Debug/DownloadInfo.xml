@@ -20,7 +20,8 @@
   <CommandLine>
     <!-- Command line options. these get sent directly into youtube-dl, after replacing the macros-->
     <!-- {0}=DateAfter (prefix), {1}=Actual Date, {2}=YoutubeSong/MixDuration (inner argument), {3}=Custom command lines, {4}=URL -->
-    <Default>-i --playlist-reverse --youtube-skip-dash-manifest --geo-bypass {0} {1} --match-filter "{2}" -o "%(autonumber)s--%(title)s--%(upload_date)s.%(ext)s" --format m4a --embed-thumbnail {3} {4}</Default>
+    <!-- Note the requirement to escape quotes with \" -->
+    <Default>-i --playlist-reverse --youtube-skip-dash-manifest --geo-bypass {0} {1} --match-filter \"{2}\" -o \"%(autonumber)s--%(title)s--%(upload_date)s.%(ext)s\" --format m4a --embed-thumbnail {3} {4}</Default>
     <!-- DateAfter is only applied to the youtube-dl process is firstRun = true, is why it's custom defined out here -->
     <DateAfter>--dateafter</DateAfter>
     <!-- time moved to 11 mins cause some trance songs are long -->
