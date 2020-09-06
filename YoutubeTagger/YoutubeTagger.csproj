@@ -101,6 +101,7 @@
     <EmbeddedResource Include="exe\AtomicParsley.exe" />
     <EmbeddedResource Include="exe\ffmpeg.zip" />
     <EmbeddedResource Include="exe\ffprobe.zip" />
+    <EmbeddedResource Include="..\CommandShellWrapper\bin\Debug\CommandShellWrapper.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- Copy the nuget dlls to the project's dll directory by overiding a predefined target -->
