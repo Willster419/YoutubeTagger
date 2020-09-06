@@ -7,6 +7,7 @@ using System.Net;
 using System.Xml;
 using System.Reflection;
 using System.ComponentModel;
+using Ionic.Zip;
 
 namespace YoutubeTagger
 {
@@ -256,13 +257,25 @@ namespace YoutubeTagger
                 CheckMissingFolder(BinaryFolder);
 
                 //if embedded binary does not exist, OR force binary embedded write, then write it
-                foreach (string s in EmbeddedBinaryFiles)
+                string binaryPath = Path.Combine(BinaryFolder, AtomicParsley);
+                if (!File.Exists(binaryPath) || ForceWriteFFBinaries)
                 {
-                    string binaryPath = Path.Combine(BinaryFolder, s);
+                    WriteToLog(string.Format("File {0} does not exist or ForceWriteFFBinaries is on, writing binaries to disk", AtomicParsley));
+                    File.WriteAllBytes(binaryPath, GetEmbeddedResource(Path.GetFileNameWithoutExtension(AtomicParsley)));
+                }
+
+                string[] zipsToGet = { "ffmpeg.zip", "ffprobe.zip" };
+                foreach (string zipToGet in zipsToGet)
+                {
+                    binaryPath = Path.Combine(BinaryFolder, string.Format("{0}.{1}",Path.GetFileNameWithoutExtension(zipToGet),"exe"));
                     if (!File.Exists(binaryPath) || ForceWriteFFBinaries)
                     {
-                        WriteToLog(string.Format("File {0} does not exist or ForceWriteFFBinaries is on, writing binaries to disk", s));
-                        File.WriteAllBytes(binaryPath, GetEmbeddedResource(Path.GetFileNameWithoutExtension(s)));
+                        WriteToLog(string.Format("File {0} does not exist or ForceWriteFFBinaries is on, writing binaries to disk", zipToGet));
+                        using (Stream stream = GetEmbeddedResourceStream(zipToGet))
+                        using (ZipFile zip = ZipFile.Read(stream))
+                        {
+                            zip.ExtractAll(BinaryFolder,ExtractExistingFileAction.OverwriteSilently);
+                        }
                     }
                 }
 

@@ -41,6 +41,18 @@ namespace YoutubeTagger
                 return null;
         }
 
+        private static Stream GetEmbeddedResourceStream(string resourceName)
+        {
+            Assembly assem = Assembly.GetExecutingAssembly();
+            string resourceNameFound = assem.GetManifestResourceNames().FirstOrDefault(rn => rn.Contains(resourceName));
+            if (!string.IsNullOrWhiteSpace(resourceNameFound))
+            {
+                return assem.GetManifestResourceStream(resourceNameFound);
+            }
+            else
+                return null;
+        }
+
         //write to the console and the logfile
         private static void WriteToLog(string logMessage)
         {
