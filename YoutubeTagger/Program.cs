@@ -262,7 +262,7 @@ namespace YoutubeTagger
                 foreach (Process p in processes)
                 {
                     p.WaitForExit();
-                    WriteToLog(string.Format("Process of folder {0} has finished or previously finished", p.StartInfo.WorkingDirectory));
+                    WriteToLog(string.Format("Process of folder {0} has finished or previously finished. exit code {1}", p.StartInfo.WorkingDirectory, p.ExitCode));
                 }
 
                 //check exit code status
