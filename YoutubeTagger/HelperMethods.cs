@@ -193,6 +193,34 @@ namespace YoutubeTagger
                 return defaultEntry;
         }
 
+        //update an attribute in a DownloadInfo.xml entry
+        private static void UpdateDownloadInfoXmlEntry(XmlDocument doc, DownloadInfo downloadInfoToSaveProp, string attributeName, string value, bool createIfNotExist)
+        {
+            string xpath = string.Format("//DownloadInfo.xml/DownloadInfos/DownloadInfo[@Folder='{0}']", downloadInfoToSaveProp.Folder);
+            XmlNode infoNode = doc.SelectSingleNode(xpath);
+            if (infoNode == null)
+            {
+                WriteToLog("Failed to save xml doc back folder " + downloadInfoToSaveProp.Folder);
+                if (!NoErrorPrompts)
+                    Console.ReadLine();
+                Environment.Exit(-1);
+            }
+
+            XmlAttribute attribute = infoNode.Attributes[attributeName];
+            if (attribute == null && createIfNotExist)
+            {
+                //make it first then
+                attribute = doc.CreateAttribute(attributeName);
+                infoNode.Attributes.Append(attribute);
+            }
+
+            if (attribute != null)
+            {
+                attribute.Value = value;
+                doc.Save(DownloadInfoXml);
+            }
+        }
+
         //parse the xml file
         private static void ParseDownloadInfoXml()
         {

@@ -347,6 +347,7 @@ namespace YoutubeTagger
 
                     //also turn off creating archive, it should only be a one time thing
                     info.CreateArchive = string.Empty;
+                    UpdateDownloadInfoXmlEntry(doc, info, nameof(info.CreateArchive), info.CreateArchive, false);
                 }
             }
             else
@@ -369,25 +370,7 @@ namespace YoutubeTagger
                     DownloadInfos[i].LastDate = newDate;
 
                     //then save it in xml
-                    string xpath = string.Format("//DownloadInfo.xml/DownloadInfos/DownloadInfo[@Folder='{0}']", DownloadInfos[i].Folder);
-                    XmlNode infoNode = doc.SelectSingleNode(xpath);
-                    if (infoNode == null)
-                    {
-                        WriteToLog("Failed to save xml doc back folder " + DownloadInfos[i].Folder);
-                        if (!NoErrorPrompts)
-                            Console.ReadLine();
-                        Environment.Exit(-1);
-                    }
-
-                    XmlAttribute lastDate = infoNode.Attributes["LastDate"];
-                    if (lastDate == null)
-                    {
-                        //make it first then
-                        lastDate = doc.CreateAttribute("LastDate");
-                        infoNode.Attributes.Append(lastDate);
-                    }
-                    lastDate.Value = DownloadInfos[i].LastDate;
-                    doc.Save(DownloadInfoXml);
+                    UpdateDownloadInfoXmlEntry(doc, DownloadInfos[i], "LastDate", DownloadInfos[i].LastDate, true);
                 }
             }
             else
