@@ -146,7 +146,8 @@ namespace YoutubeTagger
             if (!File.Exists(filePath))
             {
                 WriteToLog(string.Format("ERROR: missing file {0} for path {1}", Path.GetFileName(filePath), filePath));
-                Console.ReadLine();
+                if (!NoErrorPrompts)
+                    Console.ReadLine();
                 //https://stackoverflow.com/questions/10286056/what-is-the-command-to-exit-a-console-application-in-c
                 Environment.Exit(-1);
             }
@@ -200,7 +201,8 @@ namespace YoutubeTagger
             if (!File.Exists(DownloadInfoXml))
             {
                 WriteToLog(string.Format("{0} is missing, application cannot continue", DownloadInfoXml));
-                Console.ReadLine();
+                if (!NoErrorPrompts)
+                    Console.ReadLine();
                 Environment.Exit(-1);
             }
             WriteToLog("---------------------------APPLICATION START---------------------------");
@@ -214,7 +216,8 @@ namespace YoutubeTagger
             {
                 WriteToLog("Failed to load Xml document");
                 WriteToLog(ex.ToString());
-                Console.ReadLine();
+                if (!NoErrorPrompts)
+                    Console.ReadLine();
                 Environment.Exit(-1);
             }
             try
@@ -242,8 +245,10 @@ namespace YoutubeTagger
                 YoutubeDlUrl = UpdateTextFromXmlEntry(nameof(YoutubeDlUrl), YoutubeDlUrl, doc, "/DownloadInfo.xml/CommandLine/YoutubeDlUrl");
 
                 //for each xml element "DownloadInfo" in element "DownloadInfo.xml"
+                int processingIndex = 0;
                 foreach (XmlNode infosNode in doc.SelectNodes("//DownloadInfo.xml/DownloadInfos/DownloadInfo"))
                 {
+                    WriteToLog(string.Format("Processing DownloadInfo {0}", processingIndex));
                     DownloadInfo temp = new DownloadInfo();
 
                     //get list of fields in the DownloadInfo class
@@ -261,15 +266,30 @@ namespace YoutubeTagger
                         }
                         catch (Exception ex)
                         {
-                            WriteToLog(string.Format("ERROR: Failed to parse xml attribute '{0}' to data type", field.Name));
+                            WriteToLog(string.Format("ERROR: Failed to parse xml attribute '{0}' to data type for DownloadInfo {1}", field.Name, temp.Folder));
                             WriteToLog(ex.ToString());
-                            Console.ReadLine();
+                            if (!NoErrorPrompts)
+                                Console.ReadLine();
                             Environment.Exit(-1);
                         }
                     }
 
+                    //parse DownloadUrl
+                    temp.DownloadURL = infosNode[nameof(temp.DownloadURL)].InnerText.Trim();
+                    if(string.IsNullOrWhiteSpace(temp.DownloadURL))
+                    {
+                        WriteToLog(string.Format("ERROR: DownloadURL for '{0}' is blank", temp.Folder));
+                        if (!NoErrorPrompts)
+                            Console.ReadLine();
+                        Environment.Exit(-1);
+                    }
+
+                    //parse CustomYoutubeDlCommands
+                    temp.DownloadURL = infosNode[nameof(temp.CustomYoutubedlCommands)].InnerText.Trim();
+
+                    //parse CopyPaths
                     //get the list of paths that the parsed music files should be copied to
-                    XmlNodeList pathsList = infosNode.ChildNodes;
+                    XmlNodeList pathsList = (infosNode as XmlElement).SelectNodes("CopyPath");
                     if (pathsList.Count > 0)
                     {
                         temp.CopyPaths = new string[pathsList.Count];
@@ -287,16 +307,28 @@ namespace YoutubeTagger
                                 else
                                 {
                                     WriteToLog(string.Format("ERROR: The folder '{0}' declared in the xml does not exist", paths.InnerText));
-                                    Console.ReadLine();
+                                    if (!NoErrorPrompts)
+                                        Console.ReadLine();
                                     Environment.Exit(-1);
                                 }
+                            }
+
+                            //check to make sure there's no duplicate CopyPath entries for this DownloadInfo
+                            if(temp.CopyPaths.Contains(paths.InnerText))
+                            {
+                                WriteToLog("ERROR: Copy path already parsed, remove duplicate");
+                                if (!NoErrorPrompts)
+                                    Console.ReadLine();
+                                Environment.Exit(-1);
                             }
                             temp.CopyPaths[i++] = paths.InnerText;
                         }
                     }
                     else
                     {
-                        WriteToLog("ERROR: Paths count is 0 for downloadFolder of folder attribute " + infosNode.Attributes[nameof(DownloadInfo.Folder)].Value);
+                        WriteToLog("ERROR: Paths count is 0 for downloadFolder of folder attribute " + temp.Folder);
+                        if (!NoErrorPrompts)
+                            Console.ReadLine();
                         Environment.Exit(-1);
                     }
 
@@ -306,12 +338,14 @@ namespace YoutubeTagger
 
                     //and finally add it to the list
                     DownloadInfos.Add(temp);
+                    processingIndex++;
                 }
             }
             catch (Exception ex)
             {
                 WriteToLog(ex.ToString());
-                Console.ReadLine();
+                if (!NoErrorPrompts)
+                    Console.ReadLine();
                 Environment.Exit(-1);
             }
         }
