@@ -210,6 +210,7 @@ namespace YoutubeTagger
             doc = new XmlDocument();
             try
             {
+                doc.PreserveWhitespace = true;
                 doc.Load(DownloadInfoXml);
             }
             catch (XmlException ex)
