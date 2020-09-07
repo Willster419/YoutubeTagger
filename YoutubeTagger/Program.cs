@@ -8,6 +8,8 @@ using System.Xml;
 using System.Reflection;
 using System.ComponentModel;
 using Ionic.Zip;
+using System.CodeDom.Compiler;
+using System.Text.RegularExpressions;
 
 namespace YoutubeTagger
 {
@@ -296,6 +298,56 @@ namespace YoutubeTagger
                     p.Dispose();
                 GC.Collect();
                 WriteToLog("All processes completed");
+
+                //check if creating archive text files
+                foreach (DownloadInfo info in DownloadInfos.FindAll(temp => (temp.DownloadType == DownloadType.YoutubeSong || temp.DownloadType == DownloadType.YoutubeMix) && (!string.IsNullOrWhiteSpace(temp.CreateArchive)) && (temp.Enabled)))
+                {
+                    WriteToLog(string.Format("Creating archive file for folder {0}, called {1}", info.Folder, info.CreateArchive));
+
+                    //read the output log of the first run
+                    string outputLogPath = Path.Combine(info.Folder, CommandLineWrapperLogfile);
+                    if(!File.Exists(outputLogPath))
+                    {
+                        WriteToLog("Output log does not exist for folder " + info.Folder);
+                        if (!NoErrorPrompts)
+                            Console.ReadLine();
+                        Environment.Exit(-1);
+                    }
+                    string[] youtubeDlLog = File.ReadAllLines(outputLogPath);
+
+                    //do a regex search for each video url
+                    List<string> archiveLines = new List<string>();
+                    foreach (string line in youtubeDlLog)
+                    {
+                        Match result = Regex.Match(line, CreateArchiveRegex);
+                        if (result.Success)
+                        {
+                            string valueToAppend = result.Value;
+                            WriteToLog(string.Format("Regex match: {0}", valueToAppend));
+
+                            //remove the last character (:)
+                            valueToAppend = valueToAppend.Substring(0, valueToAppend.Length - 1);
+
+                            //remove brackets for [youtube] -> youtube
+                            valueToAppend = valueToAppend.Replace(@"[youtube]", @"youtube");
+
+                            //add to list
+                            if(!archiveLines.Contains(valueToAppend))
+                                archiveLines.Add(valueToAppend);
+                        }
+                    }
+
+                    //and write to text
+                    if (archiveLines.Count > 0)
+                    {
+                        archiveLines.Add(string.Empty);
+                        File.WriteAllLines(Path.Combine(info.Folder, info.CreateArchive), archiveLines);
+                        WriteToLog(string.Format("{0} written for folder {1}", info.CreateArchive, info.Folder));
+                    }
+
+                    //also turn off creating archive, it should only be a one time thing
+                    info.CreateArchive = string.Empty;
+                }
             }
             else
                 WriteToLog("RunScripts skipped");

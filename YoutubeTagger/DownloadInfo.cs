@@ -24,5 +24,6 @@
         public uint BackupLastTrackNumber;
         public string CustomYoutubedlCommands = string.Empty;
         public bool Enabled = true;
+        public string CreateArchive = string.Empty;
     }
 }

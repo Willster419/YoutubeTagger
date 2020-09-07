@@ -54,5 +54,8 @@
 
         //default download URL of youtube-dl program. can be updated from the xml file
         private static string YoutubeDlUrl = "https://yt-dl.org/latest/youtube-dl.exe";
+
+        //the regex search when reading the youtube-dl command log for creating the archive text
+        private static string CreateArchiveRegex = @"^\[youtube\] .+:";
     }
 }

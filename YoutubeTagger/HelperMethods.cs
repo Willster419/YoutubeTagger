@@ -244,6 +244,7 @@ namespace YoutubeTagger
                 YoutubeMixDurationCommandLine = doc.SelectSingleNode("/DownloadInfo.xml/CommandLine/YoutubeMixDuration").InnerText.Trim();
                 YoutubeSongDurationCommandLine = doc.SelectSingleNode("/DownloadInfo.xml/CommandLine/YoutubeSongDuration").InnerText.Trim();
                 YoutubeDlUrl = UpdateTextFromXmlEntry(nameof(YoutubeDlUrl), YoutubeDlUrl, doc, "/DownloadInfo.xml/CommandLine/YoutubeDlUrl");
+                CreateArchiveRegex = UpdateTextFromXmlEntry(nameof(CreateArchiveRegex), CreateArchiveRegex, doc, "/DownloadInfo.xml/CommandLine/CreateArchiveRegex");
 
                 //for each xml element "DownloadInfo" in element "DownloadInfo.xml"
                 int processingIndex = 0;
