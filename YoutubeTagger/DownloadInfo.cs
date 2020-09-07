@@ -13,9 +13,6 @@
         //the name of the folder to process files
         public string Folder;
         public string Album;
-        //public int Year;//from datetime now
-        //public string Title;//from filename
-        //public string Artist;//from filename or VA
         public string AlbumArtist;
         //from saved in xml file
         public uint LastTrackNumber;
