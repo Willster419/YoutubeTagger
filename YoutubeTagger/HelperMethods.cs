@@ -276,7 +276,7 @@ namespace YoutubeTagger
 
                     //parse DownloadUrl
                     temp.DownloadURL = infosNode[nameof(temp.DownloadURL)].InnerText.Trim();
-                    if(string.IsNullOrWhiteSpace(temp.DownloadURL))
+                    if (string.IsNullOrWhiteSpace(temp.DownloadURL) && (temp.DownloadType == DownloadType.YoutubeMix || temp.DownloadType == DownloadType.YoutubeSong))
                     {
                         WriteToLog(string.Format("ERROR: DownloadURL for '{0}' is blank", temp.Folder));
                         if (!NoErrorPrompts)
