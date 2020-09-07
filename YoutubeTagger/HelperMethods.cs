@@ -286,7 +286,7 @@ namespace YoutubeTagger
                     }
 
                     //parse CustomYoutubeDlCommands
-                    temp.DownloadURL = infosNode[nameof(temp.CustomYoutubedlCommands)].InnerText.Trim();
+                    temp.CustomYoutubedlCommands = infosNode[nameof(temp.CustomYoutubedlCommands)].InnerText.Trim();
 
                     //parse CopyPaths
                     //get the list of paths that the parsed music files should be copied to
