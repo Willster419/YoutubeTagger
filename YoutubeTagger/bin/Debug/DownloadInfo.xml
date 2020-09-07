@@ -86,7 +86,7 @@
   Here's a sample, one of each type -->
   <DownloadInfos>
     <!-- Synthwave -->
-    <DownloadInfo Enabled="True" Folder="Synthwave_Outrun" Album="OUTRUN" AlbumArtist="ThePrimeThanatos" Genre="Synthwave" DownloadType="YoutubeMix" LastTrackNumber="5" FirstRun="False" LastDate="20200905" CreateArchive="archive.txt">
+    <DownloadInfo Enabled="True" Folder="Synthwave_Outrun" Album="OUTRUN" AlbumArtist="ThePrimeThanatos" Genre="Synthwave" DownloadType="YoutubeMix" LastTrackNumber="5" FirstRun="False" LastDate="20200906" CreateArchive="">
       <DownloadURL>https://www.youtube.com/playlist?list=PL_MHjKxnHz1sm0YARyIdgev09N9A-3FEP</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\ThePrimeThanatos\OUTRUN</CopyPath>
