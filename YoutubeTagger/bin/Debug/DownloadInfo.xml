@@ -68,7 +68,7 @@
     <!-- OLD DATEAFTER METHOD -->
     <Default>-i --playlist-reverse --youtube-skip-dash-manifest --geo-bypass {0} {1} --match-filter \"{2}\" -o \"%(autonumber)s--%(title)s--%(upload_date)s.%(ext)s\" --format m4a --embed-thumbnail {3} {4}</Default>
     <!-- NEW ARCHIVE METHOD -->
-    <!-- <Default>-i -\-playlist-reverse -\-youtube-skip-dash-manifest -\-geo-bypass -o "%(autonumber)s--%(title)s--%(upload_date)s.%(ext)s" -\-format m4a --embed-thumbnail -\-download-archive archive.txt {3} {4}</Default> -->
+    <!-- <Default>-i -\-playlist-reverse -\-youtube-skip-dash-manifest -\-geo-bypass -o "%(autonumber)s-\-%(title)s-\-%(upload_date)s.%(ext)s" -\-format m4a -\-embed-thumbnail -\-download-archive archive.txt {3} {4}</Default> -->
     
     <!-- DateAfter is only applied to the youtube-dl process is firstRun = true, is why it's custom defined out here -->
     <DateAfter>--dateafter</DateAfter>
