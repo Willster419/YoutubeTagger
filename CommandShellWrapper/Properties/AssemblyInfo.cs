@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("CommandShellWrapper")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Wrap a shell command around a .net application. Allows for logging.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("CommandShellWrapper")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
+[assembly: AssemblyCopyright("Copyright © 2020 Willard Wider")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
