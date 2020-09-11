@@ -325,8 +325,12 @@ namespace YoutubeTagger
                             string valueToAppend = result.Value;
                             WriteToLog(string.Format("Regex match: {0}", valueToAppend));
 
-                            //remove the last character (:)
-                            valueToAppend = valueToAppend.Substring(0, valueToAppend.Length - 1);
+                            //this gives you two results:
+                            //[youtube] gQjAEbWZEgU:
+                            //[youtube] HdOCXC8ZwAw: Writing thumbnail to:
+
+                            //array split on ":" character
+                            valueToAppend = valueToAppend.Split(':')[0];
 
                             //remove brackets for [youtube] -> youtube
                             valueToAppend = valueToAppend.Replace(@"[youtube]", @"youtube");
