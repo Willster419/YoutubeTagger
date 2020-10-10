@@ -89,17 +89,17 @@
   Here's a sample, one of each type -->
   <DownloadInfos>
     <!-- Synthwave -->
-    <DownloadInfo Enabled="True" Folder="Synthwave_Outrun" Album="OUTRUN" AlbumArtist="ThePrimeThanatos" Genre="Synthwave" DownloadType="YoutubeMix" LastTrackNumber="5" FirstRun="False" LastDate="20201009" CreateArchive="">
-      <DownloadURL>https://www.youtube.com/playlist?list=PL_MHjKxnHz1sm0YARyIdgev09N9A-3FEP</DownloadURL>
+    <DownloadInfo Enabled="True" Folder="Synthwave_Mixes" Album="OUTRUN" AlbumArtist="ThePrimeThanatos" Genre="Synthwave" DownloadType="YoutubeMix" LastTrackNumber="0" FirstRun="True" LastDate="0" CreateArchive="">
+      <DownloadURL>https://www.youtube.com/user/ThePrimeThanatos/videos</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
-      <CopyPath>F:\Music\ThePrimeThanatos\OUTRUN</CopyPath>
-      <CopyPath>F:\Converted Phone Music\ThePrimeThanatos\OUTRUN</CopyPath>
+      <CopyPath>F:\Music\ThePrimeThanatos\Mixes</CopyPath>
+      <CopyPath>F:\Converted Phone Music\ThePrimeThanatos\Mixes</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Synthwave_80s" Album="Back to the 80s" AlbumArtist="ThePrimeThanatos" Genre="Synthwave" DownloadType="YoutubeMix" LastTrackNumber="20" FirstRun="False" LastDate="20201009" CreateArchive="">
-      <DownloadURL>https://www.youtube.com/playlist?list=PL_MHjKxnHz1vGIan1NvtfR1NLMk3qkG8j</DownloadURL>
+    <DownloadInfo Enabled="True" Folder="Synthwave_Songs" Album="Back to the 80s" AlbumArtist="ThePrimeThanatos" Genre="Synthwave" DownloadType="YoutubeSong" LastTrackNumber="0" FirstRun="True" LastDate="0" CreateArchive="">
+      <DownloadURL>https://www.youtube.com/user/ThePrimeThanatos/videos</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
-      <CopyPath>F:\Music\ThePrimeThanatos\Back to the 80s</CopyPath>
-      <CopyPath>F:\Converted Phone Music\ThePrimeThanatos\Back to the 80s</CopyPath>
+      <CopyPath>F:\Music\ThePrimeThanatos\Songs</CopyPath>
+      <CopyPath>F:\Converted Phone Music\ThePrimeThanatos\Songs</CopyPath>
     </DownloadInfo>
     <!-- Eurobeat -->
     <DownloadInfo Enabled="True" Folder="EUTOBEAT" Album="EUROBEATS" AlbumArtist="VA" Genre="Eutobeat" DownloadType="YoutubeMix" LastTrackNumber="22" FirstRun="False" LastDate="20201009" CreateArchive="">
@@ -108,7 +108,7 @@
       <CopyPath>F:\Music\EUROBEATS</CopyPath>
       <CopyPath>F:\Converted Phone Music\EUROBEATS</CopyPath>
     </DownloadInfo>
-    <!-- Electro House -->
+    <!-- Electro & House -->
     <DownloadInfo Enabled="False" Folder="Eric_Clapman" Album="Eric Clapman Mixes" AlbumArtist="Eric Clapman" Genre="Dance" DownloadType="YoutubeMix" LastTrackNumber="196" LastDate="20200814" FirstRun="False">
       <DownloadURL>https://www.youtube.com/user/ericclapman/videos</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
@@ -127,32 +127,23 @@
       <CopyPath>F:\Music\Nick Cooper\Electro House</CopyPath>
       <CopyPath>F:\Converted Phone Music\Nick Cooper\Electro House</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="dj_ekki_charts" Album="DJ Ekki - Charts" AlbumArtist="VA" Genre="Electro House" DownloadType="YoutubeMix" LastTrackNumber="29" LastDate="20201009" FirstRun="False" CreateArchive="">
+    <DownloadInfo Enabled="False" Folder="dj_ekki_charts" Album="DJ Ekki - Charts" AlbumArtist="VA" Genre="Electro House" DownloadType="YoutubeMix" LastTrackNumber="29" LastDate="20201009" FirstRun="False" CreateArchive="">
       <DownloadURL>https://www.youtube.com/playlist?list=PLF9wqcynIHBxFWDGTuQa2y4Kuod0-rC_D</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\DJ Ekki\Charts</CopyPath>
       <CopyPath>F:\Converted Phone Music\DJ Ekki\Charts</CopyPath>
     </DownloadInfo>
-    <!-- EDM -->
-    <DownloadInfo Enabled="True" Folder="proximity" Album="Proximity Releases" AlbumArtist="VA" Genre="EDM" DownloadType="YoutubeSong" LastTrackNumber="1577" LastDate="20201009" FirstRun="False" CreateArchive="">
-      <DownloadURL>https://www.youtube.com/user/PandoraMuslc/videos</DownloadURL>
-      <CustomYoutubedlCommands></CustomYoutubedlCommands>
-      <CopyPath>F:\Music\Proximity</CopyPath>
-      <CopyPath>F:\Converted Phone Music\Proximity</CopyPath>
-    </DownloadInfo>
-    <!-- Dance -->
-    <DownloadInfo Enabled="True" Folder="You_love_dance_tv" Album="YouLoveDance.tv" AlbumArtist="VA" Genre="Dance" DownloadType="YoutubeSong" LastTrackNumber="1423" LastDate="20201009" FirstRun="False" CreateArchive="">
-      <DownloadURL>https://www.youtube.com/user/Planetpunkmusic/videos</DownloadURL>
-      <CustomYoutubedlCommands></CustomYoutubedlCommands>
-      <CopyPath>F:\Music\YouLoveDance.TV</CopyPath>
-      <CopyPath>F:\Converted Phone Music\YouLoveDance.TV</CopyPath>
-    </DownloadInfo>
-    <!-- Progressive -->
     <DownloadInfo Enabled="True" Folder="Revealed_tv" Album="Revealed TV" AlbumArtist="VA" Genre="Progressive" DownloadType="YoutubeSong" LastTrackNumber="843" LastDate="20201009" FirstRun="False" CreateArchive="">
       <DownloadURL>https://www.youtube.com/playlist?list=PLUHdivV5QCGf6vCG17JiAV91V4WMUzkCP</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\Revealed TV</CopyPath>
       <CopyPath>F:\Converted Phone Music\Revealed TV</CopyPath>
+    </DownloadInfo>
+    <DownloadInfo Enabled="True" Folder="You_love_dance_tv" Album="YouLoveDance.tv" AlbumArtist="VA" Genre="Dance" DownloadType="YoutubeSong" LastTrackNumber="1423" LastDate="20201009" FirstRun="False" CreateArchive="">
+      <DownloadURL>https://www.youtube.com/user/Planetpunkmusic/videos</DownloadURL>
+      <CustomYoutubedlCommands></CustomYoutubedlCommands>
+      <CopyPath>F:\Music\YouLoveDance.TV</CopyPath>
+      <CopyPath>F:\Converted Phone Music\YouLoveDance.TV</CopyPath>
     </DownloadInfo>
     <DownloadInfo Enabled="True" Folder="Nick_Cooper_progressive" Album="Nick Cooper - Progressive" AlbumArtist="VA" Genre="Progressive" DownloadType="YoutubeSong" LastTrackNumber="521" LastDate="20201009" FirstRun="False" CreateArchive="">
       <DownloadURL>https://www.youtube.com/playlist?list=PL4C9F90A46845CCB1</DownloadURL>
@@ -224,7 +215,7 @@
       <CopyPath>F:\Converted Phone Music\Vital Tunes\Releases</CopyPath>
     </DownloadInfo>
     <!-- non-youtube, kept as example -->
-    <DownloadInfo Enabled="True" Folder="Flybeat_bass_up" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="Bass Up" DownloadType="Other1" LastTrackNumber="1" LastDate="20201009" FirstRun="False">
+    <DownloadInfo Enabled="False" Folder="Flybeat_bass_up" Album="DJ FlyBeat" AlbumArtist="Willster419" Genre="Bass Up" DownloadType="Other1" LastTrackNumber="1" LastDate="20201009" FirstRun="False">
       <DownloadURL></DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\DJ FlyBeat\Bass Up</CopyPath>
