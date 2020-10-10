@@ -89,13 +89,13 @@
   Here's a sample, one of each type -->
   <DownloadInfos>
     <!-- Synthwave -->
-    <DownloadInfo Enabled="True" Folder="Synthwave_Mixes" Album="OUTRUN" AlbumArtist="ThePrimeThanatos" Genre="Synthwave" DownloadType="YoutubeMix" LastTrackNumber="0" FirstRun="True" LastDate="0" CreateArchive="">
+    <DownloadInfo Enabled="True" Folder="Synthwave_Mixes" Album="OUTRUN" AlbumArtist="ThePrimeThanatos" Genre="Synthwave" DownloadType="YoutubeMix" LastTrackNumber="159" FirstRun="False" LastDate="20201010" CreateArchive="">
       <DownloadURL>https://www.youtube.com/user/ThePrimeThanatos/videos</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\ThePrimeThanatos\Mixes</CopyPath>
       <CopyPath>F:\Converted Phone Music\ThePrimeThanatos\Mixes</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Synthwave_Songs" Album="Back to the 80s" AlbumArtist="ThePrimeThanatos" Genre="Synthwave" DownloadType="YoutubeSong" LastTrackNumber="0" FirstRun="True" LastDate="0" CreateArchive="">
+    <DownloadInfo Enabled="True" Folder="Synthwave_Songs" Album="Back to the 80s" AlbumArtist="ThePrimeThanatos" Genre="Synthwave" DownloadType="YoutubeSong" LastTrackNumber="364" FirstRun="False" LastDate="20201010" CreateArchive="">
       <DownloadURL>https://www.youtube.com/user/ThePrimeThanatos/videos</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\ThePrimeThanatos\Songs</CopyPath>
@@ -152,7 +152,7 @@
       <CopyPath>F:\Converted Phone Music\Nick Cooper\Progressive</CopyPath>
     </DownloadInfo>
     <!-- Hardstyle -->
-    <DownloadInfo Enabled="True" Folder="EuphoricHardStyleZ" Album="EuphoricHardStyleZ" AlbumArtist="VA" Genre="Hardstyle" DownloadType="YoutubeSong" LastTrackNumber="3450" LastDate="20201009" FirstRun="False" CreateArchive="">
+    <DownloadInfo Enabled="True" Folder="EuphoricHardStyleZ" Album="EuphoricHardStyleZ" AlbumArtist="VA" Genre="Hardstyle" DownloadType="YoutubeSong" LastTrackNumber="3451" LastDate="20201009" FirstRun="False" CreateArchive="">
       <DownloadURL>https://www.youtube.com/user/EuphoricHardStyleZ/videos</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\EuphoricHardStyleZ</CopyPath>
