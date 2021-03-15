@@ -83,11 +83,17 @@
       <CopyPath>F:\Music\DJ Playlists\Handsup</CopyPath>
       <CopyPath>F:\Converted Phone Music\DJ Playlists\Handsup</CopyPath>
     </DownloadInfo>
-     <DownloadInfo Enabled="True" Folder="DJ_PlaylistEurobeat" Album="DJ Playlist" AlbumArtist="Willster419" Genre="Eurobeat" DownloadType="YoutubeSong" LastTrackNumber="1" LastDate="0" FirstRun="False">
+    <DownloadInfo Enabled="True" Folder="DJ_PlaylistEurobeat" Album="DJ Playlist" AlbumArtist="Willster419" Genre="Eurobeat" DownloadType="YoutubeSong" LastTrackNumber="1" LastDate="0" FirstRun="False">
       <DownloadURL>https://www.youtube.com/playlist?list=PLJvSsumjZ8FRaoBcohlRmYzPd1QHHHbgb</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\DJ Playlists\Eurobeat</CopyPath>
       <CopyPath>F:\Converted Phone Music\DJ Playlists\Eurobeat</CopyPath>
+    </DownloadInfo>
+    <DownloadInfo Enabled="True" Folder="DJ_Playlist_Trance" Album="DJ Playlist" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeSong" LastTrackNumber="1" LastDate="0" FirstRun="True">
+      <DownloadURL>https://www.youtube.com/playlist?list=PLJvSsumjZ8FREUaKYHSi5cxqR-zJyytdF</DownloadURL>
+      <CustomYoutubedlCommands></CustomYoutubedlCommands>
+      <CopyPath>F:\Music\DJ Playlists\Trance</CopyPath>
+      <CopyPath>F:\Converted Phone Music\DJ Playlists\Trance</CopyPath>
     </DownloadInfo>
   </DownloadInfos>
 </DownloadInfo.xml>
