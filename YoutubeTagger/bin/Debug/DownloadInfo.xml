@@ -183,12 +183,6 @@
       <CopyPath>F:\Music\HHH Sounds</CopyPath>
       <CopyPath>F:\Converted Phone Music\HHH Sounds</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="OMProject_HandsUp" Album="OMProject Hands Up" AlbumArtist="OMProject" Genre="Hands Up" DownloadType="YoutubeMix" LastTrackNumber="60" LastDate="20210417" FirstRun="False" CreateArchive="">
-      <DownloadURL>https://www.youtube.com/playlist?list=PLncEfTKnudJfKBIJcpG7YUUQ0WKG66VPa</DownloadURL>
-      <CustomYoutubedlCommands></CustomYoutubedlCommands>
-      <CopyPath>F:\Music\OMProject\Hands Up</CopyPath>
-      <CopyPath>F:\Converted Phone Music\OMProject\Hands Up</CopyPath>
-    </DownloadInfo>
     <DownloadInfo Enabled="True" Folder="Hands_Up_Generation" Album="Hands Up Generation" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="1971" LastDate="20210417" FirstRun="False" CreateArchive="">
       <DownloadURL>https://www.youtube.com/playlist?list=UU-26WTlPONcXLec3pnIrCaA</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
