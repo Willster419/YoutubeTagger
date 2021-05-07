@@ -105,8 +105,8 @@
     <DownloadInfo Enabled="True" Folder="EUTOBEAT" Album="EUROBEATS" AlbumArtist="VA" Genre="Eutobeat" DownloadType="YoutubeMix" LastTrackNumber="27" FirstRun="False" LastDate="20210430" CreateArchive="">
       <DownloadURL>https://www.youtube.com/playlist?list=PLAZCk8xCc7mZbuQOpzt7xt_UpHrWkPuOm</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
-      <CopyPath>F:\Music\EUROBEATS</CopyPath>
-      <CopyPath>F:\Converted Phone Music\EUROBEATS</CopyPath>
+      <CopyPath>F:\Music\EUROBEATS\mixes</CopyPath>
+      <CopyPath>F:\Converted Phone Music\EUROBEATS\mixes</CopyPath>
     </DownloadInfo>
     <!-- Electro & House -->
     <DownloadInfo Enabled="False" Folder="Eric_Clapman" Album="Eric Clapman Mixes" AlbumArtist="Eric Clapman" Genre="Dance" DownloadType="YoutubeMix" LastTrackNumber="196" LastDate="20200814" FirstRun="False">
