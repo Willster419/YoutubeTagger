@@ -219,7 +219,7 @@
       <CopyPath>F:\Music\Vital Tunes\Releases</CopyPath>
       <CopyPath>F:\Converted Phone Music\Vital Tunes\Releases</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="JAIME_TRANCE" Album="JAIME TRANCE" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeSong" LastTrackNumber="4162" LastDate="20210603" FirstRun="False" CreateArchive="">
+    <DownloadInfo Enabled="True" Folder="JAIME_TRANCE" Album="JAIME TRANCE" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeSong" LastTrackNumber="4190" LastDate="20210603" FirstRun="False" CreateArchive="">
       <DownloadURL>https://www.youtube.com/c/JAIMETRANCE/videos</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\JAIME TRANCE</CopyPath>
