@@ -206,6 +206,18 @@
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\Music Empire</CopyPath>
     </DownloadInfo>
+    <DownloadInfo Enabled="True" Folder="Zooland_tv" Album="Zooland.TV" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="0" LastDate="" FirstRun="True" CreateArchive="">
+      <DownloadURL>https://www.youtube.com/c/zoolandtv/videos</DownloadURL>
+      <CustomYoutubedlCommands></CustomYoutubedlCommands>
+      <CopyPath>F:\Music\Zooland.TV</CopyPath>
+      <CopyPath>F:\Converted Phone Music\Zooland.TV</CopyPath>
+    </DownloadInfo>
+    <DownloadInfo Enabled="True" Folder="Hands_Up_Freaks" Album="Hands Up Freaks" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="0" LastDate="" FirstRun="True" CreateArchive="">
+      <DownloadURL>https://www.youtube.com/c/HandsUpFreaks/videos</DownloadURL>
+      <CustomYoutubedlCommands></CustomYoutubedlCommands>
+      <CopyPath>F:\Music\Hands Up Freaks</CopyPath>
+      <CopyPath>F:\Converted Phone Music\Hands Up Freaks</CopyPath>
+    </DownloadInfo>
     <!-- Trance -->
     <DownloadInfo Enabled="True" Folder="Vital_Tunes_Mixes" Album="Vital Tunes Mixes" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeMix" LastTrackNumber="295" LastDate="20210807" FirstRun="False" CreateArchive="">
       <DownloadURL>https://www.youtube.com/user/VitalTunezMusic/videos</DownloadURL>
