@@ -651,7 +651,7 @@ namespace YoutubeTagger
                         //check to make sure song doesn't already exist (but only if it's not the first time downloading
                         else if (!info.FirstRun)
                         {
-                            if (SongAlreadyExists(info.CopyPaths, tag.Title))
+                            if (SongAlreadyExists(info.CopyPaths, tag.Title, tag.Performers[0]))
                             {
                                 WriteToLog(string.Format("WARNING: Song {0} already exists in a copy folder, deleting the entry!", tag.Title));
                                 if (!NoPrompts)

@@ -94,7 +94,7 @@ namespace YoutubeTagger
         }
 
         //check if a song with a same title exists based on what was just parsed
-        private static bool SongAlreadyExists(string[] copyFoldersToCheck, string titleOfSongToCheck)
+        private static bool SongAlreadyExists(string[] copyFoldersToCheck, string titleOfSongToCheck, string artistOfSongToCheck)
         {
             bool doesSongAlreadyExist = false;
             foreach (string copyFolderToCheck in copyFoldersToCheck)
@@ -121,6 +121,11 @@ namespace YoutubeTagger
                         Environment.Exit(-1);
                     }
                     if (tag.Title.Equals(titleOfSongToCheck))
+                    {
+                        doesSongAlreadyExist = true;
+                        break;
+                    }
+                    if (tag.Performers[0].Equals(artistOfSongToCheck))
                     {
                         doesSongAlreadyExist = true;
                         break;
