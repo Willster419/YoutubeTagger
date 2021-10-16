@@ -120,12 +120,7 @@ namespace YoutubeTagger
                             Console.ReadLine();
                         Environment.Exit(-1);
                     }
-                    if (tag.Title.Equals(titleOfSongToCheck))
-                    {
-                        doesSongAlreadyExist = true;
-                        break;
-                    }
-                    if (tag.Performers[0].Equals(artistOfSongToCheck))
+                    if (tag.Title.Equals(titleOfSongToCheck) && tag.Performers[0].Equals(artistOfSongToCheck))
                     {
                         doesSongAlreadyExist = true;
                         break;
