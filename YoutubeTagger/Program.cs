@@ -605,6 +605,22 @@ namespace YoutubeTagger
                                 //skip one for the artist name
                                 tag.Title = string.Join(" - ", splitArtistTitleName.Skip(1)).Trim();
 
+                                //perform a regex search and replace on the title to remove something that may not want to be included
+                                if (info.RegexReplaces != null && info.RegexReplaces.Count() > 0)
+                                {
+                                    foreach (RegexReplaces regexReplace in info.RegexReplaces)
+                                    {
+                                        try
+                                        {
+                                            tag.Title = Regex.Replace(tag.Title, regexReplace.Find, regexReplace.Replace);
+                                        }
+                                        catch (Exception)
+                                        {
+                                            WriteToLog($"ERROR: Failed to run regex expression {regexReplace.Find} on title {tag.Title} on file {fileName}, skipping regex");
+                                        }
+                                    }
+                                }
+
                                 //year is YYYMMDD, only want YYYY
                                 bool validYear = false;
                                 string yearString = string.Empty;
@@ -651,9 +667,9 @@ namespace YoutubeTagger
                         //check to make sure song doesn't already exist (but only if it's not the first time downloading
                         else if (!info.FirstRun)
                         {
-                            if (SongAlreadyExists(info.CopyPaths, tag.Title))
+                            if (SongAlreadyExists(info.CopyPaths, tag.Title, tag.Performers[0]))
                             {
-                                WriteToLog(string.Format("WARNING: Song {0} already exists in a copy folder, deleting the entry!", tag.Title));
+                                WriteToLog(string.Format("WARNING: Song {0}, by artist {1}, already exists in a copy folder, deleting the entry!", tag.Title, tag.Performers[0]));
                                 if (!NoPrompts)
                                     Console.ReadLine();
                                 File.Delete(fileName);
@@ -888,6 +904,173 @@ namespace YoutubeTagger
             }
             else
                 WriteToLog("DeleteBinaries skipped");
+
+            if (!NoPrompts)
+            {
+                ApplyRegexToCopyFolders = GetUserResponse("ApplyRegexToCopyFolders?");
+            }
+            if (ApplyRegexToCopyFolders)
+            {
+                foreach (DownloadInfo info in DownloadInfos.FindAll(inn => inn.CopyPaths != null && inn.CopyPaths.Count() > 0 && inn.Enabled))
+                {
+                    if (info.RegexReplaces == null || info.RegexReplaces.Count() == 0)
+                        continue;
+
+                    foreach (string copyPath in info.CopyPaths)
+                    {
+                        WriteToLog($"{nameof(ApplyRegexToCopyFolders)} for DownloadInfo {info.Folder}, path {copyPath}");
+                        List<string> files = Directory.GetFiles(copyPath, "*", SearchOption.TopDirectoryOnly).Where(file => ValidExtensions.Contains(Path.GetExtension(file))).ToList();
+                        foreach (string file in files)
+                        {
+                            string actualFile = file;
+                            foreach (RegexReplaces regexReplace in info.RegexReplaces)
+                            {
+                                TagLib.File tagFile = null;
+                                TagLib.Tag tag = null;
+                                try
+                                {
+                                    //https://stackoverflow.com/questions/40826094/how-do-i-use-taglib-sharp
+                                    tagFile = TagLib.File.Create(actualFile);
+                                    tag = tagFile.Tag;
+                                    string oldTitle = tag.Title;
+                                    tag.Title = Regex.Replace(tag.Title, regexReplace.Find, regexReplace.Replace);
+                                    if (!tag.Title.Equals(oldTitle))
+                                    {
+                                        tagFile.Save();
+                                        string oldTrackNum = Path.GetFileName(actualFile).Split('-')[0];
+                                        string newFileName = string.Format("{0}-{1} - {2}", oldTrackNum, tag.Performers[0], tag.Title);
+                                        string completeFolderPath = Path.GetDirectoryName(actualFile);
+                                        string completeOldPath = actualFile;
+                                        string completeNewPath = Path.Combine(completeFolderPath, newFileName + Path.GetExtension(actualFile));
+                                        WriteToLog(string.Format("Renaming {0}\n                           to {1}", Path.GetFileNameWithoutExtension(actualFile), newFileName));
+                                        File.Move(completeOldPath, completeNewPath);
+                                        actualFile = completeNewPath;
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    WriteToLog($"ERROR: Ane error occurred running regex expression {regexReplace.Find} on title {tag.Title} on file {actualFile}, skipping regex");
+                                    WriteToLog(ex.ToString());
+                                    if (!NoErrorPrompts)
+                                        Console.ReadLine();
+                                    Environment.Exit(-1);
+                                }
+                                finally
+                                {
+                                    if (tagFile != null)
+                                        tagFile.Dispose();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else
+                WriteToLog("ApplyRegexToCopyFolders skipped");
+
+            if (!NoPrompts)
+            {
+                CheckAndFixDuplicateTrackNumbers = GetUserResponse("CheckAndFixDuplicateTrackNumbers?");
+            }
+            if (CheckAndFixDuplicateTrackNumbers)
+            {
+                foreach (DownloadInfo info in DownloadInfos.FindAll(inn => inn.CopyPaths != null && inn.CopyPaths.Count() > 0 && inn.Enabled))
+                {
+                    foreach (string copyPath in info.CopyPaths)
+                    {
+                        WriteToLog($"{nameof(CheckAndFixDuplicateTrackNumbers)} for DownloadInfo {info.Folder}, path {copyPath}");
+                        List<string> files = Directory.GetFiles(copyPath, "*", SearchOption.TopDirectoryOnly).Where(file => ValidExtensions.Contains(Path.GetExtension(file))).ToList();
+                        Dictionary<string, string> fileMap = new Dictionary<string, string>();
+                        foreach (string file in files)
+                            fileMap.Add(Path.GetFileName(file), Path.GetFileName(file));
+
+                        string lastIndex = string.Empty;
+                        int nextIndexToUse = int.Parse(Path.GetFileName(files.Last().Split('-')[0])) + 1;
+                        for (int i = 0; i < fileMap.Count; i++)
+                        {
+                            KeyValuePair<string, string> fileMapEntry = fileMap.ElementAt(i);
+                            string currentIndex = fileMapEntry.Key.Split('-')[0];
+                            if (lastIndex.Equals(currentIndex))
+                            {
+                                //name needs to be updated, there's a duplicate
+                                string newNameWithoutIndex = fileMapEntry.Key.Substring(currentIndex.Length);
+                                newNameWithoutIndex = nextIndexToUse.ToString() + newNameWithoutIndex;
+                                fileMap[fileMapEntry.Key] = newNameWithoutIndex;
+                                nextIndexToUse++;
+                            }
+                            else
+                                lastIndex = currentIndex;
+                        }
+
+                        foreach (KeyValuePair<string, string> keyValuePair in fileMap)
+                        {
+                            if (keyValuePair.Key.Equals(keyValuePair.Value))
+                                continue;
+                            TagLib.File tagFile = null;
+                            TagLib.Tag tag = null;
+                            try
+                            {
+                                //https://stackoverflow.com/questions/40826094/how-do-i-use-taglib-sharp
+                                string oldFilepath = Path.Combine(copyPath, keyValuePair.Key);
+                                tagFile = TagLib.File.Create(oldFilepath);
+                                tag = tagFile.Tag;
+                                string newIndex = keyValuePair.Value.Split('-')[0];
+                                tag.Track = uint.Parse(newIndex);
+                                tagFile.Save();
+                                tagFile.Dispose();
+                                string newFilepath = Path.Combine(copyPath, keyValuePair.Value);
+                                WriteToLog(string.Format("Renaming {0}\n                           to {1}", keyValuePair.Key, keyValuePair.Value));
+                                File.Move(oldFilepath, newFilepath);
+                            }
+                            catch (Exception ex)
+                            {
+                                WriteToLog(ex.ToString());
+                                if (!NoErrorPrompts)
+                                    Console.ReadLine();
+                                Environment.Exit(-1);
+                            }
+                        }
+                    }
+                }
+            }
+            else
+                WriteToLog("CheckAndFixDuplicateTrackNumbers skipped");
+
+            if (!NoPrompts)
+            {
+                CheckAndFixFilePadding = GetUserResponse("CheckAndFixFilePadding?");
+            }
+            if (CheckAndFixFilePadding)
+            {
+                foreach (DownloadInfo info in DownloadInfos.FindAll(inn => inn.CopyPaths != null && inn.CopyPaths.Count() > 0 && inn.Enabled))
+                {
+                    foreach (string copyPath in info.CopyPaths)
+                    {
+                        WriteToLog($"{nameof(CheckAndFixFilePadding)} for DownloadInfo {info.Folder}, path {copyPath}");
+                        List<string> files = Directory.GetFiles(copyPath, "*", SearchOption.TopDirectoryOnly).Where(file => ValidExtensions.Contains(Path.GetExtension(file))).ToList();
+                        List<string> longestLength = files.Select(file => Path.GetFileName(file).Split('-')[0]).ToList();
+                        List<int> longestLengthInt = longestLength.Select(num => int.Parse(num)).ToList();
+                        int numIndexLengthNeeded = longestLengthInt.Max().ToString().Length;
+                        foreach (string file in files)
+                        {
+                            string filename = Path.GetFileName(file);
+                            string trackNum = filename.Split('-')[0];
+                            if (trackNum.Length < numIndexLengthNeeded)
+                            {
+                                trackNum = trackNum.PadLeft(numIndexLengthNeeded, '0');
+                                string newNameWithoutIndex = filename.Substring(filename.Split('-')[0].Length);
+                                string newFilename = trackNum + newNameWithoutIndex;
+                                string oldFilepath = Path.Combine(copyPath, filename);
+                                string newFilepath = Path.Combine(copyPath, newFilename);
+                                WriteToLog(string.Format("Renaming {0}\n                           to {1}", filename, newFilename));
+                                File.Move(oldFilepath, newFilepath);
+                            }
+                        }
+                    }
+                }
+            }
+            else
+                WriteToLog("CheckAndFixFilePadding skipped");
 
             //delete the output log files in each folder
             if (!NoPrompts)
