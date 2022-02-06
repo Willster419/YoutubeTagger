@@ -653,7 +653,7 @@ namespace YoutubeTagger
                         {
                             if (SongAlreadyExists(info.CopyPaths, tag.Title, tag.Performers[0]))
                             {
-                                WriteToLog(string.Format("WARNING: Song {0} already exists in a copy folder, deleting the entry!", tag.Title));
+                                WriteToLog(string.Format("WARNING: Song {0}, by artist {1}, already exists in a copy folder, deleting the entry!", tag.Title, tag.Performers[0]));
                                 if (!NoPrompts)
                                     Console.ReadLine();
                                 File.Delete(fileName);
