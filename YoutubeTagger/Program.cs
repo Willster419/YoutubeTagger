@@ -911,7 +911,7 @@ namespace YoutubeTagger
             }
             if (ApplyRegexToCopyFolders)
             {
-                foreach (DownloadInfo info in DownloadInfos.FindAll(inn => inn.CopyPaths != null && inn.CopyPaths.Count() > 0))
+                foreach (DownloadInfo info in DownloadInfos.FindAll(inn => inn.CopyPaths != null && inn.CopyPaths.Count() > 0 && inn.Enabled))
                 {
                     if (info.RegexReplaces == null || info.RegexReplaces.Count() == 0)
                         continue;
@@ -942,7 +942,7 @@ namespace YoutubeTagger
                                         string completeFolderPath = Path.GetDirectoryName(actualFile);
                                         string completeOldPath = actualFile;
                                         string completeNewPath = Path.Combine(completeFolderPath, newFileName + Path.GetExtension(actualFile));
-                                        WriteToLog(string.Format("Renaming {0}\n                           to {1}", Path.GetFileName(actualFile), newFileName));
+                                        WriteToLog(string.Format("Renaming {0}\n                           to {1}", Path.GetFileNameWithoutExtension(actualFile), newFileName));
                                         File.Move(completeOldPath, completeNewPath);
                                         actualFile = completeNewPath;
                                     }
@@ -974,7 +974,7 @@ namespace YoutubeTagger
             }
             if (CheckAndFixDuplicateTrackNumbers)
             {
-                foreach (DownloadInfo info in DownloadInfos.FindAll(inn => inn.CopyPaths != null && inn.CopyPaths.Count() > 0))
+                foreach (DownloadInfo info in DownloadInfos.FindAll(inn => inn.CopyPaths != null && inn.CopyPaths.Count() > 0 && inn.Enabled))
                 {
                     foreach (string copyPath in info.CopyPaths)
                     {
@@ -985,7 +985,7 @@ namespace YoutubeTagger
                             fileMap.Add(Path.GetFileName(file), Path.GetFileName(file));
 
                         string lastIndex = string.Empty;
-                        int nextIndexToUse = fileMap.Count;
+                        int nextIndexToUse = int.Parse(Path.GetFileName(files.Last().Split('-')[0])) + 1;
                         for (int i = 0; i < fileMap.Count; i++)
                         {
                             KeyValuePair<string, string> fileMapEntry = fileMap.ElementAt(i);
@@ -1011,15 +1011,16 @@ namespace YoutubeTagger
                             try
                             {
                                 //https://stackoverflow.com/questions/40826094/how-do-i-use-taglib-sharp
-                                tagFile = TagLib.File.Create(keyValuePair.Key);
+                                string oldFilepath = Path.Combine(copyPath, keyValuePair.Key);
+                                tagFile = TagLib.File.Create(oldFilepath);
                                 tag = tagFile.Tag;
                                 string newIndex = keyValuePair.Value.Split('-')[0];
                                 tag.Track = uint.Parse(newIndex);
                                 tagFile.Save();
-                                string oldFilepath = Path.Combine(copyPath, keyValuePair.Key);
-                                string newFilepath = Path.Combine(copyPath, keyValuePair.Value);
-                                File.Move(oldFilepath, newFilepath);
                                 tagFile.Dispose();
+                                string newFilepath = Path.Combine(copyPath, keyValuePair.Value);
+                                WriteToLog(string.Format("Renaming {0}\n                           to {1}", keyValuePair.Key, keyValuePair.Value));
+                                File.Move(oldFilepath, newFilepath);
                             }
                             catch (Exception ex)
                             {
@@ -1041,24 +1042,27 @@ namespace YoutubeTagger
             }
             if (CheckAndFixFilePadding)
             {
-                foreach (DownloadInfo info in DownloadInfos.FindAll(inn => inn.CopyPaths != null && inn.CopyPaths.Count() > 0))
+                foreach (DownloadInfo info in DownloadInfos.FindAll(inn => inn.CopyPaths != null && inn.CopyPaths.Count() > 0 && inn.Enabled))
                 {
                     foreach (string copyPath in info.CopyPaths)
                     {
                         WriteToLog($"{nameof(CheckAndFixFilePadding)} for DownloadInfo {info.Folder}, path {copyPath}");
                         List<string> files = Directory.GetFiles(copyPath, "*", SearchOption.TopDirectoryOnly).Where(file => ValidExtensions.Contains(Path.GetExtension(file))).ToList();
-                        int numIndexLengthNeeded = files.Count.ToString().Length;
+                        List<string> longestLength = files.Select(file => Path.GetFileName(file).Split('-')[0]).ToList();
+                        List<int> longestLengthInt = longestLength.Select(num => int.Parse(num)).ToList();
+                        int numIndexLengthNeeded = longestLengthInt.Max().ToString().Length;
                         foreach (string file in files)
                         {
                             string filename = Path.GetFileName(file);
                             string trackNum = filename.Split('-')[0];
                             if (trackNum.Length < numIndexLengthNeeded)
                             {
-                                trackNum = trackNum.PadLeft(numIndexLengthNeeded);
+                                trackNum = trackNum.PadLeft(numIndexLengthNeeded, '0');
                                 string newNameWithoutIndex = filename.Substring(filename.Split('-')[0].Length);
                                 string newFilename = trackNum + newNameWithoutIndex;
                                 string oldFilepath = Path.Combine(copyPath, filename);
                                 string newFilepath = Path.Combine(copyPath, newFilename);
+                                WriteToLog(string.Format("Renaming {0}\n                           to {1}", filename, newFilename));
                                 File.Move(oldFilepath, newFilepath);
                             }
                         }
