@@ -57,5 +57,17 @@
 
         //the regex search when reading the youtube-dl command log for creating the archive text
         private static string CreateArchiveRegex = @"^\[youtube\] .+:";
+
+        //if true, for each copy folder, the program will read all song titles and perform the regex replace on the title
+        private static bool ApplyRegexToCopyFolders = false;
+
+        //if true, for each copy folder, the program will check for and correct all duplicate indexes
+        //NOTE: the program does not perform a sort by date, all it does is take duplicate indexes and move them to the bottom
+        //(i.e. the second song of index 42 will be made 69, if there are a total of 68 songs in the list currently)
+        private static bool CheckAndFixDuplicateTrackNumbers = false;
+
+        //if true, for each copy folder, the program will check all files for correct padding
+        //(i.e. if song 1000 was added to a folder, then songs 000-999 will be renamed to 0000-0999)
+        private static bool CheckAndFixFilePadding = false;
     }
 }

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace YoutubeTagger
@@ -265,6 +266,9 @@ namespace YoutubeTagger
                 CopyFiles = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/CopyFiles").InnerText.Trim());
                 DeleteBinaries = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/DeleteBinaries").InnerText.Trim());
                 DeleteOutputLogs = bool.Parse(doc.SelectSingleNode("/DownloadInfo.xml/Settings/DeleteOutputLogs").InnerText.Trim());
+                ApplyRegexToCopyFolders = bool.Parse(doc.SelectSingleNode($"/DownloadInfo.xml/Settings/{nameof(ApplyRegexToCopyFolders)}").InnerText.Trim());
+                CheckAndFixDuplicateTrackNumbers = bool.Parse(doc.SelectSingleNode($"/DownloadInfo.xml/Settings/{nameof(CheckAndFixDuplicateTrackNumbers)}").InnerText.Trim());
+                CheckAndFixFilePadding = bool.Parse(doc.SelectSingleNode($"/DownloadInfo.xml/Settings/{nameof(CheckAndFixFilePadding)}").InnerText.Trim());
 
                 //and some default command line settings
                 DefaultCommandLine = doc.SelectSingleNode("/DownloadInfo.xml/CommandLine/Default").InnerText.Trim();
@@ -276,7 +280,7 @@ namespace YoutubeTagger
 
                 //for each xml element "DownloadInfo" in element "DownloadInfo.xml"
                 int processingIndex = 0;
-                foreach (XmlNode infosNode in doc.SelectNodes("//DownloadInfo.xml/DownloadInfos/DownloadInfo"))
+                foreach (XmlNode infosNode in doc.SelectNodes("/DownloadInfo.xml/DownloadInfos/DownloadInfo"))
                 {
                     WriteToLog(string.Format("Processing DownloadInfo {0}", processingIndex));
                     DownloadInfo temp = new DownloadInfo();
@@ -361,6 +365,55 @@ namespace YoutubeTagger
                             Console.ReadLine();
                         Environment.Exit(-1);
                     }
+
+                    //parse Regexes
+                    XmlNodeList regexesList = (infosNode as XmlElement).SelectNodes("Regex");
+                    if (regexesList.Count > 0)
+                    {
+                        temp.RegexReplaces = new RegexReplaces[regexesList.Count];
+                        int i = 0;
+                        foreach (XmlElement regex in regexesList)
+                        {
+                            XmlAttribute searchAttribute = regex.Attributes["Search"];
+                            XmlAttribute replaceAttribute = regex.Attributes["Replace"];
+                            if (string.IsNullOrEmpty(searchAttribute.Value))
+                            {
+                                WriteToLog($"ERROR: Search attribute for DownloadInfo {temp.Folder} is empty!");
+                                if (!NoErrorPrompts)
+                                    Console.ReadLine();
+                                Environment.Exit(-1);
+                            }
+
+                            RegexReplaces tempReplace;
+                            for (int j = 0; j < temp.RegexReplaces.Count(); j++)
+                            {
+                                if (temp.RegexReplaces[j] != null && temp.RegexReplaces[j].Find.Equals(searchAttribute.Value))
+                                {
+                                    WriteToLog($"ERROR: Search attribute {searchAttribute.Value} for DownloadInfo {temp.Folder} was already parsed!");
+                                    if (!NoErrorPrompts)
+                                        Console.ReadLine();
+                                    Environment.Exit(-1);
+                                }
+                            }
+
+                            tempReplace = new RegexReplaces() { Find = searchAttribute.Value, Replace = replaceAttribute.Value };
+                            temp.RegexReplaces[i++] = tempReplace;
+
+                            //check that the regex is formed well
+                            try
+                            {
+                                string tempString = Regex.Replace("nothing", tempReplace.Find, tempReplace.Replace);
+                            }
+                            catch (Exception)
+                            {
+                                WriteToLog($"ERROR: Search attribute {searchAttribute.Value} for DownloadInfo {temp.Folder} is an invalid regex expression!");
+                                if (!NoErrorPrompts)
+                                    Console.ReadLine();
+                                Environment.Exit(-1);
+                            }
+                        }
+                    }
+
 
                     //if it's the first time running, then we can set the last track count to 0 (if not already)
                     if (temp.FirstRun)

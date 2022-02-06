@@ -6,6 +6,7 @@
         YoutubeSong,
         Other1
     }
+
     public class DownloadInfo
     {
         //the type of download type to use
@@ -25,5 +26,12 @@
         public string CustomYoutubedlCommands = string.Empty;
         public bool Enabled = true;
         public string CreateArchive = string.Empty;
+        public RegexReplaces[] RegexReplaces;
+    }
+
+    public class RegexReplaces
+    {
+        public string Find;
+        public string Replace;
     }
 }

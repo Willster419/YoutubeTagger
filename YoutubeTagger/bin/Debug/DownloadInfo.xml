@@ -58,6 +58,18 @@
     
     <!-- Feature switch. If true, the application will delete the output logs originally made by running youtube-dl. -->
     <DeleteOutputLogs>False</DeleteOutputLogs>
+
+    <!-- Feature switch. If true, for each copy folder, the program will read all song titles and perform the regex replace on the title -->
+    <ApplyRegexToCopyFolders>True</ApplyRegexToCopyFolders>
+
+    <!-- Feature switch. If true, for each copy folder, the program will check for and correct all duplicate indexes
+         NOTE: the program does not perform a sort by date, all it does is take duplicate indexes and move them to the bottom
+         (i.e. the second song of index 42 will be made 69, if there are a total of 68 songs in the list currently) -->
+    <CheckAndFixDuplicateTrackNumbers>True</CheckAndFixDuplicateTrackNumbers>
+
+    <!-- Feature switch. If true, for each copy folder, the program will check all files for correct padding
+         (i.e. if song 1000 was added to a folder, then songs 000-999 will be renamed to 0000-0999) -->
+    <CheckAndFixFilePadding>True</CheckAndFixFilePadding>
   </Settings>
 
   <!-- Application command line settings -->
@@ -162,6 +174,8 @@
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\EuphoricHardStyleZ</CopyPath>
       <CopyPath>F:\Converted Phone Music\EuphoricHardStyleZ</CopyPath>
+      <Regex Search="\[HQ " Replace="("/>
+      <Regex Search="\]$" Replace=")"/>
     </DownloadInfo>
     <!-- might have stopped -->
     <DownloadInfo Enabled="False" Folder="Hardstyle_of_choice" Album="Hardstyle of choice" AlbumArtist="VA" Genre="Hardstyle" DownloadType="YoutubeMix" LastTrackNumber="196" LastDate="20211210" FirstRun="False" CreateArchive="">
@@ -248,6 +262,7 @@
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\JAIME TRANCE</CopyPath>
       <CopyPath>F:\Converted Phone Music\JAIME TRANCE</CopyPath>
+      <Regex Search="\[.+?\]$" Replace=""/>
     </DownloadInfo>
     <!-- non-youtube, kept as example -->
     <!--
