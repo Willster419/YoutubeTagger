@@ -949,11 +949,10 @@ namespace YoutubeTagger
                                 }
                                 catch (Exception ex)
                                 {
-                                    WriteToLog($"ERROR: Ane error occurred running regex expression {regexReplace.Find} on title {tag.Title} on file {actualFile}, skipping regex");
+                                    WriteToLog($"ERROR: An error occurred running regex expression {regexReplace.Find} on title {tag.Title} on file {actualFile}, skipping regex");
                                     WriteToLog(ex.ToString());
                                     if (!NoErrorPrompts)
                                         Console.ReadLine();
-                                    Environment.Exit(-1);
                                 }
                                 finally
                                 {
