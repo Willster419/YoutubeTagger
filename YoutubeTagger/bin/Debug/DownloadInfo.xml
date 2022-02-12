@@ -175,7 +175,10 @@
       <CopyPath>F:\Music\EuphoricHardStyleZ</CopyPath>
       <CopyPath>F:\Converted Phone Music\EuphoricHardStyleZ</CopyPath>
       <Regex Search="\[HQ " Replace="("/>
-      <Regex Search="\]$" Replace=")"/>
+      <Regex Search="\] *$" Replace=")"/>
+      <Regex Search="\[" Replace="("/>
+      <Regex Search="\{" Replace="("/>
+      <Regex Search="\}" Replace=")"/>
     </DownloadInfo>
     <!-- might have stopped -->
     <DownloadInfo Enabled="False" Folder="Hardstyle_of_choice" Album="Hardstyle of choice" AlbumArtist="VA" Genre="Hardstyle" DownloadType="YoutubeMix" LastTrackNumber="196" LastDate="20211210" FirstRun="False" CreateArchive="">
