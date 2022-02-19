@@ -1058,9 +1058,8 @@ namespace YoutubeTagger
                         }
                         lastTrackNumber.Value = info.LastTrackNumber.ToString();
 
-                        infoNode.Attributes[nameof(info.FirstRun)].Value = info.FirstRun.ToString();
                         doc.Save(DownloadInfoXml);
-                        WriteToLog("Saved LastTrackNumber for folder " + info.Folder);
+                        WriteToLog($"Saved LastTrackNumber as {info.LastTrackNumber} for folder {info.Folder}");
                     }
                 }
             }
