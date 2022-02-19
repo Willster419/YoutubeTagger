@@ -169,7 +169,7 @@
     </DownloadInfo>
 
     <!-- Hardstyle -->
-    <DownloadInfo Enabled="True" Folder="EuphoricHardStyleZ" Album="EuphoricHardStyleZ" AlbumArtist="VA" Genre="Hardstyle" DownloadType="YoutubeSong" LastTrackNumber="3898" LastDate="20220219" FirstRun="False" CreateArchive="">
+    <DownloadInfo Enabled="True" Folder="EuphoricHardStyleZ" Album="EuphoricHardStyleZ" AlbumArtist="VA" Genre="Hardstyle" DownloadType="YoutubeSong" LastTrackNumber="3899" LastDate="20220219" FirstRun="False" CreateArchive="">
       <DownloadURL>https://www.youtube.com/user/EuphoricHardStyleZ/videos</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\EuphoricHardStyleZ</CopyPath>
@@ -208,7 +208,7 @@
       <CopyPath>F:\Music\HHH Sounds</CopyPath>
       <CopyPath>F:\Converted Phone Music\HHH Sounds</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Hands_Up_Generation" Album="Hands Up Generation" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="2124" LastDate="20220219" FirstRun="False" CreateArchive="">
+    <DownloadInfo Enabled="True" Folder="Hands_Up_Generation" Album="Hands Up Generation" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="2125" LastDate="20220219" FirstRun="False" CreateArchive="">
       <DownloadURL>https://www.youtube.com/playlist?list=UU-26WTlPONcXLec3pnIrCaA</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\HandsUp Generation</CopyPath>
