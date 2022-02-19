@@ -975,6 +975,7 @@ namespace YoutubeTagger
             {
                 foreach (DownloadInfo info in DownloadInfos.FindAll(inn => inn.CopyPaths != null && inn.CopyPaths.Count() > 0 && inn.Enabled))
                 {
+                    List<uint> lastTrackNumbers = new List<uint>() { info.LastTrackNumber };
                     foreach (string copyPath in info.CopyPaths)
                     {
                         WriteToLog($"{nameof(CheckAndFixDuplicateTrackNumbers)} for DownloadInfo {info.Folder}, path {copyPath}");
@@ -1029,6 +1030,37 @@ namespace YoutubeTagger
                                 Environment.Exit(-1);
                             }
                         }
+                        lastTrackNumbers.Add((uint)nextIndexToUse-1);
+                    }
+
+                    uint lastMaxTrackNumber = lastTrackNumbers.Max();
+                    if (lastMaxTrackNumber != info.LastTrackNumber)
+                    {
+                        info.LastTrackNumber = lastMaxTrackNumber;
+                        //update the last index in the xml file so the last track number is synced with what we just added
+                        //at the end of each folder, write the new value back to the xml file
+                        string xpath = string.Format("//DownloadInfo.xml/DownloadInfos/DownloadInfo[@Folder='{0}']", info.Folder);
+                        XmlNode infoNode = doc.SelectSingleNode(xpath);
+
+                        if (infoNode == null)
+                        {
+                            WriteToLog("Failed to select node for saving LastTrackNumber back to folder " + info.Folder);
+                            if (!NoErrorPrompts)
+                                Console.ReadLine();
+                            Environment.Exit(-1);
+                        }
+
+                        XmlAttribute lastTrackNumber = infoNode.Attributes["LastTrackNumber"];
+                        if (lastTrackNumber == null)
+                        {
+                            lastTrackNumber = doc.CreateAttribute("LastTrackNumber");
+                            infoNode.Attributes.Append(lastTrackNumber);
+                        }
+                        lastTrackNumber.Value = info.LastTrackNumber.ToString();
+
+                        infoNode.Attributes[nameof(info.FirstRun)].Value = info.FirstRun.ToString();
+                        doc.Save(DownloadInfoXml);
+                        WriteToLog("Saved LastTrackNumber for folder " + info.Folder);
                     }
                 }
             }
