@@ -501,7 +501,7 @@ namespace YoutubeTagger
                             tag.Performers = null;
                             tag.Performers = new string[] { "VA" };
                             tag.Year = (uint)DateTime.Now.Year;
-                            WriteToLog("Song treated as heartAtThis mix");
+                            WriteToLog("Song treated as custom mix");
                         }
                         else//youtube mix and song
                         {
