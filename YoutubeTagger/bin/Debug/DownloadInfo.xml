@@ -102,13 +102,13 @@
   <DownloadInfos>
 
     <!-- Synthwave -->
-    <DownloadInfo Enabled="True" Folder="Synthwave_Mixes" Album="OUTRUN" AlbumArtist="ThePrimeThanatos" Genre="Synthwave" DownloadType="YoutubeMix" LastTrackNumber="205" FirstRun="False" LastDate="20220415" CreateArchive="">
+    <DownloadInfo Enabled="True" Folder="Synthwave_Mixes" Album="OUTRUN" AlbumArtist="ThePrimeThanatos" Genre="Synthwave" DownloadType="YoutubeMix" LastTrackNumber="205" FirstRun="False" LastDate="20220422" CreateArchive="">
       <DownloadURL>https://www.youtube.com/user/ThePrimeThanatos/videos</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\ThePrimeThanatos\Mixes</CopyPath>
       <CopyPath>F:\Converted Phone Music\ThePrimeThanatos\Mixes</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Synthwave_Songs" Album="Back to the 80s" AlbumArtist="ThePrimeThanatos" Genre="Synthwave" DownloadType="YoutubeSong" LastTrackNumber="378" FirstRun="False" LastDate="20220415" CreateArchive="">
+    <DownloadInfo Enabled="True" Folder="Synthwave_Songs" Album="Back to the 80s" AlbumArtist="ThePrimeThanatos" Genre="Synthwave" DownloadType="YoutubeSong" LastTrackNumber="378" FirstRun="False" LastDate="20220422" CreateArchive="">
       <DownloadURL>https://www.youtube.com/user/ThePrimeThanatos/videos</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\ThePrimeThanatos\Songs</CopyPath>
@@ -116,7 +116,7 @@
     </DownloadInfo>
 
     <!-- Eurobeat -->
-    <DownloadInfo Enabled="True" Folder="EUTOBEAT" Album="EUROBEATS" AlbumArtist="VA" Genre="Eutobeat" DownloadType="YoutubeMix" LastTrackNumber="29" FirstRun="False" LastDate="20220415" CreateArchive="">
+    <DownloadInfo Enabled="True" Folder="EUTOBEAT" Album="EUROBEATS" AlbumArtist="VA" Genre="Eutobeat" DownloadType="YoutubeMix" LastTrackNumber="29" FirstRun="False" LastDate="20220422" CreateArchive="">
       <DownloadURL>https://www.youtube.com/playlist?list=PLAZCk8xCc7mZbuQOpzt7xt_UpHrWkPuOm</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\EUROBEATS\mixes</CopyPath>
@@ -131,13 +131,13 @@
       <CopyPath>F:\Music\Eric Clapman</CopyPath>
       <CopyPath>F:\Converted Phone Music\Eric Clapman</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="NCS_House" Album="NCS House" AlbumArtist="Willster419" Genre="House" DownloadType="YoutubeSong" LastTrackNumber="228" LastDate="20220415" FirstRun="False" CreateArchive="">
+    <DownloadInfo Enabled="True" Folder="NCS_House" Album="NCS House" AlbumArtist="Willster419" Genre="House" DownloadType="YoutubeSong" LastTrackNumber="229" LastDate="20220422" FirstRun="False" CreateArchive="">
       <DownloadURL>https://www.youtube.com/playlist?list=PLRBp0Fe2GpgmsW46rJyudVFlY6IYjFBIK</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\NCS\House</CopyPath>
       <CopyPath>F:\Converted Phone Music\NCS\House</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Nick_Cooper_electro_house" Album="Nick Cooper - Electro House" AlbumArtist="VA" Genre="Electro House" DownloadType="YoutubeSong" LastTrackNumber="689" LastDate="20220415" FirstRun="False" CreateArchive="">
+    <DownloadInfo Enabled="True" Folder="Nick_Cooper_electro_house" Album="Nick Cooper - Electro House" AlbumArtist="VA" Genre="Electro House" DownloadType="YoutubeSong" LastTrackNumber="689" LastDate="20220422" FirstRun="False" CreateArchive="">
       <DownloadURL>https://www.youtube.com/playlist?list=PL4E3D21C21A3B8901</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\Nick Cooper\Electro House</CopyPath>
@@ -150,18 +150,18 @@
       <CopyPath>F:\Music\DJ Ekki\Charts</CopyPath>
       <CopyPath>F:\Converted Phone Music\DJ Ekki\Charts</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Revealed_tv" Album="Revealed TV" AlbumArtist="VA" Genre="Progressive" DownloadType="YoutubeSong" LastTrackNumber="1058" LastDate="20220415" FirstRun="False" CreateArchive="">
+    <DownloadInfo Enabled="True" Folder="Revealed_tv" Album="Revealed TV" AlbumArtist="VA" Genre="Progressive" DownloadType="YoutubeSong" LastTrackNumber="1060" LastDate="20220422" FirstRun="False" CreateArchive="">
       <DownloadURL>https://www.youtube.com/playlist?list=PLUHdivV5QCGf6vCG17JiAV91V4WMUzkCP</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\Revealed TV</CopyPath>
       <CopyPath>F:\Converted Phone Music\Revealed TV</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="You_love_dance_tv" Album="YouLoveDance.tv" AlbumArtist="VA" Genre="Dance" DownloadType="YoutubeSong" LastTrackNumber="1676" LastDate="20220415" FirstRun="False" CreateArchive="">
+    <DownloadInfo Enabled="True" Folder="You_love_dance_tv" Album="YouLoveDance.tv" AlbumArtist="VA" Genre="Dance" DownloadType="YoutubeSong" LastTrackNumber="1686" LastDate="20220422" FirstRun="False" CreateArchive="">
       <DownloadURL>https://www.youtube.com/user/Planetpunkmusic/videos</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\YouLoveDance.TV</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Nick_Cooper_progressive" Album="Nick Cooper - Progressive" AlbumArtist="VA" Genre="Progressive" DownloadType="YoutubeSong" LastTrackNumber="537" LastDate="20220415" FirstRun="False" CreateArchive="">
+    <DownloadInfo Enabled="True" Folder="Nick_Cooper_progressive" Album="Nick Cooper - Progressive" AlbumArtist="VA" Genre="Progressive" DownloadType="YoutubeSong" LastTrackNumber="537" LastDate="20220422" FirstRun="False" CreateArchive="">
       <DownloadURL>https://www.youtube.com/playlist?list=PL4C9F90A46845CCB1</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\Nick Cooper\Progressive</CopyPath>
@@ -169,7 +169,7 @@
     </DownloadInfo>
 
     <!-- Hardstyle -->
-    <DownloadInfo Enabled="True" Folder="EuphoricHardStyleZ" Album="EuphoricHardStyleZ" AlbumArtist="VA" Genre="Hardstyle" DownloadType="YoutubeSong" LastTrackNumber="3971" LastDate="20220415" FirstRun="False" CreateArchive="">
+    <DownloadInfo Enabled="True" Folder="EuphoricHardStyleZ" Album="EuphoricHardStyleZ" AlbumArtist="VA" Genre="Hardstyle" DownloadType="YoutubeSong" LastTrackNumber="3980" LastDate="20220422" FirstRun="False" CreateArchive="">
       <DownloadURL>https://www.youtube.com/user/EuphoricHardStyleZ/videos</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\EuphoricHardStyleZ</CopyPath>
@@ -187,7 +187,7 @@
       <CopyPath>F:\Music\Hardstyle of choice</CopyPath>
       <CopyPath>F:\Converted Phone Music\Hardstyle of choice</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Hardstyle_Promotions" Album="Hardstyle Promotions" AlbumArtist="VA" Genre="Hardstyle" DownloadType="YoutubeSong" LastTrackNumber="791" LastDate="20220415" FirstRun="False" CreateArchive="">
+    <DownloadInfo Enabled="True" Folder="Hardstyle_Promotions" Album="Hardstyle Promotions" AlbumArtist="VA" Genre="Hardstyle" DownloadType="YoutubeSong" LastTrackNumber="791" LastDate="20220422" FirstRun="False" CreateArchive="">
       <DownloadURL>https://www.youtube.com/user/SwEKlingan/videos</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\Hardstyle Promotions</CopyPath>
@@ -202,13 +202,13 @@
       <CopyPath>F:\Music\CX Music</CopyPath>
       <CopyPath>F:\Converted Phone Music\CX Music</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="HHH_Sounds" Album="HHH Sounds" AlbumArtist="DJ HHH" Genre="Hands Up" DownloadType="YoutubeMix" LastTrackNumber="295" LastDate="20220415" FirstRun="False" CreateArchive="">
+    <DownloadInfo Enabled="True" Folder="HHH_Sounds" Album="HHH Sounds" AlbumArtist="DJ HHH" Genre="Hands Up" DownloadType="YoutubeMix" LastTrackNumber="295" LastDate="20220422" FirstRun="False" CreateArchive="">
       <DownloadURL>https://www.youtube.com/channel/UCpCB87jDAMiOVlZH3VD-DPw/videos</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\HHH Sounds</CopyPath>
       <CopyPath>F:\Converted Phone Music\HHH Sounds</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Hands_Up_Generation" Album="Hands Up Generation" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="2164" LastDate="20220415" FirstRun="False" CreateArchive="">
+    <DownloadInfo Enabled="True" Folder="Hands_Up_Generation" Album="Hands Up Generation" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="2168" LastDate="20220422" FirstRun="False" CreateArchive="">
       <DownloadURL>https://www.youtube.com/playlist?list=UU-26WTlPONcXLec3pnIrCaA</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\HandsUp Generation</CopyPath>
@@ -234,12 +234,12 @@
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\Music Empire</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Zooland_tv" Album="Zooland.TV" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="1454" LastDate="20220415" FirstRun="False" CreateArchive="">
+    <DownloadInfo Enabled="True" Folder="Zooland_tv" Album="Zooland.TV" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="1456" LastDate="20220422" FirstRun="False" CreateArchive="">
       <DownloadURL>https://www.youtube.com/c/zoolandtv/videos</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\Zooland.TV</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="Hands_Up_Freaks" Album="Hands Up Freaks" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="149" LastDate="20220415" FirstRun="False" CreateArchive="">
+    <DownloadInfo Enabled="True" Folder="Hands_Up_Freaks" Album="Hands Up Freaks" AlbumArtist="Willster419" Genre="Hands Up" DownloadType="YoutubeSong" LastTrackNumber="151" LastDate="20220422" FirstRun="False" CreateArchive="">
       <DownloadURL>https://www.youtube.com/c/HandsUpFreaks/videos</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\Hands Up Freaks</CopyPath>
@@ -260,7 +260,7 @@
       <CopyPath>F:\Music\Vital Tunes\Releases</CopyPath>
       <CopyPath>F:\Converted Phone Music\Vital Tunes\Releases</CopyPath>
     </DownloadInfo>
-    <DownloadInfo Enabled="True" Folder="JAIME_TRANCE" Album="JAIME TRANCE" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeSong" LastTrackNumber="5550" LastDate="20220415" FirstRun="False" CreateArchive="">
+    <DownloadInfo Enabled="True" Folder="JAIME_TRANCE" Album="JAIME TRANCE" AlbumArtist="Willster419" Genre="Trance" DownloadType="YoutubeSong" LastTrackNumber="5579" LastDate="20220422" FirstRun="False" CreateArchive="">
       <DownloadURL>https://www.youtube.com/c/JAIMETRANCE/videos</DownloadURL>
       <CustomYoutubedlCommands></CustomYoutubedlCommands>
       <CopyPath>F:\Music\JAIME TRANCE</CopyPath>
