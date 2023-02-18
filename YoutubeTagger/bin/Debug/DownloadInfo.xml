@@ -94,7 +94,9 @@
     <YoutubeMixDuration>duration &gt; 660</YoutubeMixDuration>
     
     <!-- URL for where to download the latest youtube-dl executable. -->
-    <YoutubeDlUrl>https://yt-dl.org/latest/youtube-dl.exe</YoutubeDlUrl>
+    <!-- OLD URL -->
+    <!-- <YoutubeDlUrl>https://yt-dl.org/latest/youtube-dl.exe</YoutubeDlUrl> -->
+    <YoutubeDlUrl>https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe</YoutubeDlUrl>
   </CommandLine>
 
   <!-- Each element is a playlist/album/folder of songs you wish to have downloaded,tagged, and copied.
