@@ -340,3 +340,5 @@ desktop.ini
 /YoutubeTagger/bin/Debug/dj_playlist
 *.webp
 /YoutubeTagger/dll
+cookies.firefox-private.txt
+cookies.txt
